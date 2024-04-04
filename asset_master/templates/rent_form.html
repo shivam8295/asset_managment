@@ -1,0 +1,421 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    /* Optional: Add custom styling to the Dropzone container */
+    /* .dropzone {
+        background: white;
+        border-radius: 8px;
+        min-height: 10px;
+        width: 120px;
+        padding: 12px;
+        text-align: center;
+        border: none;
+    }
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -40px;
+    } */
+
+
+    .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    }
+
+    .navbar-second a {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+
+    }
+
+    .navbar-second a svg {
+        margin-right: 5px;
+    }
+
+    .navbar-second a:hover {
+        color: #6A1B9A;
+    }
+
+    .active {
+        color: #6A1B9A;
+        border-bottom: 3px solid #6A1B9A;
+    }
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+    
+</style>
+<section class="assetdetail">
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+    <div class="assetheaderbuttones">
+        
+        <div class="uploadboxy" style="align-items: center;">
+            <form action="/upload" class="dropzone" id="imageUpload" enctype="multipart/form-data">
+            </form>
+            <h1 style="font-size: 1.4rem !important; color:#4C555D;">Create Asset</h1>
+        </div>
+        
+    <form action="" method="post">
+       {%csrf_token%}
+        <div class="assebutton" style="gap: 20px; display: flex;">
+            <div class="asset-tablebtn">
+                
+                    <button style="height: 45px;">
+                        <a href="/asset-list/">CANCEL</a>
+                    </button>
+                
+        </div>
+            <button type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                width="20" height="20" viewBox="0 0 24 24"
+                style="fill: #fff;transform: ;msFilter:; margin-right: 5px;">
+                <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path>
+                <path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path>
+                </svg>Done
+            </button>
+    
+        </div>
+       
+    </div>
+    
+
+</section>
+<div class="assetform-heading">
+    <h1> Core Information</h1>
+    <p>Specify the primary description for your asset</p>
+</div>
+
+
+<section class="assetform-data ">
+
+<div class="assetform-formtable">
+    <div class="assetform-input">
+        <label for="">Category<span>*</span></label>
+        <input type="text" name="category" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">Description<span>*</span></label>
+        <input type="text" name="description" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">Model Number<span>*</span></label>
+        <input type="text" name="model_no" id="" required>
+    </div>
+    
+    
+    <div class="assetform-input">
+        <label for="">Brand<span>*</span></label>
+        <input type="text" name="brand" id="" value="{{form_data.brand}}" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">Serial Number<span>*</span></label>
+        <input type="text" min="0" name="serial_no" id="" value="{{form_data.serial_no}}" required>
+        <!-- {%if form_data.serial_no == "" %}
+            {% for message in messages %}
+            <h7 class="text-danger">{{message}}</h7>
+            {% endfor %}
+        {% endif %} -->
+    </div>
+    <div class="assetform-input">
+        <label for="">Name of Vendor <span></span></label>
+        <input type="text" name="vendor" id="" value="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">Asset Tag<span>*</span></label>
+        <input type="text" name="asset_tag" id="" value="{{form_data.asset_tag}}" required>
+        <!-- {%if form_data.asset_tag == "" %}
+            {% for message in messages %}
+            <h7>{{message}}</h7>
+            {% endfor %}
+        {% endif %} -->
+    </div>
+
+    <div class="assetform-input">
+        <label for="">Rental Period<span></span></label>
+        <input type="text" name="rental_pricing" id="" value="" required>
+    </div>
+   
+    <div class="assetform-input">
+        <label for="">Vintage<span>*</span></label>
+        <input type="text" min="0" name="age" id="" required>
+    </div>
+    <!-- <div class="assetform-input">
+        <label for="">SKU</label>
+        <input type="text" name="sku" id="">
+    </div> -->
+    <div class="assetform-input">
+        <label for="">Storage Area<span>*</span></label>
+        <input type="text" name="area" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">FC No.<span>*</span></label>
+        <input type="text" name="fc_no" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">Last Service Date<span></span></label>
+        <input type="date" name="last_service_date" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Upcoming Service Date<span></span></label>
+        <input type="date" name="upcoming_service_date" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Box Number<span></span></label>
+        <input type="text" name="box_number" id="" >
+    </div>
+
+    <div class="assetform-input">
+        <label for="">Asset or Accessory<span>*</span></label>
+        <select class="" id="relation" name="relation" style="width: 60%; height:40px; border-radius:5px"
+        required>
+            <option disabled selected value=''>SELECT</option>
+            <option value="101" >Add as asset</option>
+            <option value="102" >Add as accessory</option>
+        </select>
+    </div>
+    <div class="assetform-input" id="mappingInput" style="display: none; ">
+        <label for="">Mapping<span>*</span></label>
+        <select name="mapping" id="mapping" style="width: 60%; height:40px; border-radius:5px; margin-left:235px;" >
+            <option value="">--Select--</option>
+            {% for m in rented_asset_description %}
+                <option value="{{ m }}">{{ m }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+
+</div>
+</section>
+<div class="assetform-heading">
+    <h1>UoM (Unit of Measurement)</h1>
+
+</div>
+<section class="assetform-data ">
+    <div class="assetform-formtable">
+        <div class="assetform-input">
+            <label for="">Length</label>
+            <input type="text" name="length" id="">
+        </div>
+        <div class="assetform-input">
+            <label for="">Breadth</label>
+            <input type="text" name="breadth" id="">
+        </div>
+        <div class="assetform-input">
+            <label for="">Height</label>
+            <input type="text" name="height" id="">
+        </div>
+        <div class="assetform-input">
+            <label for="">Weight</label>
+            <input type="text" name="width" id="">
+        </div>
+        
+    </div>
+        
+    </section>
+    <div class="assetform-heading">
+        <h1>Product Engineering Support Info
+        </h1>
+    
+    </div>
+    <section class="assetform-data ">
+        <div class="assetform-formtable">
+            <div class="assetform-input">
+                <label for="">WARRANTY PERIOD                </label>
+                <input type="text" name="warranty_period" id="">
+            </div>
+            <div class="assetform-input">
+                <label for="">UNDER AMC                </label>
+                <select class="form-select" aria-label="Default select example" style="width: 60%;">
+                    <option selected>SELECT</option>
+                    <option value="1">YES</option>
+                    <option value="2">NO</option>
+                  </select>
+            </div>
+            <div class="assetform-input">
+                <label for="">AMC DATE                </label>
+                <input type="date" name="amc_date" id="">
+            </div>
+            
+            
+        </div>
+            
+        </section>
+        <div class="assetform-heading">
+            <h1>Asset In and Out Tracking
+
+            </h1>
+        
+        </div>
+        <section class="assetform-data ">
+            <div class="assetform-formtable">
+                <div class="assetform-input">
+                    <label for="">STORAGE WAREHOUSE NUMBER</label>
+                    <input type="text" name="storage_warehouse_number" id="">
+                </div>
+                <div class="assetform-input">
+                    <label for="">AVAILABILITY</label>
+                    <select class="form-select" aria-label="Default select example" style="width: 60%;">
+                        <option selected>SELECT</option>
+                        <option value="1">YES</option>
+                        <option value="2">NO</option>
+                      </select>
+                </div>
+                <div class="assetform-input">
+                    <label for="">OUTWARD DATE</label>
+                    <input type="date" name="outward_date" id="">
+                </div>
+                <div class="assetform-input">
+                    <label for="">OUTWARD REMARKS</label>
+                    <input type="text" name="outward_remarks" id="">
+                </div>
+                <div class="assetform-input">
+                    <label for="">INWARD DATE</label>
+                    <input type="date" name="inward_date" id="">
+                </div>
+                <div class="assetform-input">
+                    <label for="">INWARD REMARKS</label>
+                    <input type="text" name="inward_remarks" id="">
+                </div>
+                
+                
+            </div>
+                
+            </section>
+<div class="assetform-heading">
+    <h1>Purchase</h1>
+    <p>If you're not using a rental rate, leave it as 0.</p>
+</div>
+<section class="assetform-data ">
+    <div class="assetform-formtable">
+        <div class="assetform-input">
+            <label for="">Vendor</label>
+            <input type="text" name="vendor" id="">
+        </div>
+        <div class="assetform-input">
+            <label for="">Purchased On</label>
+            <input type="date" name="purchased_on" id="">
+        </div>
+        <div class="assetform-input">
+            <label for="">Cost Price </label>
+            <input type="text" name="cost_price" id="">
+        </div>
+        <div class="assetform-input">
+            <label for="">Tax Rate</label>
+            <input type="text" name="tax_rate" id="">
+        </div>
+        <div class="assetform-input">
+            <label for="">Depreciated Value</label>
+            <input type="text" name="depricated_value" id="">
+        </div>
+        <div class="assetform-input">
+            <label for="">CREATED on</label>
+            <input type="date" name="created_on" id="">
+        </div>
+        
+    </div>
+        
+    </section>
+    <div class="assetform-heading">
+        <h1>Pricing</h1>
+    </div>
+    <section class="assetform-data mb-5">
+        <div class="assetform-formtable">
+            <div class="assetform-input">
+                <label for="">Rental Pricing</label>
+                <input type="text" name="rental_pricing" id="">
+            </div>
+            
+        </div>
+        
+            
+        </section>
+</form>
+
+
+
+<script>
+    // Customize your Dropzone options as needed
+    Dropzone.options.imageUpload = {
+        paramName: "image", // The name that will be used to transfer the file
+        maxFilesize: 2, // MB
+        acceptedFiles: "image/*",
+        addRemoveLinks: true, // Display remove link
+        dictDefaultMessage: "<span style='font-size: 14px; color:#6A1B9A; ' > Upload </span>",
+        dictRemoveFile: "Remove",
+        init: function () {
+            this.on("success", function (file, response) {
+                // Handle success
+                console.log(response);
+            });
+            this.on("error", function (file, response) {
+                // Handle error
+                console.error(response);
+            });
+        }
+    };
+</script>
+
+<script>
+    function setActive(navbarId, linkId) {
+        // Remove 'active' class from all links in the specified navbar
+        var links = document.getElementById(navbarId).getElementsByTagName('a');
+        for (var i = 0; i < links.length; i++) {
+            links[i].classList.remove('active');
+        }
+
+        // Add 'active' class to the clicked link
+        document.getElementById(linkId).classList.add('active');
+    }
+</script>
+
+
+
+
+<script>
+    var selectElement = document.querySelector('select[name="relation"]');
+    selectElement.addEventListener('change', function() { 
+        var selectedOption = selectElement.options[selectElement.selectedIndex].value;
+        var mappingInput = document.getElementById('mappingInput');   
+        if (selectedOption === '102') {
+            mappingInput.style.display = 'block';
+        } else {
+            mappingInput.style.display = 'none';
+        }
+    });
+</script>
+
+
+{% endblock content %}

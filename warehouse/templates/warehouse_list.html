@@ -1,0 +1,192 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+<style>
+    table {
+            width: 100%;
+            border-collapse: separate; /* Set border-collapse to separate */
+            border-spacing: 0; /* Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+       
+</style>
+
+<section class="assetdetail">
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+
+    <div class="assetheaderbuttones">
+        <h1>Warehouse</h1>
+        <div class="assebutton">
+       
+             
+        <button ><a href="#" style="color: #fff; text-decoration: none;">+ Add New order</a></button>
+
+      
+    </div>
+
+    </div>
+</section>
+<!-- <div class="order-headingcnt">
+    <h1>Warehouse</h1>
+</div> -->
+<section class="assest-container-table">
+
+    <div class="asset-tablebtn">
+        <div class="searchiconbtn" >
+            <img src="{% static 'images/search.svg' %}" alt="icon" style="margin-left: 15px;">
+<form method="GET" style="display: flex;align-items: center;gap: 10px;">   
+    <input name="q" type="text" placeholder="Search.." style = "padding-left: 40px; border-radius: 5px;">
+    <div class="dropdown">
+        <button class=" dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="height: 40px; text-transform: uppercase;">
+          Filter
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Serial number</a></li>
+          <li><a class="dropdown-item" href="#">model number</a></li>
+          <li><a class="dropdown-item" href="#">category</a></li>
+          <li><a class="dropdown-item" href="#">area</a></li>
+          <li><a class="dropdown-item" href="#">FC number</a></li>
+          <li><a class="dropdown-item" href="#">description</a></li>
+          <li><a class="dropdown-item" href="#">brand</a></li>
+          
+        </ul>
+      </div>
+</form>            
+        </div>
+        <button>
+            EXPORT TO CSV
+        </button>
+       
+
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th>
+                <th>Serial Number</th>
+                <th>Model Number</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Brand</th>
+                <th>Quantity</th>
+                <th>Storage Area</th>
+                <th> FC Number</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+           
+            {% for asset in assets %}
+            <tr>
+                <td class="checkbox-column"><input type="checkbox"></td>
+                <td class="tbname"><a href="/asset_management/warehouse-detail/{{asset.serial_no.id}}/">{{asset.serial_no.serial_no}}</a></td>
+                <td class="tbname"><a href="/asset_management/warehouse-detail/{{asset.serial_no.id}}/ ">{{asset.serial_no.model_no}}</a></td>
+                <td>{{asset.serial_no.category}}</td>
+                <td >{{asset.serial_no.description}}</td>
+                <td>{{asset.serial_no.brand}}</td> 
+                <td>1</td>
+                <td>{{asset.serial_no.area}}</td>     
+                <td>{{asset.serial_no.fc_no}}</td>         
+                <td></td>         
+
+            </tr>
+            
+            {% endfor %}
+           
+     
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+    <div class="pagidis">
+    <div></div>
+    <div class="card text-center" style="border: none;">
+        <div class="card-footer text-body-secondary" style="background-color: #fff; border: none;" >
+        Displaying all {{queryset_length}} assets
+        </div>
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if assets.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ assets.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ assets.number }} of {{ assets.paginator.num_pages }}
+        </span>
+
+        {% if assets.has_next %}
+            <a href="?page={{ assets.next_page_number }}">Next</a>
+            <a href="?page={{ assets.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+</section>
+
+
+
+<script>
+    // JavaScript function to select or unselect all checkboxes
+    function selectAllCheckboxes(masterCheckbox) {
+        var checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = masterCheckbox.checked;
+        });
+    }
+</script>
+
+{% endblock content %}

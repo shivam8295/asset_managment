@@ -1,0 +1,1140 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    /* Optional: Add custom styling to the Dropzone container */
+  
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -90px;
+        margin-top: 15px;
+    }
+
+
+    /* .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    } */
+
+   
+
+    
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+
+
+    .tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  padding: 0 30px;
+  /* background-color: #f1f1f1; */
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  border: none;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  border-bottom:2px solid #6A1B9A;
+  color: #6A1B9A;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/* Set initial display for the first tab content */
+#London {
+  display: block;
+}
+button.tablinks {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        
+    }
+    button.tablinks svg {
+        margin-right: 5px;
+    }
+    table {
+            width: 100%;
+            border-collapse: separate; /* Set border-collapse to separate */
+            border-spacing: 0; /* Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+        
+       
+    
+</style>
+<section class="assetdetail">
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: msFilter">
+        <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+    <div class="assetheaderbuttones">
+        
+        <div class="uploadboxy">
+            <form action="/upload" class="dropzone" id="imageUpload" enctype="multipart/form-data">
+                <!-- <div class="upload-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                        <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+                      </svg>
+                </div> -->
+
+            </form>
+            <div class="uploadsubbtn">
+                <p></p>
+                <h1>INSTANT ROW
+                </h1>
+                {% for m in repair_obj%}
+                <div class="editbtn">
+                    {% if m.asset_obj.repair_type == 20%}
+                    <div class="editicon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                        </svg><a style="text-decoration:none;" 
+                        href="/asset_management/repair-maintenance-external-edit/{{m.id}}/">Edit</a>
+                    </div>
+                   {% endif %}
+                    <div class="editicon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                            <path
+                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                        </svg>Delete</div>
+
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        {% for m in repair_obj%}
+        <div class="assebutton" style="gap: 20px; display: flex;">
+            {% if m.asset_obj.repair_type == 10 %}
+            <button disabled>Sent to inventory</button>
+            {% elif m.asset_obj.repair_type == 20 %}
+            <button onclick="sendToInventory({{m.asset_obj.id}})">Send to inventory</button>
+            {% endif %}
+            <button>history</button>
+            <button>Print Label</button>
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+ <div class="navbar-navi tab">
+    <button class="tablinks active" onclick="openCity(event, 'London')"><svg
+        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-list"
+        viewBox="0 0 16 16">
+        <path
+            d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+        <path
+            d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+    </svg>Details</button>
+  </div>
+  
+  <div id="London" class="tabcontent active">
+    <section  class="assetdetail-detail " >
+
+        <div class="assetdetail-containing">
+           
+            <div class="assetdetail-contain mt-0">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A"
+                        class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
+                        <path
+                            d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z" />
+                        <path
+                            d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                    </svg>Details</h1>
+                {% for m in repair_obj%}
+                <div class="detialasset mt-4">
+                    
+                    <div class="detialasset-name">
+                        <p>Equipment Type</p>
+                        <div class="bndname">
+                            {% if m.eqiupment_type == none %}
+                            --
+                            {% else %}
+                            {{m.eqiupment_type}}
+                            {% endif %} 
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Equipment Name</p>
+                        <div class="bndname">
+                            {{m.equipment_name}}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Model No</p>
+                        <div class="bndname">{{m.model_no}}</div>
+    
+                    </div>
+                     <div class="detialasset-name">
+                        <p>Serial No</p>
+                        <div class="bndname2">{{m.serial_no}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Part No</p>
+                        <div class="bndname">
+                            {% if m.part_no == none %}
+                            --
+                            {% else %}
+                            {{m.part_no}}
+                            {% endif %} 
+                        </div>
+    
+                    </div>   
+                    <div class="detialasset-name">
+                        <p>Quantity</p>
+                        <div class="bndname">
+                            {% if m.quantity == none %}
+                            --
+                            {% else %}
+                            {{m.quantity}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Accessories</p>
+                        <div class="bndname">
+                            {% if m.accessories == none %}
+                            --
+                            {% else %}
+                            {{m.accessories}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Accessories Quantity</p>
+                        <div class="bndname">
+                            {% if m.accessories_qty == none %}
+                            --
+                            {% else %}
+                            {{m.accessories_qty}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Out Date</p>
+                        <div class="bndname">
+                            {% if m.out_date == none %}
+                            --
+                            {% else %}
+                            {{m.out_date|date:'d-m-Y'}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Out Time</p>
+                        <div class="bndname">
+                            {% if m.out_time == none %}
+                            --
+                            {% else %}
+                            {{m.out_time}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Equipment Last Report Date</p>
+                        <div class="bndname">
+                            {% if m.equipment_last_report_date == none %}
+                            --
+                            {% else %}
+                            {{m.equipment_last_report_date|date:'d-m-Y'}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Equipment Last Report Fault</p>
+                        <div class="bndname">
+                            {% if m.equipment_last_report_fault == none %}
+                            --
+                            {% else %}
+                            {{m.equipment_last_report_fault}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Equipment Received by (OEM/Vendor)</p>
+                        <div class="bndname">
+                            {% if m.equipment_received_by == none %}
+                            --
+                            {% else %}
+                            {{m.equipment_received_by}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Equipment Handed Over By (Name & Appt)</p>
+                        <div class="bndname">
+                            {% if m.equipment_handed_over_by == none %}
+                            --
+                            {% else %}
+                            {{m.equipment_handed_over_by}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Equipment Handed Over to</p>
+                        <div class="bndname">
+                            {% if m.equipment_handed_over_to == none %}
+                            --
+                            {% else %}
+                            {{m.equipment_handed_over_to}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    
+                    <div class="detialasset-name">
+                        <p>Default Detected</p>
+                        <div class="bndname">
+                            {% if m.default_detected == none %}
+                            --
+                            {% else %}
+                            {{m.default_detected}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Last Service Date</p>
+                        <div class="bndname">
+                            {% if m.last_service_date == none %}
+                            --
+                            {% else %}
+                            {{m.last_service_date|date:'d-m-Y'}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                    
+                    <div class="detialasset-name">
+                        <p>Upcoming Service Date </p>
+                        <div class="bndname">
+                            {% if m.upcoming_service_date == none %}
+                            --
+                            {% else %}
+                            {{m.upcoming_service_date|date:'d-m-Y'}}
+                            {% endif %} 
+                         </div>
+    
+                    </div>
+                </div>
+                {% endfor %}
+              
+    
+            </div>
+            <br>
+            
+            <div style="max-height: 350px; overflow-y: auto;" class="assetdetail-contain mt-5">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A" class="bi bi-upc-scan" viewBox="0 0 16 16" style="margin-right: 5px;">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                  </svg>Equipment Forward Details</h1>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-column" style="border-radius: 10px 0 0 0;">
+                                <input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)">
+                            </th>
+                            <th>S/No</th>
+                            <th>Fault Reported</th>
+                            <th>Fault Detected</th>
+                            <th>Fault Occurred</th>
+                            <th>Type of Repair Carried Out</th> 
+                            <th></th>
+                            <th><button style="font-weight:bold;background-color: transparent; border: none; color:green"
+                                onclick="addRows()">+ Add</button>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in external_equipment_details%}
+                        <tr>
+                            <td class="checkbox-column"><input type="checkbox"></td>
+                            <td >{{ forloop.counter }}</td>
+
+                            {% if m.falut_reported == none %}
+                            <td>--</td>
+                            {% else %}
+                            <td>{{m.falut_reported}}</td>
+                            {% endif%}
+                            
+                            
+                            {% if m.falut_detected == none %}
+                            <td>--</td>
+                            {% else %}
+                            <td>{{m.falut_detected}}</td>
+                            {% endif%}
+
+
+                            {% if m.falut_occured == None %}
+                            <td>--</td>
+                            {% else %}
+                                <td>{{m.falut_occured}}</td>
+                            {% endif %}
+                            
+                            
+                            {% if m.type_of_repair_carried_out == none %}
+                            <td>--</td>
+                            {% else %}
+                                <td>{{m.type_of_repair_carried_out}}</td>
+                            {% endif %}
+
+
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                                
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+               
+    
+            </div>
+            <br>
+            <div style="max-height: 350px; overflow-y: auto;" class="assetdetail-contain mt-5">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A" class="bi bi-upc-scan" viewBox="0 0 16 16" style="margin-right: 5px;">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                  </svg>Advisory for Equipment Handling</h1>
+                
+                <table class="table advisory">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th>
+                            <th style="max-width: 30px;">Serial No </th>
+                            <th>Remarks</th>
+                            <th>
+                                <button style="font-weight:bold;background-color: transparent; border: none; color:green"
+                                    onclick="addRowsInAdvisory()">+Add</button>
+                            </th>
+                            <th></th>
+                            
+                            <!-- <th style="border-radius: 0 10px  0 0; cursor: pointer;"><img src="{% static 'images/sliders.svg' %}" alt=""></th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in external_advosory_details%}
+                        <tr>
+                            <td class="checkbox-column"><input type="checkbox"></td>
+                            <td >{{ forloop.counter }}</td>
+                            <td>{{m.remarks}}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+               
+    
+            </div>
+            <br>
+            <div class="assetdetail-contain mt-0">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A" class="bi bi-upc-scan" viewBox="0 0 16 16" style="margin-right: 5px;">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                  </svg>Equipment Out Details</h1>
+                {% for m in repair_obj%}
+                <div class="detialasset mt-4">
+                    <div class="detialasset-name">
+                        <p>Repaired</p>
+                        <div class="bndname">
+                            {% if m.accessories_qty == none %}
+                            --
+                            {% else %}
+                            {{m.accessories_qty}}
+                            {% endif %} 
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p> Specification</p>
+                        <div class="bndname">
+                            {% if m.specification == none %}
+                            --
+                            {% else %}
+                            {{m.specification}}
+                            {% endif %} 
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Reason</p>
+                        <div class="bndname">
+                            {% if m.reason == none %}
+                            --
+                            {% else %}
+                            {{m.reason}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Date of Intimation to Zoom Communications Team</p>
+                        <div class="bndname">
+                            {% if m.date_of_intimation == none %}
+                            --
+                            {% else %}
+                            {{m.date_of_intimation|date:'d-m-Y'}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Name of Zoom Communications Engineering Team Informed Contact Person</p>
+                        <div class="bndname">
+                            {% if m.informed_contact_person == none %}
+                            --
+                            {% else %}
+                            {{m.informed_contact_person}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                   
+                   
+                    <div class="detialasset-name">
+                        <p>Signature</p>
+                        <div class="bndname">
+                            {% if m.signature == none %}
+                            --
+                            {% else %}
+                            {{m.signature}}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+               
+    
+            </div>
+            <br>
+            <div class="assetdetail-contain mt-0">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A" class="bi bi-upc-scan" viewBox="0 0 16 16" style="margin-right: 5px;">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                  </svg>Equipment Received Details</h1>
+                <div class="detialasset mt-4">
+                    <div class="detialasset-name">
+                        <p>Equipment Collected by</p>
+                        <div class="bndname">
+                            {% if m.equipment_collected_by == none %}
+                            --
+                            {% else %}
+                            {{m.equipment_collected_by}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Quantity Collected</p>
+                        <div class="bndname">
+                            {% if m.quantity_collected == none %}
+                            --
+                            {% else %}
+                            {{m.quantity_collected}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Date of Collection</p>
+                        <div class="bndname">
+                            {% if m.date_of_collection == none %}
+                            --
+                            {% else %}
+                            {{m.date_of_collection|date:'d-m-Y'}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Equipment Received by (Inventory Team)</p>
+                        <div class="bndname">
+                            {% if m.equipment_received_by == none %}
+                            --
+                            {% else %}
+                            {{m.equipment_received_by}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Quantity Received</p>
+                        <div class="bndname">
+                            {% if m.quantity_received == none %}
+                            --
+                            {% else %}
+                            {{m.quantity_received}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p> Date of Receipt</p>
+                        <div class="bndname">
+                            {% if m.date_of_receipt == none %}
+                            --
+                            {% else %}
+                            {{m.date_of_receipt|date:'d-m-Y'}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Equipment Handed Over to Engineering Team for checking</p>
+                        <div class="bndname">
+                            {% if m.equipment_handed_to_eng_team == none %}
+                            --
+                            {% else %}
+                            {{m.equipment_handed_to_eng_team}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Equipment Fitted in Rack/Handed Over to Inventory</p>
+                        <div class="bndname">
+                            {% if m.equipment_fitted_in_rack == none %}
+                            --
+                            {% else %}
+                            {{m.equipment_fitted_in_rack}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+    
+                </div>
+                {% endfor %}
+            </div>
+            <br>
+            {% comment %} <div class="assetdetail-contain mt-0">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A" class="bi bi-upc-scan" viewBox="0 0 16 16" style="margin-right: 5px;">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                  </svg>Signature</h1>
+                <div class="detialasset mt-4">
+                    <div class="detialasset-name">
+                        <p>Signature <span>of</span> Engineering Head</p>
+                        <div class="bndname">
+                            <span>--</span>
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Signature <span>of</span> Engineering Inventory Head</p>
+                        <div class="bndname">
+                            --
+                        </div>
+    
+                    </div> 
+                </div>
+               
+    
+            </div> {% endcomment %}
+           
+           
+          
+        </div>
+        <div class="leftfile">
+            <div class="assetdetail-containing mt-3">
+                <div class="filebtny">
+                    <h1><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            style="fill: #6A1B9A;transform: msFilter">
+                            <path
+                                d="M19.903 8.586a.997.997 0 0 0-.196-.293l-6-6a.997.997 0 0 0-.293-.196c-.03-.014-.062-.022-.094-.033a.991.991 0 0 0-.259-.051C13.04 2.011 13.021 2 13 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V9c0-.021-.011-.04-.013-.062a.952.952 0 0 0-.051-.259c-.01-.032-.019-.063-.033-.093zM16.586 8H14V5.414L16.586 8zM6 20V4h6v5a1 1 0 0 0 1 1h5l.002 10H6z">
+                            </path>
+                            <path d="M8 12h8v2H8zm0 4h8v2H8zm0-8h2v2H8z"></path>
+                        </svg>Files</h1>
+    
+                        {% for m in repair_obj%}
+                            <button id="uploadButton" onclick="document.getElementById('attachfile').click()">+ Attach file</button>
+                            <input type="file" id="attachfile" onchange="uploadFile({{m.id}})" style="display: none;">
+                        {% endfor %}
+                </div>
+                <div class="navbar-navi">
+    
+                    <div class="navbar-second" id="navbar2" style="padding: 0; border: none;">
+                        <a id="ASSET DOCUMENTS" class="active" > ASSET
+                            DOCUMENTS</a>
+                        <!-- <a  id="GROUP DOCUMENTS"  onclick="setActive('navbar2','GROUP DOCUMENTS')">GROUP DOCUMENTS</a>  -->
+    
+                    </div>
+                </div>
+                <div class="filint" id="attachFile">
+                    {% for m in attached_files %}               
+                    {% if m.attached_file  %}
+                    <div class="commrntline">
+                        <li >{{m.attached_file}}</li>
+                        <div>
+                            <a href="{{m.attached_file.url}}" download><li ></li>Download</a>    
+                            <button id="deletefile" style="background: transparent; border: none; color: red;" onclick="delete_attached_file({{m.id}})">Delete</button>
+                        </div>       
+                    </div>       
+                    {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="#A1A1A1" class="bi bi-slash-circle"
+                        viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708z" />
+                    </svg>
+                    <p>No File Found</p>
+                    {%endif%}
+                {% endfor %}
+    
+                </div>
+    
+    
+            </div>
+            <div class="assetdetail-containing mt-3">
+                <div class="filebtny">
+                    <h1><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            style="fill: #6A1B9A;transform: msFilter">
+                            <path
+                                d="M4 18h2v4.081L11.101 18H16c1.103 0 2-.897 2-2V8c0-1.103-.897-2-2-2H4c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2z">
+                            </path>
+                            <path
+                                d="M20 2H8c-1.103 0-2 .897-2 2h12c1.103 0 2 .897 2 2v8c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2z">
+                            </path>
+                        </svg>Comments
+    
+                    </h1>
+    
+    
+                </div>
+                <div class="filint">
+                    {% for m in comments %}
+                        <div class="commrntline">
+                            <li style="width:60%;">{{m.comment}}</li>
+                            <li >{{m.date_time}}</li>
+                            
+                        </div>                    
+                    {%endfor%}
+                </div>
+               
+                    {% for m in repair_obj %}
+                    <div class="addcmtbtn">
+                        <textarea name="comment" id="commentText" cols="30" rows="10" style="height: 40px; background-color: #fff; border-radius: 5px; border: none; padding: 5px; width: 70%; border: 1px solid #CCCCCC;
+                    "></textarea>
+                        <button onclick="update_comment_again({{m.id}})" value="">Add comment</button>
+                    </div>
+                    {% endfor %}
+
+                
+    
+            </div>
+        </div>
+        
+    </section>
+    
+        </div>
+
+  </div> 
+
+  
+
+
+</div>
+  
+
+
+
+
+<script>
+    // Customize your Dropzone options as needed
+    Dropzone.options.imageUpload = {
+        paramName: "image", // The name that will be used to transfer the file
+        maxFilesize: 2, // MB
+        acceptedFiles: "image/*",
+        addRemoveLinks: true, // Display remove link
+        dictDefaultMessage: "<span style='font-size: 14px; color:#6A1B9A; ' > Upload </span>",
+        dictRemoveFile: "Remove",
+        init: function () {
+            // this.on("success", function (file, response) {
+            //     // Handle success
+            //     console.log(response);
+            // });
+            // this.on("error", function (file, response) {
+            //     // Handle error
+            //     console.error(response);
+            // });
+        }
+    };
+    
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+
+{% for m in repair_obj%}
+<script>
+    function addRows() {
+        var table = document.querySelector('.table tbody');
+        var newRow = document.createElement('tr');
+        var repair_id = {{m.id}}
+        newRow.innerHTML = `
+            <td class="checkbox-column"><input type="checkbox"></td>
+            <td></td>
+            <td>
+                <input type="text" name="falut_reported" id="" value="">
+            </td>
+            <td>
+                <input type="text" name="falut_detected" id="" value="">
+            </td>
+            <td>
+                <input type="text" name="falut_occured" id="" value="">
+            </td>
+            <td>
+                <input type="text" name="type_of_repair_carried_out" id="" value="">
+            </td>
+            <td>
+                <button style="font-weight:bold;background-color: transparent; border: none; color:red"
+                onclick="deleteRows(this)">Delete</button></td>
+            <td>
+                <button style="font-weight:bold;background-color: transparent; border: none; color:blue"
+                onclick="saveThisRow(this)">Save</button>
+            </td>
+        `;
+        table.appendChild(newRow);
+    }
+
+
+    function deleteRows(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+
+
+    function saveThisRow(button) {
+        var row = button.parentNode.parentNode;
+
+        var inputs = row.querySelectorAll('input[type="text"]');
+        var data = {};
+        var repair_id = {{m.id}}
+        inputs.forEach(function(input) {
+            var fieldName = input.getAttribute('name');
+            var fieldValue = input.value;
+            data[fieldName] = fieldValue;
+        });
+        
+        $.ajax({
+            type: "POST",
+            url: "/asset_management/external-equipment-forward-details-save/",
+            data: $.param({ 
+                "csrfmiddlewaretoken": "{{ csrf_token }}",
+                ...data, "repair_id": repair_id
+            }),
+            success: function(response) {
+                window.location.reload();
+                
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+             
+            }
+        });
+    }
+</script>
+{% endfor %}
+
+
+
+
+{% for m in repair_obj%}
+<script>
+    function addRowsInAdvisory() {
+        var table = document.querySelector('.advisory tbody');
+        var newRow = document.createElement('tr');
+        var repair_id = {{m.id}}
+        newRow.innerHTML = `
+            <td class="checkbox-column"><input type="checkbox"></td>
+            <td></td>
+            <td>
+                <input type="text" name="remarks" id="" value="">
+            </td>
+            <td>
+                <button style="font-weight:bold;background-color: transparent; border: none; color:red"
+                onclick="deleteRows(this)">Delete</button></td>
+            <td>
+                <button style="font-weight:bold;background-color: transparent; border: none; color:blue"
+                onclick="saveThisAdvisoryRow(this)">Save</button>
+            </td>
+        `;
+        table.appendChild(newRow);
+    }
+
+
+    function deleteRows(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+
+
+    function saveThisAdvisoryRow(button) {
+        var row = button.parentNode.parentNode;
+
+        var inputs = row.querySelectorAll('input[type="text"]');
+        var data = {};
+        var repair_id = {{m.id}}
+        inputs.forEach(function(input) {
+            var fieldName = input.getAttribute('name');
+            var fieldValue = input.value;
+            data[fieldName] = fieldValue;
+        });
+        
+        $.ajax({
+            type: "POST",
+            url: "/asset_management/external-advisory-details-save/",
+            data: $.param({ 
+                "csrfmiddlewaretoken": "{{ csrf_token }}",
+                ...data, "repair_id": repair_id
+            }),
+            success: function(response) {
+                window.location.reload();
+                
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+             
+            }
+        });
+    }
+</script>
+{% endfor %}
+
+
+
+<script>
+    function update_comment_again(id) {
+        var comment = $('#commentText').val(); 
+        $.ajax({
+            type: "POST",
+            url: "/asset_management/external-repair-comments/", 
+            data: {
+                'id': id,
+                'comment': comment,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'  
+            },
+            success: function(response) {
+                window.location.reload()
+
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating comment:", error);
+            }
+        });
+    }
+</script>
+
+
+
+<script>
+    function uploadFile(id) {
+        var fileInput = document.getElementById('attachfile');
+        var selectedFile = fileInput.files[0];
+        console.log(fileInput,"---------------------------------")
+        if (selectedFile) { 
+            var formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('id', id);
+            
+            $.ajax({
+                type: "POST",
+                url: "/asset_management/external-repair-attach-file/",
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function(response) {
+                    window.location.reload()
+    
+                },
+                error: function(xhr, status, error) {
+                    window.location.reload()
+                }
+            });
+        }
+    }
+</script>
+
+
+
+
+<script>
+    function delete_attached_file(id) {
+    let spinner = ` <div id="spinner">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden"></span>
+                </div>
+              </div>
+        </div> `
+        $('#attachFile').html(spinner)
+    $.ajax({
+        type: "POST",
+        url: "/asset_management/external-detail-attach-file-delete/",
+        data: {
+            'id': id,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function (response) {
+            window.location.reload();
+        },
+        error: function (xhr, status, error) {
+            console.error("Error updating comment:", error);
+        }
+    });
+}
+</script>
+
+
+
+
+<script>
+    function sendToInventory(asset_id) {
+        console.log(asset_id,"asset_id")
+        $.ajax({
+            type: 'POST',
+            url: '/asset_management/send-to-asset-to-inventory/', 
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                asset_id: asset_id,
+            },
+            success: function(response) {
+                
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Sent to inventory');
+                setTimeout(function () {
+                    window.location.reload(); 
+                }, 1000); 
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+</script>
+
+
+
+
+
+{% endblock content %}

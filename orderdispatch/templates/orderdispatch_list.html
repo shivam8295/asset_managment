@@ -1,0 +1,307 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+<style>
+    table {
+            width: 100%;
+            border-collapse: separate; /* Set border-collapse to separate */
+            border-spacing: 0; /* Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+
+        .select-button{
+            border: 1px solid #CCCCCC;
+            color: #7C7C7C !important;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            padding: 0 6px;
+            font-size: inherit;
+            height:40px;
+    
+        }
+      
+        span.select2-selection.select2-selection--single {
+            height:38px !important;
+        }
+
+
+       
+        .asset-tablebtn button{
+        border: 1px solid #CCCCCC;
+        color: #7C7C7C !important;
+        background-color: #FFFFFF;
+        border-radius: 5px;
+        padding: 0 20px;
+        height: 40px;}
+</style>
+
+<section class="assetdetail">
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+
+    <div class="assetheaderbuttones">
+        <h1>Order Dispatch</h1>
+        <div class="assebutton">
+       
+             
+        <!-- <button ><a href="#" style="color: #fff; text-decoration: none;">+ Add New order</a></button> -->
+
+      
+    </div>
+
+    </div>
+</section>
+<!-- <div class="order-headingcnt">
+    <h1>Order Dispatch</h1>
+</div> -->
+<section class="assest-container-table">
+
+    <div class="asset-tablebtn">
+        <div class="searchiconbtn" >
+            <form method="GET">   
+                <input name="q" id="search_field" type="text" placeholder="Search.." value="{% if query_params_q %} {{query_params_q}} {% endif %}" style = "padding-left: 10px; border-radius: 5px;">   
+                <select name="q" id="secondDropdown" name="second_dropdown" style="display: none; height:50px;">
+                    <!-- The options will be populated dynamically -->
+                </select>
+                <select class='select-button' id="dropdown" name="filter_type">
+                    <option  disabled {% if query_params_filter_value == '' or query_params_filter_value is None  %} selected {% endif %} value='none' >--Select--</option>
+                    <option {% if query_params_filter_value == 'customer_id' %} selected {% endif %} value="customer_id">Customer</option>
+                    <option {% if query_params_filter_value == 'challan_number' %} selected {% endif %}  value="challan_number">Challan Number</option>
+                    <option {% if query_params_filter_value == 'order_no' %} selected {% endif %} value="order_no">Order Number</option>
+                    <option {% if query_params_filter_value == 'return_date' %} selected {% endif %} value="return_date">Return Date</option>
+                </select>
+            <button type='submit'>Search</button>
+            <span><button onclick="clearSearch(event, 'search_field', 'dropdown', 'secondDropdown')">Clear</button></span>
+            </form>         
+        </div>
+        <div class="pinkbox">
+        <button>
+            EXPORT TO CSV
+        </button>
+        </div>
+       
+
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th>
+                <th>Challan Number</th>
+                <th>Customer</th>
+                <th>Deployment Date</th>
+                <th>Return Date</th>
+                <th>Order Number</th>
+                <th>Order From</th>
+                <th>Order To</th>
+                <th>Mode of Dispatch</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for m in all_dispatched_order%}
+            <tr>
+                <td class="checkbox-column"><input type="checkbox"></td>
+                <td class="tbname"><a href="/asset_management/orderdispatch-details/{{m.id}}/">{{m.challan_number}}</a></td>
+                <td class="tbname"><a href="/asset_management/orderdispatch-details/{{m.id}}/">{{m.customer_id.customer}}</a></td>
+                <td>
+                    {% if m.deployment_date == none or m.deployment_date == "" %}
+                        --
+                    {% else %}
+                        {{m.deployment_date|date:'d-m-Y'}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if m.return_date == none or m.return_date == "" %}
+                        --
+                    {% else %}
+                        {{m.return_date|date:'d-m-Y'}}
+                    {% endif %}
+                </td>
+                <td>{{m.id}}</td>
+                <td>
+                    {% if m.order_from == none or m.order_from == "" %}
+                        --
+                    {% else %}
+                        {{m.order_from}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if m.order_to == none or m.order_to == "" %}
+                        --
+                    {% else %}
+                        {{m.order_to}}
+                    {% endif %}
+                </td> 
+               
+                <td>
+                    {% if m.mode_of_dispatch == none or m.mode_of_dispatch == "" %}
+                        --
+                    {% else %}
+                        {{m.mode_of_dispatch}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if m.price == none or m.price == "" %}
+                        --
+                    {% else %}
+                        {{m.price}}
+                    {% endif %}
+                </td>         
+                <td></td>         
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagidis">
+    <div></div>
+    <div class="card text-center" style="border: none;">
+        <div class="card-footer text-body-secondary" style="background-color: #fff; border: none;" >
+            Displaying all {{queryset_length}} assets
+        </div>
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if all_dispatched_order.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ all_dispatched_order.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ all_dispatched_order.number }} of  {{ all_dispatched_order.paginator.num_pages }}
+        </span>
+
+        {% if all_dispatched_order.has_next %}
+            <a href="?page={{ all_dispatched_order.next_page_number }}">next</a>
+            <a href="?page={{ all_dispatched_order.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+</section>
+
+
+
+<script>
+    // JavaScript function to select or unselect all checkboxes
+    function selectAllCheckboxes(masterCheckbox) {
+        var checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = masterCheckbox.checked;
+        });
+    }
+</script>
+
+
+<script>
+    function clearSearch(event, mySearchField, dropdown, secondDropdown ) {
+        event.preventDefault();
+        document.getElementById(mySearchField).value=''; 
+        document.getElementById(dropdown).value = 'none';
+        document.getElementById(secondDropdown).value = '';
+        $('#secondDropdown').empty().hide();
+        $('#secondDropdown').append('<option value="">--Select--</option>');
+        
+    }
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#dropdown').change(function() {
+            var selectedValue = $(this).val();
+            if (selectedValue !== 'none') {
+                $.ajax({
+                    type: 'GET',
+                    url: '/asset_management/dispatch-order-search/', 
+                    data: {
+                        'selected_value': selectedValue
+                    },
+                    success: function(data) {
+                        // Update the second dropdown with fetched data
+                        $('#secondDropdown').empty().show();
+                        $('#secondDropdown').append('<option value="">--Select--</option>');
+                        $.each(data, function(key, value) {
+                            $('#secondDropdown').append('<option value="' + value + '">' + value + '</option>');
+                        });
+                        $('#secondDropdown').select2({
+                            placeholder: 'Search...',
+                            height:"40px",                             
+                        });
+                        $('#search_field').hide();
+                        $('#secondDropdown').select2({
+                            dropdownAutoWidth: true,
+                            width:"300px",
+                            height:"40px",  
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                    }
+                });
+            } else {
+                // If the default option is selected, hide the second dropdown and show the input dropdown
+                $('#secondDropdown').hide();
+                $('#search_field').show();
+            }
+        });
+    });
+</script>
+
+
+{% endblock content %}

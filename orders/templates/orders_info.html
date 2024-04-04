@@ -1,0 +1,1413 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    /* Optional: Add custom styling to the Dropzone container */
+    .dropzone {
+        background: white;
+        border-radius: 8px;
+        min-height: 10px;
+        width: 120px;
+        padding: 12px;
+        text-align: center;
+        border: none;
+    }
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -40px;
+    }
+
+
+    .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    }
+
+   
+
+    
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+
+
+    .tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  padding: 0 30px;
+  /* background-color: #f1f1f1; */
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  border: none;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  border-bottom:2px solid #6A1B9A;
+  color: #6A1B9A;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/* Set initial display for the first tab content */
+#London {
+  display: block;
+}
+button.tablinks {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        
+    }
+    button.tablinks svg {
+        margin-right: 5px;
+    }
+    table {
+            width: 100%;
+            border-collapse: separate; /* Set border-collapse to separate */
+            border-spacing: 0; /* Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+             width: 300px;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+
+        section.assest-container-table {
+            height: 360px;
+            overflow-y: auto;
+        }
+       
+        section.assest-container-table-modal {
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        span.select2-selection.select2-selection--single {
+            height:38px !important;
+        }
+
+        section.assest-container-table {
+            padding: 15px 30px;
+            overflow-y: auto;
+            max-height: 420px;
+        }
+        .searchiconbtn input {
+            width: 300px;
+            height: 40px;
+        }
+
+        .searchiconbtn button {
+            width: 92px;
+            height: 40px;
+        }
+
+        .select-button {
+            border: 1px solid #CCCCCC;
+            color: #7C7C7C !important;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            padding: 0 6px;
+            font-size: inherit;
+            height: 40px;
+        }
+    
+</style>
+{% for m in orders_info %}
+<section class="assetdetail">
+    <button onclick="goToCustomerDetails(m.customer_id.id)" style="border: none; margin-bottom: 10px;
+    background-color: transparent;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+    style="fill: #6A1B9A;">
+    <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+    <div class="assetheaderbuttones">
+        
+        <div class="uploadboxy">
+           
+            <div class="uploadsubbtn">
+                <h1>{{m.id}}</h1>
+                <div class="" style=" padding: 0;width: 40%; margin-left:-15px" >
+               <h4>
+                {% if m.order_dispatch == True %}
+                <span 
+                    id=""
+                    class="badge badge-secondary"
+                    style="margin-left:20px; background-color: #001AFF" >Dispatched
+                </span>
+                {% else %}
+                <span 
+                    id="orderStatusBadge{{ m.id }}"
+                    class="badge badge-secondary"
+                    style="margin-left:20px">{{m.get_order_status_display}}
+                </span>
+                {% endif %}
+               </h4></div>
+                
+                <div class="editbtn">
+                    <div class="editicon" id="editIcon"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                        </svg><a href="/asset_management/orders-form-edit/{{m.id}}/">Edit </a>
+                    </div>
+                </div>
+                <div id="alert-for-acc">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                        </symbol>
+                        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                        </symbol>
+                        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                        </symbol>
+                    </svg>
+                    <div  class="alert alert-primary d-flex align-items-center mt-2" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                        <div id= "lengthDiv" class="me-2">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="assebutton" style="gap: 20px; display: flex;">
+            <button id='addMoreAssets' data-toggle="modal" data-target="#myModal1" onclick="receiveData(1, '/asset_management/get_data/')">+ Add more assets</button> 
+            <button id='approveButton' data-toggle="modal" data-target="#myModal2" 
+            onclick="alertForAcc(page = 1, url = '/asset_management/alert-for-accessories/', {{m.id}})">Approve Order</button> 
+            {% comment %} <button id='approveButton' onclick="approveOrder(m.id)">Approve Order</button>  {% endcomment %}
+            {% comment %} <button id='approveButton'>Approve Order</button>  {% endcomment %}
+            <button id='cancelButton' onclick="cancelOrder({{m.id}})">Cancel booking</button>
+        </div>
+
+    </div>
+</section>
+
+ <div class="navbar-navi tab">
+    <button class="tablinks active" onclick="openCity(event, 'London')"><svg
+        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-list"
+        viewBox="0 0 16 16">
+        <path
+            d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+        <path
+            d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+    </svg>Details</button>
+  </div>
+
+  <div id="London" class="tabcontent active">
+    <section  class="assetdetail-detail " >
+
+        <div class="assetdetail-containing">
+           
+            <div class="assetdetail-contain mt-0">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A"
+                        class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
+                        <path
+                            d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z" />
+                        <path
+                            d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                    </svg>Order Details 
+                    {% if m.order_dispatch == True %}
+                    <span 
+                        id=""
+                        class="badge badge-secondary"
+                        style="margin-left:20px; background-color: #001AFF" >Dispatched
+                    </span>
+                    {% else %}
+                    <span 
+                        id="orderStatusBadge2{{ m.id }}"
+                        class="badge badge-secondary"
+                        style="margin-left:20px">{{m.get_order_status_display}}
+                    </span>
+                    {% endif %}
+                </h1>
+                <div class="detialasset mt-4">
+                    <div class="detialasset-name">
+                        <p>Name of consignee</p>
+                        <div class="bndname">
+                            <span class="bdnme">
+                        
+                                {% if m.name_of_consignee == none or m.name_of_consignee == "" %}
+                                    --
+                                {% else %}
+                                    {{m.name_of_consignee}}
+                                {% endif %}
+                            </span>
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Organization</p>
+                        <div class="bndname">
+                            <span class="bdnme">
+                              
+                                {% if m.organization == none or m.organization == "" %}
+                                    --
+                                {% else %}
+                                    {{m.organization}}
+                                {% endif %}
+                            </span>
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>customer</p>
+                        <div class="bndname">
+                            <span class="bdnme">
+                                {% if m.customer_id.customer == none or m.customer_id.customer == "" %}
+                                    --
+                                {% else %}
+                                    {{m.customer_id.customer}}
+                                {% endif %}
+                            </span>
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Invoice No. </p>
+                        <div class="bndname">
+            
+                            {% if m.invoice_number == none or m.invoice_number == "" %}
+                                --
+                            {% else %}
+                                {{m.invoice_number}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Date </p>
+                        <div class="bndname">
+                          
+                           {% if m.out_date_and_time == none or m.out_date_and_time == "" %}
+                                --
+                            {% else %}
+                            {{m.out_date_and_time|date:'d-m-Y'}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Mode <span>of</span> Dispatch</p>
+                        <div class="bndname">
+                            {% if m.mode_of_dispatch == none or m.mode_of_dispatch == "" %}
+                                --
+                            {% else %}
+                                {{m.mode_of_dispatch}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Transportation</p>
+                        <div class="bndname">
+
+                            {% if m.transportation == none or m.transportation == "" %}
+                                --
+                            {% else %}
+                                {{m.transportation}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>from</p>
+                        <div class="bndname">
+                   
+                            {% if m.order_from == none or m.order_from == "" %}
+                                --
+                            {% else %}
+                                {{m.order_from}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>to</p>
+                        <div class="bndname">
+                            {% if m.order_to == none or m.order_to == "" %}
+                            --
+                            {% else %}
+                                {{m.order_to}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Out Date</p>
+                        <div class="bndname">
+                            {% if m.out_date_and_time == none or m.out_date_and_time == "" %}
+                            --
+                            {% else %}
+                            {{m.out_date_and_time|date:'d-m-Y'}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Return Date</p>
+                        <div class="bndname">
+                    
+                            {% if m.return_date == none or m.return_date == "" %}
+                            --
+                            {% else %}
+                            {{m.return_date|date:'d-m-Y'}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Website</p>
+                        <div class="bndname"><span>
+                            {% if m.website == none or m.website == "" %}
+                            --
+                            {% else %}
+                            {{m.website}}
+                            {% endif %}
+                        </span></div>
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Maker Email</p>
+                        <div class="bndname">{{m.maker_email}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Checker Email</p>
+                        <div class="bndname">{{m.checker_email}}</div>
+    
+                    </div>
+
+                    <div class="detialasset-name">
+                        <p>Prepared by (Name)</p>
+                        <div class="bndname">{{m.prepared_by_name}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Prepared by (Email)</p>
+                        <div class="bndname">{{m.prepared_by_email }}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>POC at venue (Name)</p>
+                        <div class="bndname">{{m.poc_at_venue_name }}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>APPROVER EMAIL</p>
+                        <div class="bndname">{{m.approver_email }}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Truck Details</p>
+                        <div class="bndname">
+                            {% if m.truck_details == none or m.truck_details == "" %}
+                            --
+                            {% else %}
+                            {{m.truck_details}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Driver Details</p>
+                        <div class="bndname">
+           
+                            {% if m.driver_details == none or m.driver_details == "" %}
+                            --
+                            {% else %}
+                            {{m.driver_details}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                 
+                  
+    
+                    <div class="detialasset-name">
+                        <p>Contact </p>
+                        <div class="bndname">
+                           
+                            {% if m.contact_details == none or m.contact_details == "" %}
+                            --
+                            {% else %}
+                            {{m.contact_details}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Remarks</p>
+                        <div class="bndname">
+        
+                            {% if m.remarks == none or m.remarks == "" %}
+                            --
+                            {% else %}
+                            {{m.remarks}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Purpose
+                            </p>
+                        <div class="bndname">
+                     
+                            {% if m.purpose == none or m.purpose == "" %}
+                            --
+                            {% else %}
+                            {{m.purpose}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Reason </p>
+                        <div class="bndname">
+                       
+                            {% if m.reason == none or m.reason == "" %}
+                            --
+                            {% else %}
+                            {{m.reason}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Office Address</p>
+                        <div class="bndname">
+                            {% if m.office_address == none or m.office_address == "" %}
+                            --
+                            {% else %}
+                            {{m.office_address}}
+                            {% endif %}
+                        </div>
+    
+                    </div> 
+                     
+                </div>
+               
+                
+    
+            </div>
+            {% endfor %}
+   
+           
+            <section class="assest-container-table p-0" >
+        
+                <table class="table">
+                    <thead>
+                        <tr>
+                            {% comment %} <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th> {% endcomment %}
+                            <th>BOX No. </th>
+                            <th>QTY</th>
+                            <th>CATEGORY </th>
+                            <th>Sub CATEGORY</th>
+                            <th>Description</th>
+                            <th>Brand</th>
+                            <th>Model No</th>
+                            <th>SERIAL No</th>
+                            <th>Owner</th>
+                            <th></th>
+                            
+                            <!-- <th style="border-radius: 0 10px  0 0; cursor: pointer;"><img src="{% static 'images/sliders.svg' %}" alt=""></th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in all_asset_of_an_order %}
+                        <tr>
+                            {% comment %} <td class="checkbox-column"><input type="checkbox"></td> {% endcomment %}
+                            {% if m.assets__box_number%}
+                                <td>{{m.assets__box_number}}</td>
+                            {% else %}
+                                <td>--</td>
+                            {% endif %}
+                            <td>1</td>
+                            {% if m.assets__category == 'nan'%}
+                                <td>--</td>
+                            {% else %}
+                                <td>{{m.assets__category}}</td>
+                            {% endif %}
+                            {% if m.assets__sub_category%}
+                                <td>{{m.assets__sub_category}}</td>
+                            {% else %}
+                                <td>--</td>
+                            {% endif %}
+                            {%if m.approve_order or m.order_dispatch %}
+                            <td>{{m.assets__description}} </td>
+                            {% else %}
+                            <td><button
+                                style="background: none; border: none; color: #6A1B9A;;"
+                                onclick="window.location='/asset-detail/{{m.assets__id}}/'">
+                                </button>{{m.assets__description}}
+                            </td>
+                            {% endif %}
+                            <td >{{m.assets__brand}}</td>
+                            <td>{{m.assets__model_no}}</td>              
+                            <td>{{m.assets__serial_no}}</td>
+                            <td>{{m.assets__owner}}</td>  
+                            <td id="orderApprovalOrCancel{{m.assets__id}}">
+                                <div class="book-status">
+                                <button style="background: none; border: none; color: #E15F12; font-weight: 700;"
+                                onclick="removeFromOrder(m.assets__id)">Remove</button>
+                                </div>
+                            </td>             
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="pagidis">
+                <div></div>
+                <div class="card text-center" style="border: none;">
+                        <div class="card-footer text-body-secondary" style="background-color: #fff; border: none;" >
+                       Total Quantity: {{queryset_length}} 
+                        </div>
+                </div>
+                <div class="pagination">
+                </div>
+            </div>
+            </section>
+        </div>
+    </section>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!---------------------------------- Asset Modal Start----------------------------    -->
+
+
+
+<div class="modal fade" id="myModal1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="max-width:1030px;">
+    <div class="modal-content" style="padding:30px;">
+        
+
+    <!-- --------modal content start here------ -->
+
+
+    <section class="assest-container-table-modal p-0" >
+        <div class="asset-tablebtn">
+            <div class="searchiconbtn" >
+                    <input name="q" id="search_field" type="text" placeholder="Search.." value="{% if query_params_q %} {{query_params_q}} {% endif %}" style = "padding-left: 10px; border-radius: 5px;">   
+                    <select name="q" id="secondDropdown" name="second_dropdown" style="display: none; height:10%;">
+                        <!-- The options will be populated dynamically -->
+                    </select>
+                    <select class='select-button' id="dropdown" name="filter_type">
+                        <option  disabled {% if query_params_filter_value == '' or query_params_filter_value is None  %} selected {% endif %} value='none' >--Select--</option>
+                        <option {% if query_params_filter_value == 'brand' %} selected {% endif %} value="brand">Brand</option>
+                        <option {% if query_params_filter_value == 'model_no' %} selected {% endif %} value="model_no">Model No.</option>
+                        <option {% if query_params_filter_value == 'model_no' %} selected {% endif %} value="category">Category</option>
+                    </select>
+                <button id='searchButton' onclick="receiveData()" type='submit'>Search</button>
+                <span>
+                    <button onclick="clearSearch(event, 'search_field', 'dropdown', 'secondDropdown')">Clear</button>
+                </span>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> 
+            </div>
+        </div>
+        
+       
+        
+        <table class="table-modal">
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>CATEGORY </th>
+                    <th>Description</th>
+                    <th>Brand</th>
+                    <th>Model No</th>
+                    <th>SERIAL No</th>
+                    <th>Owner</th>                    
+                </tr>
+            </thead>
+            <tbody id="assetTableBody">
+                <!-- The table body will be populated dynamically with JavaScript -->
+            </tbody>
+        </table>
+        <div class="pagidis">
+            <div></div>
+            <div class="pagination">
+                <span id="paginationLinks" class="step-links">
+                    <!-- Pagination links will be dynamically added here -->
+                </span>
+            </div>
+            <div class="card text-center" style="border: none;">
+            </div>
+            
+        </div>
+    </section>
+
+
+    <!-- ---------modal content end here------- -->
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!---------------------------------- Alert Modal----------------------------    -->
+
+
+
+<div class="modal fade" id="myModal2" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width:1030px;">
+      <div class="modal-content" style="padding:30px;">
+  
+      <!-- --------modal content start here------ -->
+  
+        <h1>These accessories are also available for these assets. Are you sure you want to proceed?
+            {% comment %} <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> {% endcomment %}
+        </h1>
+        
+        {% for m in orders_info %}
+        <div class="assetheaderbuttones">
+            <div class="assebutton" style="gap: 20px; display: flex;">
+                <button id='approveButton' onclick="approveOrder({{m.id}})">Approve</button>
+            </div>
+        </div>
+        {% endfor %}
+      <section class="assest-container-table-modal p-0" >
+  
+          <table class="table-modal">
+              <thead>
+                  <tr>
+                      <th>Status</th>
+                      <th>CATEGORY </th>
+                      <th>Description</th>
+                      <th>Brand</th>
+                      <th>Model No</th>
+                      <th>SERIAL No</th>
+                      <th>Owner</th>                    
+                  </tr>
+              </thead>
+              <tbody id="assetTableBodyForAlert">
+                  <!-- The table body will be populated dynamically with JavaScript -->
+              </tbody>
+          </table>
+          <div class="pagidis">
+              <div></div>
+              <div class="pagination">
+                  <span id="paginationLinks" class="step-links">
+                      <!-- Pagination links will be dynamically added here -->
+                  </span>
+              </div>
+              <div class="card text-center" style="border: none;">
+              </div>
+              
+          </div>
+      </section>
+  
+  
+      <!-- ---------modal content end here------- -->
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    {% if messages %}
+        {% for msg in messages %}
+        <script>
+            alertify.set('notifier','position', 'top-right');
+            alertify.success('{{msg}}');
+        </script>
+        {% endfor %}
+    {% endif %}
+
+
+ 
+
+
+
+    <script>
+        function goToCustomerDetails(id){
+            window.location.href = '/asset_management/customer-details/'+id+"/"
+        }
+    </script>
+
+
+
+
+{% comment %}-------------------- JavaScript for modal content------------------------- {% endcomment %}
+    
+
+    <script>
+        function receiveData(page = 1, url = '/asset_management/get_data/') {
+
+            var filterType = document.getElementById('dropdown').value;
+            var filterValue = document.getElementById('secondDropdown').value;
+            url += `?page=${page}`;
+
+            if (filterType !== 'none' && filterValue) {
+                url += `&filter_type=${filterType}&filter_value=${filterValue}`;
+            }
+
+            var searchFieldValue = document.getElementById('search_field').value.trim();
+            if (searchFieldValue) {
+                url += `&search_field=${searchFieldValue}`;
+            }
+            
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Call the function to update the HTML table with received data
+                    console.log(data.results,"data---------------")
+                    updatedAssetTable(data.results);
+                    // Call the function to update pagination links
+                    updatePaginationLinks(data);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error('Error:', error);
+                }
+            });
+        }
+    
+        function updatedAssetTable(results) {
+            console.log(results,"results--------------")
+            var tableBody = document.getElementById('assetTableBody');
+            tableBody.innerHTML = ''; 
+    
+            for (var i = 0; i < results.length; i++) {
+
+                var buttonText = 'Add';
+                var buttonColor = '#00A3C7';
+                var buttonDisabled = ''; 
+
+                if (results[i].confirm_order === true && results[i].asset_status==='rented_out') {
+                    buttonText = 'Booked';
+                    buttonColor = '#37A80D'; 
+                    fontWeight = '700'
+
+                }
+                else if (results[i].confirm_order === false && results[i].asset_status==='sent_for_repair') {
+                    buttonText = 'On_Repair';
+                    buttonColor = '#ffc107'; 
+                    fontWeight = '700'
+                    buttonDisabled = 'disabled';  
+
+                }
+
+                var buttonId = 'addButtonId_' + results[i].id;
+                var row = '<tr>' +
+                    '<td><button id="' + buttonId + '" style="background: none; font-weight:700; border: none; color: ' + buttonColor + ';" onclick="addAssetToThisOrder(' + results[i].id + ', \'' + buttonId + '\')" ' + buttonDisabled + ' >' + buttonText + '</button></td>' +
+                    '<td>' + (results[i].category === 'nan' ? '--' : results[i].category) + '</td>' +
+                    '<td>' + results[i].description + '</td>' +
+                    '<td>' + results[i].brand + '</td>' +
+                    '<td>' + results[i].model_no + '</td>' +
+                    '<td>' + results[i].serial_no + '</td>' +
+                    '<td>' + results[i].owner + '</td>' +
+                    '</tr>';
+    
+                tableBody.innerHTML += row;
+            }
+        }
+    
+        function updatePaginationLinks(data) {
+            var paginationLinks = document.getElementById('paginationLinks');
+            paginationLinks.innerHTML = '';
+    
+            if (data.previous) {
+                var previousPage = new URL(data.previous);
+                var page = previousPage.searchParams.get('page');
+                // Check if the 'page' parameter is present, and if not, set it to 1
+                page = page ? page : 1;
+                paginationLinks.innerHTML += '<a href="javascript:void(0);" class="paginate-link" data-page="' + page + '">Previous  </a>';
+            }
+
+            if (data.next) {
+                var nextPage = new URL(data.next);
+                var page = nextPage.searchParams.get('page');
+                paginationLinks.innerHTML += '<a href="javascript:void(0);" class="paginate-link" data-page="' + page + '" style="margin-left:20px;">    Next </a>';
+            }
+        }
+    
+        // Attach click event listener to handle pagination
+        document.getElementById('paginationLinks').addEventListener('click', function (event) {
+            if (event.target.classList.contains('paginate-link')) {
+                receiveData(event.target.getAttribute('data-page'));
+            }
+        });
+
+        document.getElementById('searchButton').addEventListener('click', function () {
+            receiveData(1);
+        });
+    </script>
+
+
+
+{% for m in orders_info%}
+<script>
+    function addAssetToThisOrder(asset_id, buttonId) {
+            order_id = {{m.id}}
+            $.ajax({
+            type: "POST",
+            url: "/asset_management/add-asset-to-order/",
+            data: { "asset_id": asset_id,
+                    "order_id":order_id,
+                    "csrfmiddlewaretoken":"{{csrf_token}}"
+                },
+            success: function(response) {
+                var addButton = document.getElementById(buttonId);
+                if (addButton) {
+
+                    addButton.innerText = 'Booked';
+                    addButton.style.color = 'green';  
+                    addButton.style.background = 'none';   
+                    addButton.style.border = 'none';    
+                    addButton.disabled = true;  
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                
+            }
+        });
+    }
+</script>
+{% endfor %}
+
+
+{% comment %}--------------------- End modal for javascript---------------------------- {% endcomment %}
+
+
+
+
+{% comment %}-------------------- JavaScript for modal Alert------------------------- {% endcomment %}
+    
+
+    <script>
+        function alertForAcc(page = 1, url = '/asset_management/alert-for-accessories/', id) {
+
+            var filterType = document.getElementById('dropdown').value;
+            var filterValue = document.getElementById('secondDropdown').value;
+            //{% comment %} url += `?page=${page}`; {% endcomment %}
+
+            if (filterType !== 'none' && filterValue) {
+                // Append filter parameters if they exist
+                url += `&filter_type=${filterType}&filter_value=${filterValue}`;
+            }
+            
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                data: { id: id },
+
+                success: function (data) {
+                    // Call the function to update the HTML table with received data
+                    if (data.length > 0) { // Check if there is data in the results
+                        updateAssetTable(data);
+                        $('#myModal2').modal('show'); // Open the modal
+                        //{% comment %} updatePaginationLinks(data); {% endcomment %}
+                    }
+                    // Call the function to update pagination links
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error('Error:', error);
+                }
+            });
+        }
+    
+        function updateAssetTable(results) {
+
+            var tableBody = document.getElementById('assetTableBodyForAlert');
+            tableBody.innerHTML = ''; 
+    
+            for (var i = 0; i < results.length; i++) {
+                var buttonText = 'Add';
+                var buttonColor = '#00A3C7';
+                var buttonDisabled = ''; 
+
+                if (results[i].confirm_order === true && results[i].asset_status==='rented_out') {
+                    buttonText = 'Booked';
+                    buttonColor = '#37A80D'; 
+                    fontWeight = '700'
+
+                }
+                else if (results[i].confirm_order === false && results[i].asset_status==='sent_for_repair') {
+                    buttonText = 'On_Repair';
+                    buttonColor = '#ffc107'; 
+                    fontWeight = '700'
+                    buttonDisabled = 'disabled';  
+
+                }
+
+                var buttonId = 'addButtonId_' + results[i].id;
+                var row = '<tr>' +
+                    '<td><button id="' + buttonId + '" style="background: none; font-weight:700; border: none; color: ' + buttonColor + ';" onclick="addAssetAccToThisOrder(' + results[i].id + ', \'' + buttonId + '\')" ' + buttonDisabled + ' >' + buttonText + '</button></td>' +
+                    '<td>' + (results[i].category === 'nan' ? '--' : results[i].category) + '</td>' +
+                    '<td>' + results[i].description + '</td>' +
+                    '<td>' + results[i].brand + '</td>' +
+                    '<td>' + results[i].model_no + '</td>' +
+                    '<td>' + results[i].serial_no + '</td>' +
+                    '<td>' + results[i].owner + '</td>' +
+                    '</tr>';
+    
+                tableBody.innerHTML += row;
+            }
+        }
+    
+        function updatePaginationLinks(data) {
+            var paginationLinks = document.getElementById('paginationLinks');
+            paginationLinks.innerHTML = '';
+    
+            if (data.previous) {
+                var previousPage = new URL(data.previous);
+                var page = previousPage.searchParams.get('page');
+                // Check if the 'page' parameter is present, and if not, set it to 1
+                page = page ? page : 1;
+                paginationLinks.innerHTML += '<a href="javascript:void(0);" class="paginate-link" data-page="' + page + '">Previous  </a>';
+            }
+
+            if (data.next) {
+                var nextPage = new URL(data.next);
+                var page = nextPage.searchParams.get('page');
+                paginationLinks.innerHTML += '<a href="javascript:void(0);" class="paginate-link" data-page="' + page + '" style="margin-left:20px;">    Next </a>';
+            }
+        }
+    
+        // Attach click event listener to handle pagination
+        document.getElementById('paginationLinks').addEventListener('click', function (event) {
+            if (event.target.classList.contains('paginate-link')) {
+                receiveData(event.target.getAttribute('data-page'));
+            }
+        });
+
+        document.getElementById('searchButton').addEventListener('click', function () {
+            receiveData(1);
+        });
+    </script>
+
+
+
+{% for m in orders_info%}
+<script>
+    function addAssetAccToThisOrder(asset_id, buttonId) {
+            order_id = m.id
+            $.ajax({
+            type: "POST",
+            url: "/asset_management/add-asset-to-order/",
+            data: { "asset_id": asset_id,
+                    "order_id":order_id,
+                    "csrfmiddlewaretoken":"{{csrf_token}}"
+                },
+            success: function(response) {
+                var addButton = document.getElementById(buttonId);
+                if (addButton) {
+
+                    addButton.innerText = 'Booked';
+                    addButton.style.color = 'green';  
+                    addButton.style.background = 'none';   
+                    addButton.style.border = 'none';    
+                    addButton.disabled = true;  
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                
+            }
+        });
+    }
+</script>
+{% endfor %}
+
+
+{% comment %}--------------------- End modal for javascript---------------------------- {% endcomment %}
+
+
+
+
+
+
+<script>
+    function approveOrder(id) {
+            $.ajax({
+            type: "POST",
+            url: "/asset_management/approve-order/",
+            data: { "id": id, "csrfmiddlewaretoken":"{{csrf_token}}"},
+            success: function(response) {
+                window.location.reload()
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Approved successfully');
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alertify.set('notifier','position', 'top-right');
+                alertify.error('Unccessful');
+                
+            }
+        });
+    }
+</script>
+
+
+
+<script>
+        function cancelOrder(id) {
+                $.ajax({
+                type: "POST",
+                url: "/asset_management/cancel-order/",
+                data: { "id": id, "csrfmiddlewaretoken":"{{csrf_token}}"},
+                success: function(response) {
+                    window.location.reload()
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.success('Order Cancelled successfully');
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.error('Unccessful');
+                    
+                }
+            });
+        }
+</script>
+
+
+
+
+{% for m in orders_info %}
+<script>
+    var orderStatusBadge = document.getElementById('orderStatusBadge{{ m.id }}');
+    var orderStatus = {{ m.order_status }};
+    
+    // Set the text content of the badge
+    orderStatusBadge.textContent = '{{ m.get_order_status_display }}';
+    
+    // Change the color based on the order status
+    if (orderStatus === {{ m.OrderStatus.APPROVED }}) {
+        orderStatusBadge.classList.add('badge-success');
+    } else if(orderStatus === {{ m.OrderStatus.BOOKED }}){
+        orderStatusBadge.classList.add('badge-warning');
+    }
+    else{
+        orderStatusBadge.classList.add('badge-danger');
+    }
+</script>
+{% endfor %}
+
+
+{% for m in orders_info %}
+<script>
+    var orderStatusBadge = document.getElementById('orderStatusBadge2{{ m.id }}');
+    var orderStatus = {{ m.order_status }};
+    
+    // Set the text content of the badge
+    orderStatusBadge.textContent = '{{ m.get_order_status_display }}';
+    
+    // Change the color based on the order status
+    if (orderStatus === {{ m.OrderStatus.APPROVED }}) {
+        orderStatusBadge.classList.add('badge-success');
+    } else if(orderStatus === {{ m.OrderStatus.BOOKED }}){
+        orderStatusBadge.classList.add('badge-warning');
+    }
+    else{
+        orderStatusBadge.classList.add('badge-danger');
+    }
+</script>
+{% endfor %}
+
+
+
+
+{% for m in orders_info %}
+{% for n in all_asset_of_an_order %}
+
+<script>
+    var orderStatus = {{ m.order_status }};
+    var orderApprovalOrCancel = document.getElementById('orderApprovalOrCancel{{n.assets__id}}');
+    if (orderStatus === {{ m.OrderStatus.APPROVED }}) {
+        document.getElementById('approveButton').style.display = 'none';
+        {% comment %} document.getElementById('addMoreAssets').style.display = 'none'; {% endcomment %}
+        document.getElementById('editIcon').style.display = 'none';
+        orderApprovalOrCancel.innerText = 'Approved';
+        orderApprovalOrCancel.style.color = 'green';
+        orderApprovalOrCancel.disabled = true;
+        document.getElementById('alert-for-acc').style.display = 'none';
+
+    }
+    else if (orderStatus === {{ m.OrderStatus.CANCELLED }}) {
+        document.getElementById('cancelButton').style.display = 'none';
+        document.getElementById('addMoreAssets').style.display = 'none';
+        document.getElementById('editIcon').style.display = 'none';
+        document.getElementById('approveButton').style.display = 'none';
+        orderApprovalOrCancel.innerText = 'Cancelled';
+        orderApprovalOrCancel.style.color = 'red';
+        orderApprovalOrCancel.disabled = true;
+        document.getElementById('alert-for-acc').style.display = 'none';
+
+
+    }
+
+    else if (orderStatus === {{ m.OrderStatus.DISPATCHED }}) {  
+        document.getElementById('approveButton').style.display = 'none';
+        document.getElementById('addMoreAssets').style.display = 'none';
+        document.getElementById('editIcon').style.display = 'none';
+        document.getElementById('cancelButton').style.display = 'none';
+        orderApprovalOrCancel.innerText = 'Dispatched';
+        orderApprovalOrCancel.style.color = '#001AFF';
+        orderApprovalOrCancel.disabled = true;
+        document.getElementById('alert-for-acc').style.display = 'none';
+
+
+    }
+</script>
+{% endfor %}
+{% endfor %}
+
+
+
+
+{% for m in orders_info %}
+<script>
+    function removeFromOrder(asset_id) {
+        order_id={{m.id}}
+        $.ajax({
+        type: "GET",
+        url: "/asset_management/remove-asset-from-order/",
+        data: { 
+            "order_id": order_id,
+            "asset_id": asset_id
+        },
+        success: function(response) {
+            window.location.reload()
+            alertify.set('notifier','position', 'top-right');
+            alertify.success('Asset removed successfully');
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            alertify.set('notifier','position', 'top-right');
+            alertify.error('Unccessful');
+            
+        }
+    });
+}
+</script>
+{% endfor %}
+
+
+
+
+<script>
+    function clearSearch(event, mySearchField, dropdown, secondDropdown ) {
+        event.preventDefault();
+        document.getElementById(mySearchField).value=''; 
+        document.getElementById(dropdown).value = 'none';
+        document.getElementById(secondDropdown).value = '';
+        $('#secondDropdown').empty().hide();
+        $('#secondDropdown').append('<option value="">--Select--</option>');
+        
+    }
+</script>
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#dropdown').change(function() {
+            var selectedValue = $(this).val();
+            if (selectedValue !== 'none') {
+                $.ajax({
+                    type: 'GET',
+                    url: '/asset-list-search/', 
+                    data: {
+                        'selected_value': selectedValue
+                    },
+                    success: function(data) {
+                        // Update the second dropdown with fetched data
+                        $('#secondDropdown').empty().show();
+                        $('#secondDropdown').append('<option value="">--Select--</option>');
+                        $.each(data, function(key, value) {
+                            $('#secondDropdown').append('<option value="' + value + '">' + value + '</option>');
+                        });
+                        $('#secondDropdown').select2({
+                            placeholder: 'Search...',                             
+                        });
+                        $('#search_field').hide();
+                        $('#secondDropdown').select2({
+                            dropdownAutoWidth: true,
+                            width:"300px",
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                    }
+                });
+            } else {
+                // If the default option is selected, hide the second dropdown and show the input dropdown
+                $('#secondDropdown').hide();
+                $('#search_field').show();
+            }
+        });
+    });
+</script>
+
+
+{% for m in orders_info%}
+<script>
+    window.onload = function() {
+        id = {{m.id}}
+        var apiUrl1 = '/asset_management/alert-for-accessories/?id='+ id;
+        var get_length = "";
+        fetch(apiUrl1)
+            .then(response => response.json())
+            .then(data => {
+
+                var lengthDiv = document.getElementById('lengthDiv');
+                if (data.length > 1) {
+                    lengthDiv.textContent = ' Hi! There are ' + data.length + ' accessories remaining. If you\'d like to add them, please click on the Approve Order button.';
+                }
+                else if(data.length === 0){
+                    lengthDiv.textContent = 'Hi! All accessories have been added. Please approve the order.';
+                }
+                else if (data.length === 1) {
+                    lengthDiv.textContent = 'Hi! only ' + data.length + ' accessory is left if you want to add it, click on the approve button.';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data from API 1:', error);
+            });
+    
+   
+    };
+        
+</script>
+{% endfor %}
+
+
+{% endblock content %}

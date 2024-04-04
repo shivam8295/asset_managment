@@ -1,0 +1,347 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    /* Optional: Add custom styling to the Dropzone container */
+    .dropzone {
+        background: white;
+        border-radius: 8px;
+        min-height: 10px;
+        width: 120px;
+        padding: 12px;
+        text-align: center;
+        border: none;
+    }
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -40px;
+    }
+
+
+    .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    }
+
+    .navbar-second a {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+
+    }
+
+    .navbar-second a svg {
+        margin-right: 5px;
+    }
+
+    .navbar-second a:hover {
+        color: #6A1B9A;
+    }
+
+    .active {
+        color: #6A1B9A;
+        border-bottom: 3px solid #6A1B9A;
+    }
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+
+    .transparent-button {
+        border: none;
+        background-color: transparent;
+        color: #6A1B9A;
+        
+    }
+    
+</style>
+
+
+<section class="assetdetail-detail" style=" margin-top: 60px">
+  
+<form method="post" enctype="multipart/form-data">
+  {%csrf_token%}
+    <div class="assetdetail-containing">
+        {% comment %} <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform:msFilter"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button> {% endcomment %}
+        <a href="{% url 'all_orders_list' %}" class="btn" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform:msFilter"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></a>
+      <div class="assebutton" style="gap: 20px; display: flex;    justify-content: flex-end;"><div>
+            {%if m.image %}
+                <button style="background: #6A1B9A;
+                border: none;
+                color: #fff;
+                padding: 10px 20px;
+                font-size: 14px;
+                border: none;
+                border-radius: 5px;
+                text-transform: uppercase;" onclick="removeImage({{m.id}})">Remove image</button>
+            {%endif%}  
+        </div>
+        
+        <button type="submit" style="background: #6A1B9A;
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        text-transform: uppercase;">Update Info</button>
+    </div>
+        <div class="assetdetail-contain mt-0">
+            <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A"
+                    class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
+                    <path
+                        d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z" />
+                    <path
+                        d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                </svg>Customer Information</h1>
+            {% for m in customer_obj%}
+            <div class="detialasset mt-4">
+                <div class="detialasset-name">
+                   
+                    <p>customer</p>
+                    <div class="bndname">
+                      <span>  <input type="text" name="customer" id="" value="{{m.customer}}"></span>
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>completed orders</p>
+                    <div class="bndname">
+                      <input type="text" name="completed_orders" id="" value="{{m.completed_orders}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>deployed order</p>
+                    <div class="bndname">
+                      <input type="text" name="deployed_order" id="" value="{{m.deployed_order}}">
+                    
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>taxed</p>
+                    <div class="bndname">
+                      <input type="text" name="taxed" id="" value="{{m.taxed}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>email address</p>
+                    <div class="bndname">
+
+                      <input type="text" name="email_address" id="" value="{{m.email_address}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>department</p>
+                    <div class="bndname">{% if m.department == nan %}
+                      <input type="text" name="department" id="" value="">
+                      {% else %}
+                      <input type="text" name="department" id="" value="{{m.department}}">
+                      {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="detialasset-name">
+                    <p>phone number</p>
+                    <div class="bndname">
+
+                      <input type="text" name="phone_number" id="" value="{{m.phone_number}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>customer revenue</p>
+                    <div class="bndname">
+                        <div class="bndname">{% if m.customer_revenue == nan or m.customer_revenue == "nan" %}
+                            <input type="text" name="customer_revenue" id="" value="">
+                            {% else %}
+                            <input type="text" name="customer_revenue" id="" value="{{m.customer_revenue}}">
+                            {% endif %}
+                          </div>
+                    </div>
+                </div>
+                <div class="detialasset-name">
+                    <p>commercial address</p>
+                    <div class="bndname">
+                        <input type="text" name="commercial_address" id="" value="{{m.commercial_address}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>created at</p>
+                    <div class="bndname">
+                      <input type="date" id="myDateField2" name="created_at" value="{{ m.created_at|date:'Y-m-d' }}">
+                      <span><button class="transparent-button" onclick="clearDate(event, 'myDateField2')">Clear</button></span>
+
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>category</p>
+                    <div class="bndname">
+    
+                      <input type="text" name="category" id="" value="{{m.category}}">
+                    </div>
+    
+                </div>
+                <div class="detialasset-name">
+                    <p>secondary email</p>
+                    <div class="bndname">
+    
+                      <input type="text" name="secondary_email" id="" value="{{m.secondary_email}}">
+                    </div>
+    
+                </div>
+                <div class="detialasset-name" >
+                    <p>description</p>
+                    <div class="bndname">
+                      <textarea name="description">{{m.description}}</textarea>
+                    </div>
+                </div>
+
+            </div>
+        {% endfor %}
+            
+        {% comment %} <div class="detialasset-name" style="margin-left: 10px; margin-top: 15px;">
+            <p>Image</p>
+            <div class="bndname">
+                {%if m.image %}
+                <form method="post" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    <img src="{%if m.image %}{{m.image.url}}{%endif%}"
+                    alt="Upload Image"
+                    style="width: 70%;height: 70%;border-radius: 5px; margin-bottom: 8px;">
+                    {{m.image.name}} 
+                    <input type="file" name="image" value=""
+                    style="width: 100%;height: 100%;border-radius: 5px; margin-top: 5%;"/>
+                    </form>
+
+                {%else%}
+                    <input type="file" name="image" style="width: 100%;border-radius: 5px;"/>
+                    
+                {%endif%}
+                </div>
+            </div> {% endcomment %}
+        </div>
+
+    </div>
+</form>
+    
+
+</section>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>   
+  function removeImage(id) {
+        $.ajax({
+            type: "POST",
+            url: "/delete-asset-detail-image/", 
+            data:{"id":id, "csrfmiddlewaretoken":"{{csrf_token}}"},
+            success: function(response) {
+                location.reload(); 
+            }
+          
+        });
+    }
+   </script>
+
+
+<script>   
+ {% for m in assets %}
+   function deleteImage() {
+        var id = '{{ m.id }}'; 
+        window.location.href = '/delete-asset-detail-image/' + id + '/';
+    } 
+    {% endfor %}
+</script>
+
+
+<script>
+    function setAvailability(id) {
+        var selectedValue = $('select[name="boolean_field2"]').val();
+        $.ajax({
+            type: 'POST',
+            url: '/asset-detail-set-availability/', 
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                id: id,
+                boolean_field: selectedValue
+            },
+            success: function(response) {
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Availability edited successfully');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+</script>
+
+ <script>
+    function setUnderAMC(id) {
+        var selectedValue = $('select[name="boolean_field1"]').val();
+        $.ajax({
+            type: 'POST',
+            url: '/asset-detail-set-under-amc/', 
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                id: id,
+                boolean_field: selectedValue
+            },
+            success: function(response) {
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Under AMC edited successfully');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+</script>
+
+{% comment %} Clear date field {% endcomment %}
+<script>
+    function clearDate(event, myDateField ) {
+        event.preventDefault();
+        document.getElementById(myDateField).value = '';
+    }
+</script>
+{% endblock content %}

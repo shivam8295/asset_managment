@@ -1,0 +1,301 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block css %}
+<style> 
+   * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif  ; 
+}
+    form.assest-container {
+    width: 96%;
+    margin: 0 auto;
+}
+
+    form.assest-container h1 {
+    font-size: 35px;
+    color: #000;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+    .headinghd {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 35px;
+}
+   
+
+
+    .main-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-items: stretch;
+    align-items: center;
+    gap: 25px;
+    margin-top: 30px;
+}
+   .input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+}
+    .input-container label{
+    font-size: 18px;
+    color: #000;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+
+}
+    .input-container input{
+        height: 50px;
+        border: none;
+        border-radius: 5px;
+        background-color: #d7d6df69;
+        font-size: 16px;
+        padding-left: 8px;
+    }
+    .submitbtn {
+      margin-top: 30px;
+    padding-bottom: 30px;
+}
+
+    /* Add the following CSS to your existing styles */
+button {
+    width: 100%;
+    height: 50px;
+    background-color: #4CAF50; /* Green color, you can change it */
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green color, you can change it */
+}
+
+/* Center the button */
+button {
+    margin: 0 auto;
+    display: block;
+}
+.center {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .dropdown {
+        width: 100%;
+        right: -70px;
+        height: fit-content;
+        box-sizing: border-box;
+        position: relative;
+      }
+      .input-box {
+        width: 70%;
+        height: 45px;
+        box-sizing: border-box;
+        outline: 1px solid #282F4A;;
+        border-radius: 2mm;
+        padding: 10px 15px;
+        font-family: poppins;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        position: relative;
+      }
+      
+      .input-box::before {
+        content: "";
+        font-family: "Material Icons";
+        position: absolute;
+        font-size: 18px;
+        top: 50%;
+        right: 15px;
+        transform: translate(0, -50%);
+        width: fit-content;
+        height: fit-content;
+      }
+      .input-box.open::before {
+        content: "";
+      }
+      .input-box:empty::after {
+        content: "Select Graph";
+        color: #282F4A;
+        color: #282F4A;
+        font-size: 16px;
+         font-weight: 500;
+;
+      }
+      .list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 70%;
+        height: fit-content;
+        background: white;
+        margin-top: 10px;
+        border-radius: 2mm;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
+        max-height: 0;
+        transition: 0.25s ease-out;
+      }
+      .list input {
+        display: none;
+      }
+      .list label {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: flex-start;
+        font-family: poppins;
+        font-size: 14px;
+        padding: 10px 15px;
+        box-sizing: border-box;
+        cursor: pointer;
+        position: relative;
+      }
+      .list label .material-icons-outlined,
+      .input-box .material-icons-outlined {
+        margin-right: 5px;
+        font-size: 22px;
+      }
+      .list label:hover {
+        background: rgba(0, 0, 0, 0.08);
+      }
+      input:checked + label {
+        color: rgb(20, 117, 213);
+        background: rgb(238, 245, 252);
+      }
+      input:checked + label::before {
+        content: "done";
+        font-family: "Material Icons";
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translate(0, -50%);
+        font-size: 18px;
+      }
+      
+      .title {
+        font-family: poppins;
+        font-size: small;
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
+      .search-box {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 8px;
+      }
+      #search {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px;
+        border-radius: 1mm;
+        border: none;
+        outline: 0.3mm solid rgba(0, 0, 0, 0.15);
+        font-family: poppins;
+      }
+      #search:focus {
+        outline: 0.5mm solid rgba(0, 0, 0, 0.35);
+      }
+</style>
+{% endblock css %}
+
+
+
+{% block content %}
+<form action="" class="assest-container mt-5 pt-1" style="height: auto;">
+  <div class="headinghd">
+      <h1>Asset Master </h1>
+      <!-- <div class="filter">
+          <select class="form-select form-select-lg" style="width: 40%;" aria-label="Large select example">
+              <option selected>select menu</option>
+              <option value="1">Area</option>
+              <option value="2">Fc no.</option>
+              <option value="3">Category</option>
+              <option value="4">Description</option>
+              <option value="5">Brand</option>
+              <option value="6">Model no</option>
+              <option value="7">Serial no</option>
+              <option value="8">Sku</option>
+              <option value="9">Asset tag</option>
+            </select>
+       
+      <input type="search" style="width: 270px;border:none; background: #d7d6df69;border-radius: 5px;">
+      <img style="cursor: pointer;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAFxJREFUSEtjZKAxYKSx+QyjFhAM4eEZRP8J+hu/ApRQwRZENLeAQg+gah/wSCY2uHA6lJAPaG4BxfFByAd0tQA9uIhyHFGKoN6guQVkBRcpPhi1gKwQIKhp6McBACZ4Bhljo5edAAAAAElFTkSuQmCC"/>    </div> -->
+  </div>
+      <div class="main-container">
+          <div class="input-container">
+              <label for="name">Area</label>  
+              <input type="text" id="name">
+          </div>
+          <div class="input-container">
+              <label for="name">Fc no.</label>  
+              <input type="numner" id="name">
+          </div>
+          <div class="input-container">
+              <label for="name">category</label>  
+              <input type="text" id="name">
+          </div>
+          <div class="input-container">
+              <label for="name">description</label>  
+              <input type="text" id="name">
+          </div>
+          <div class="input-container">
+              <label for="name">brand</label>  
+              <input type="text" id="name">
+          </div>
+          <div class="input-container">
+              <label for="name">model no</label>  
+              <input type="text" id="name">
+          </div>
+          
+          <div class="input-container">
+              <label for="name">serial no</label>
+              <input type="number" id="name">
+      </div>
+      <!-- <div class="input-container">
+          <label for="name">sku</label>
+          <input type="tex" id="name">
+  </div> -->
+  <div class="input-container">
+    <label for="name">Status</label>
+    <input type="text" id="name">
+</div>
+  <div class="input-container">
+      <label for="name">asset tag</label>
+      <input type="text" id="name">
+</div>
+</div>
+<div class="input-container mt-4">
+<label for="name">comments</label>
+<textarea name="" id="" cols="30" rows="10" style="height: 90px; background-color: #d7d6df69; border-radius: 5px; border: none; padding-left: 5px;"></textarea>
+</div>
+<div class="submitbtn">
+<button style="width: 100%;">submit</button>
+</div>
+  </form>
+
+{% endblock content %}

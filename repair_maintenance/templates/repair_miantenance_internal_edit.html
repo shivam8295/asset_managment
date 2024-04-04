@@ -1,0 +1,626 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    /* Optional: Add custom styling to the Dropzone container */
+    .dropzone {
+        background: white;
+        border-radius: 8px;
+        min-height: 10px;
+        width: 120px;
+        padding: 12px;
+        text-align: center;
+        border: none;
+    }
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -40px;
+    }
+
+
+    .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    }
+
+    .navbar-second a {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+
+    }
+
+    .navbar-second a svg {
+        margin-right: 5px;
+    }
+
+    .navbar-second a:hover {
+        color: #6A1B9A;
+    }
+
+    .active {
+        color: #6A1B9A;
+        border-bottom: 3px solid #6A1B9A;
+    }
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+
+    .transparent-button {
+        border: none;
+        background-color: transparent;
+        color: #6A1B9A;
+        
+    }
+    
+</style>
+
+
+<section class="assetdetail-detail" style=" margin-top: 60px">
+  
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform:msFilter"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+    <form method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+
+        <div class="assetdetail-containing">
+      <div class="assebutton" style="gap: 20px; display: flex;    justify-content: flex-end; ">
+        
+        <button type="submit" style="background: #6A1B9A;
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        text-transform: uppercase;">Update Details</button>
+    </div>
+        <div class="assetdetail-contain mt-0">
+            <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A"
+                    class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
+                    <path
+                        d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z" />
+                    <path
+                        d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                </svg>Internal Repair Details</h1>
+        {% for m in internal_repair_obj %}
+            <div class="detialasset mt-4">
+                
+                <div class="detialasset-name">
+                    <p>Job number</p>
+                    <div class="bndname">
+                      {% if m.job_number == nan or m.job_number == None %}
+                      <input type="text"  name="job_number" id="" value="">
+                      {% else %}
+                      <input type="text"  name="job_number" id="" value="{{m.job_number}}">
+                      {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="detialasset-name">
+                    <p>equipment type</p>
+                    <div class="bndname">
+                      {% if m.equipment_type == nan or m.equipment_type == None %}
+                      <input type="text"  name="equipment_type" id="" value="">
+                      {% else %}
+                      <input type="text"  name="equipment_type" id="" value="{{m.equipment_type}}">
+                      {% endif %}
+                                  
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                  
+                    <p>Equipment name</p>
+                    <div class="bndname">
+                      {% if m.equipment_name == nan or m.equipment_name == None %}
+                      <input type="text"  name="equipment_name" id="" value="" >
+                      {% else %}
+                      <input type="text"  name="equipment_name" id="" value="{{m.equipment_name}}" >
+                      {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>model no</p>
+                    <div class="bndname">
+                      {% if m.model_no == nan or m.model_no == None %}
+                      <input type="text"  name="model_no" id="" value="" >
+                      {% else %}
+                      <input type="text"  name="model_no" id="" value="{{m.model_no}}" >
+                      {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>serail no</p>
+                    <div class="bndname">
+                      {% if m.serial_no == nan or m.serial_no == None %}
+                      <input type="text"  name="serial_no" id="" value="" >
+                      {% else %}
+                      <input type="text"  name="serial_no" id="" value="{{m.serial_no}}" >
+                      {% endif %}
+                    
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>part no</p>
+                    <div class="bndname">
+                      {% if m.part_no == nan or m.part_no == None %}
+                      <input type="text"  name="part_no" id="" value="" >
+                      {% else %}
+                      <input type="text"  name="part_no" id="" value="{{m.part_no}}" >
+                      {% endif %}
+                    </div>
+
+                </div>
+                
+                <div class="detialasset-name">
+                    <p>Quantity</p>
+                    <div class="bndname">
+                      {% if m.quantity == nan %}
+                      <input type="number" min="0" name="quantity" id="" value="">
+                      {% else %}
+                      <input type="number" min="0" name="quantity" id="" value="{{m.quantity}}">
+                      {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>ACCESSORIES </p>
+                    <div class="bndname">
+                      {% comment %} <input type="text" name="accessories" id="" value="{{m.accessories}}"> {% endcomment %}
+                      {% if m.accessories == nan %}
+                      <input type="text" name="accessories" id="" value="">
+                      {% else %}
+                      <input type="text" name="accessories" id="" value="{{m.accessories}}">
+                      {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>ACCESSORIES quantity</p>
+                    <div class="bndname">
+                        <div class="bndname">
+                            {% if m.accessories_qty == nan or m.accessories_qty == "nan" %}
+                            <input type="number" name="accessories_qty" id="" value="">
+                            {% else %}
+                            <input type="number" name="accessories_qty" id="" value="{{m.accessories_qty}}">
+                            {% endif %}
+                          </div>
+                    </div>
+                </div>
+                <div class="detialasset-name">
+                    <p>IN DATE</p>
+                    <div class="bndname">
+                      <input type="date" id="myDateField1" name="in_date" value="{{ m.in_date|date:'Y-m-d' }}">
+                        <span><button class="transparent-button" onclick="clearDate(event, 'myDateField1')">Clear</button></span>
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>IN TIME</p>
+                    <div class="bndname">
+                      <input type="time" id="myDateField2" name="in_time" value="{{ m.in_time|time:'H:i' }}">
+                      <span><button class="transparent-button" onclick="clearDate(event, 'myDateField2')">Clear</button></span>
+
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>EQUIPMENT LAST REPORT DATE</p>
+                    <div class="bndname">
+    
+                      <input type="date" name="equipment_last_report_date" id="myDateField5" value="{{m.equipment_last_report_date|date:'Y-m-d'}}">
+                      <span><button class="transparent-button" onclick="clearDate(event, 'myDateField5')">Clear</button></span>
+
+                    </div>
+    
+                </div>
+                <div class="detialasset-name">
+                    <p>EQUIPMENT LAST REPORT FAULT </p>
+    
+                      <div class="bndname">
+                        {% if m.equipment_last_report_fault == nan or m.equipment_last_report_fault == "nan" %}
+                        <input type="text" name="equipment_last_report_fault" id="" value="">
+                        {% else %}
+                        <input type="text" name="equipment_last_report_fault" id="" value="{{m.equipment_last_report_fault}}">
+                        {% endif %}
+                      </div>
+    
+                </div>
+                <div class="detialasset-name">
+                    <p>EQUIPMENT RECEIVED BY(NAME & SECTION) </p>
+                    <div class="bndname">
+    
+                      {% comment %} <input type="text" name="equipment_received_by" id="" value="{{m.equipment_received_by}}"> {% endcomment %}
+                      {% if m.equipment_received_by_name_section == nan or m.equipment_received_by_name_section == "nan" %}
+                      <input type="text" name="equipment_received_by_name_section" id="" value="">
+                      {% else %}
+                      <input type="text" name="equipment_received_by_name_section" id="" value="{{m.equipment_received_by_name_section}}">
+                      {% endif %}
+                    </div>
+    
+                </div>
+                <div class="detialasset-name">
+                    <p>EQUIPMENT HANDED OVER BY (NAME & APPT)</p>
+                    <div class="bndname">
+    
+                      {% comment %} <input type="text" name="equipment_handed_over_by" id="" value="{{m.equipment_handed_over_by}}"> {% endcomment %}
+                      {% if m.equipment_handed_over_by_name_appt == nan or m.equipment_handed_over_by_name_appt == "nan" %}
+                      <input type="text" name="equipment_handed_over_by_name_appt" id="" value="">
+                      {% else %}
+                      <input type="text" name="equipment_handed_over_by_name_appt" id="" value="{{m.equipment_handed_over_by_name_appt}}">
+                      {% endif %}
+                    </div>
+    
+                </div>
+                <div class="detialasset-name">
+                    <p>FAULT DETECTED DURING </p>
+                    <div class="bndname">
+    
+                      {% comment %} <input type="text" name="default_detected" id="" value="{{m.default_detected}}"> {% endcomment %}
+                      {% if m.default_detected == nan or m.default_detected == "nan" %}
+                      <input type="text" name="default_detected" id="" value="">
+                      {% else %}
+                      <input type="text" name="default_detected" id="" value="{{m.default_detected}}">
+                      {% endif %}
+                    </div>
+    
+                </div>
+                <div class="detialasset-name">
+                    <p>LAST SERVICE DATE </p>
+                    <div class="bndname">
+    
+                      <input type="date" name="last_service_date" id="myDateField3" value="{{m.last_service_date|date:'Y-m-d'}}">
+                      <span><button class="transparent-button" onclick="clearDate(event, 'myDateField3')">Clear</button></span>
+                    </div>
+    
+                </div>
+                <div class="detialasset-name">
+                    <p>UPCOMING SERVICE DATE </p>
+                    <div class="bndname">
+    
+                      <input type="date" name="upcoming_service_date" id="myDateField4" value="{{m.upcoming_service_date|date:'Y-m-d'}}">
+                      <span><button class="transparent-button" onclick="clearDate(event, 'myDateField4')">Clear</button></span>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor%}
+            
+        </div>
+
+
+        <div class="assetdetail-contain mt-0">
+            <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A"
+                    class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
+                    <path
+                        d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z" />
+                    <path
+                        d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                </svg>Out Details</h1>
+        {% for m in internal_repair_obj %}
+            <div class="detialasset mt-4">
+                
+                <div class="detialasset-name">
+                    <p>EQUIPMENT REPAIRED/CHECKED BY</p>
+                    <div class="bndname">
+                      {% if m.equipment_repaired_by == nan or m.equipment_repaired_by == None %}
+                      <input type="text"  name="equipment_repaired_by" id="" value="">
+                      {% else %}
+                      <input type="text"  name="equipment_repaired_by" id="" value="{{m.equipment_repaired_by}}">
+                      {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="detialasset-name">
+                    <p>REPAIR ACTIVITY COMPLETION DATE</p>
+                    <div class="bndname">
+                        <input type="date" name="repair_activity_completion_date" id="myDateField6" value="{{m.repair_activity_completion_date|date:'Y-m-d'}}">
+                        <span><button class="transparent-button" onclick="clearDate(event, 'myDateField6')">Clear</button></span>
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                  
+                    <p>TIME TAKEN TO REPAIR</p>
+                    <div class="bndname">
+                      {% if m.time_taken_to_repair == nan or m.time_taken_to_repair == None %}
+                      <input type="text"  name="time_taken_to_repair" id="" value="" >
+                      {% else %}
+                      <input type="text"  name="time_taken_to_repair" id="" value="{{m.time_taken_to_repair}}" >
+                      {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>MARKED FOR OEM DATE</p>
+                    <div class="bndname">
+                      {% if m.marked_for_oem_date == nan or m.marked_for_oem_date == None %}
+                      <input type="text"  name="marked_for_oem_date" id="" value="" >
+                      {% else %}
+                      <input type="text"  name="marked_for_oem_date" id="" value="{{m.marked_for_oem_date}}" >
+                      {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>EQUIPMENT HANDED OVER BY</p>
+                    <div class="bndname">
+                      {% if m.equipment_handed_over_by == nan or m.equipment_handed_over_by == None %}
+                      <input type="text"  name="equipment_handed_over_by" id="" value="" >
+                      {% else %}
+                      <input type="text"  name="equipment_handed_over_by" id="" value="{{m.equipment_handed_over_by}}" >
+                      {% endif %}
+                    
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>EQUIPMENT HANDING OVER DATE</p>
+                    <div class="bndname">
+                        <input type="date" name="equipment_handing_over_date" id="myDateField7" value="{{m.equipment_handing_over_date|date:'Y-m-d'}}">
+                        <span><button class="transparent-button" onclick="clearDate(event, 'myDateField7')">Clear</button></span>
+                    </div>
+
+                </div>
+                
+                <div class="detialasset-name">
+                    <p>EQUIPMENT HANDING OVER SIGNATURE</p>
+                    <div class="bndname">
+                      {% if m.equipment_handing_over_signature == nan %}
+                      <input type="text"  name="equipment_handing_over_signature" id="" value="">
+                      {% else %}
+                      <input type="text"  name="equipment_handing_over_signature" id="" value="{{m.equipment_handing_over_signature}}">
+                      {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>EQUIPMENT RECEIVED BY</p>
+                    <div class="bndname">
+                      {% comment %} <input type="text" name="accessories" id="" value="{{m.accessories}}"> {% endcomment %}
+                      {% if m.equipment_received_by == nan %}
+                      <input type="text" name="equipment_received_by" id="" value="">
+                      {% else %}
+                      <input type="text" name="equipment_received_by" id="" value="{{m.equipment_received_by}}">
+                      {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>EQUIPMENT RECEIVED DATE</p>
+                    <div class="bndname">
+                        <div class="bndname">
+                            <input type="date" name="equipment_received_date" id="myDateField8" value="{{m.equipment_received_date|date:'Y-m-d'}}">
+                            <span><button class="transparent-button" onclick="clearDate(event, 'myDateField8')">Clear</button></span>
+                          </div>
+                    </div>
+                </div>
+                <div class="detialasset-name">
+                    <p>EQUIPMENT RECEIVER SIGNATURE</p>
+                    <div class="bndname">
+                        {% if m.equipment_receiver_signature == nan %}
+                        <input type="text" name="equipment_receiver_signature" id="" value="">
+                        {% else %}
+                        <input type="text" name="equipment_receiver_signature" id="" value="{{m.equipment_receiver_signature}}">
+                        {% endif %}
+                    </div>
+
+                </div>
+                {% comment %} <div class="detialasset-name">
+                    <p>SIGNATURE OF ENGINEERING HEAD</p>
+                    <div class="bndname">
+                        {%if m.signature_of_engineering_head %}
+                        
+                            <img src="{%if m.signature_of_engineering_head %}{{m.signature_of_engineering_head.url}}{%endif%}"
+                            alt="Upload image"
+                            style="width: 70%;height: 70%;border-radius: 5px; margin-bottom: 8px;">
+                            {{m.signature_of_engineering_head.name}} 
+                            <input type="file" name="signature_of_engineering_head" value="{{m.signature_of_engineering_head.url}}"
+                            style="width: 100%;height: 100%;border-radius: 5px; margin-top: 5%;"/>
+                          
+
+                        {%else%}
+                            <input type="file" name="signature_of_engineering_head" style="width: 100%;border-radius: 5px;"/>
+                            
+                        {%endif%}
+                    </div>
+
+                </div> 
+                <div class="detialasset-name">
+                    <p>SIGNATURE OF ENGINEERING INVENTORY HEAD</p>
+                    <div class="bndname">
+                        {%if m.signature_of_engineering_inventory_head %}
+                        
+                            <img src="{%if m.signature_of_engineering_inventory_head %}{{m.signature_of_engineering_inventory_head.url}}{%endif%}"
+                            alt="Upload image"
+                            style="width: 70%;height: 70%;border-radius: 5px; margin-bottom: 8px;">
+                            {{m.signature_of_engineering_inventory_head.name}} 
+                            <input type="file" name="signature_of_engineering_inventory_head" value="{{m.signature_of_engineering_inventory_head.url}}"
+                            style="width: 100%;height: 100%;border-radius: 5px; margin-top: 5%;"/>
+                          
+
+                        {%else%}
+                            <input type="file" name="signature_of_engineering_inventory_head" style="width: 100%;border-radius: 5px;"/>
+                            
+                        {%endif%}
+                    </div>
+
+                </div>  {% endcomment %}
+                
+              
+            </div>
+            {% endfor%}
+            
+        </div>
+
+
+
+
+
+    </div>
+</form>
+    
+
+</section>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>   
+  function removeImage(id) {
+        $.ajax({
+            type: "POST",
+            url: "/delete-asset-detail-image/", 
+            data:{"id":id, "csrfmiddlewaretoken":"{{csrf_token}}"},
+            success: function(response) {
+                location.reload(); 
+            }
+          
+        });
+    }
+   </script>
+
+<script>
+    // Customize your Dropzone options as needed
+    Dropzone.options.imageUpload = {
+        paramName: "image", // The name that will be used to transfer the file
+        maxFilesize: 2, // MB
+        acceptedFiles: "image/*",
+        addRemoveLinks: true, // Display remove link
+        dictDefaultMessage: "<span style='font-size: 14px; color:#6A1B9A; ' > Upload </span>",
+        dictRemoveFile: "Remove",
+        init: function () {
+            this.on("success", function (file, response) {
+                // Handle success
+                console.log(response);
+            });
+            this.on("error", function (file, response) {
+                // Handle error
+                console.error(response);
+            });
+        }
+    };
+</script>
+
+<script>
+    function setActive(navbarId, linkId) {
+        // Remove 'active' class from all links in the specified navbar
+        var links = document.getElementById(navbarId).getElementsByTagName('a');
+        for (var i = 0; i < links.length; i++) {
+            links[i].classList.remove('active');
+        }
+
+        // Add 'active' class to the clicked link
+        document.getElementById(linkId).classList.add('active');
+    }
+</script>
+<script>   
+ {% for m in assets %}
+   function deleteImage() {
+        var id = '{{ m.id }}'; 
+        window.location.href = '/delete-asset-detail-image/' + id + '/';
+    } 
+    {% endfor %}
+</script>
+
+
+<script>
+    function setAvailability(id) {
+        var selectedValue = $('select[name="boolean_field2"]').val();
+        $.ajax({
+            type: 'POST',
+            url: '/asset-detail-set-availability/', 
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                id: id,
+                boolean_field: selectedValue
+            },
+            success: function(response) {
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Availability edited successfully');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+</script>
+
+ <script>
+    function setUnderAMC(id) {
+        var selectedValue = $('select[name="boolean_field1"]').val();
+        $.ajax({
+            type: 'POST',
+            url: '/asset-detail-set-under-amc/', 
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                id: id,
+                boolean_field: selectedValue
+            },
+            success: function(response) {
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Under AMC edited successfully');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+</script>
+
+{% comment %} Clear date field {% endcomment %}
+<script>
+    function clearDate(event, myDateField ) {
+        event.preventDefault();
+        document.getElementById(myDateField).value = '';
+    }
+</script>
+
+
+
+
+{% for m in assets %}
+<script>
+    function goToAssetDetail() {
+        window.location.href = "/asset-detail/{{m.id}}/" 
+    }
+</script>
+{% endfor %}
+{% endblock content %}

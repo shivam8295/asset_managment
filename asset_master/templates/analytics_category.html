@@ -1,0 +1,366 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+<style>
+    table {
+            width: 100%;
+            border-collapse: separate; /* Set border-collapse to separate */
+            border-spacing: 0; /* Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+
+        .asset-tablebtn button{
+    border: 1px solid #CCCCCC;
+    color: #7C7C7C !important;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 0 20px;
+    height: 40px;}
+
+    
+    .select-button{
+        border: 1px solid #CCCCCC;
+        color: #7C7C7C !important;
+        background-color: #FFFFFF;
+        border-radius: 5px;
+        padding: 0 6px;
+        font-size: inherit;
+        height:40px;
+
+    }
+
+    span.select2-selection.select2-selection--single {
+        height:38px !important;
+    }
+</style>
+<!-- Alert JS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Alert JS -->
+<section class="assetdetail">
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+
+    <div class="assetheaderbuttones">
+        <h1> Analytics </h1>
+        <!-- <div class="assebutton">
+       
+             <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="    border: 1px solid #CCCCCC;
+            color: #7C7C7C !important;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            padding: 0 20px; height: 45px; padding-top: 10px; font-size: 14px;text-transform: uppercase;">
+            Import Assets
+            </a>
+          
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/upload/">Upload new excel </a></li>
+              <li><a class="dropdown-item" href="#">Update Existing Assets</a></li>
+            </ul>
+          </div> -->
+          <div class="pinkbox">
+          {% comment %} <button id="uploadButton" onclick="document.getElementById('fileInput').click()" >Import Assets</button> {% endcomment %}
+          <input type="file" id="fileInput" accept=".xlsx" onchange="uploadFile()" style="display: none;">
+        <!-- <button><a href="/outsource-form/" style="color: #fff; text-decoration: none;">+ Add Assets</a></button> -->
+    </div>
+    </div>
+
+    </div>
+</section>
+<section class="assest-container-table">
+    <div class="asset-tablebtn">
+        <div class="searchiconbtn" >
+            {% comment %} <img src="{% static 'images/search.svg' %}" alt="icon" style="margin-left: 15px;"> {% endcomment %}
+            <form method="GET">   
+                <input name="q" id="search_field" type="text" placeholder="Search.." value="{% if query_params_q %} {{query_params_q}} {% endif %}" style = "padding-left: 10px; border-radius: 5px;">   
+                <select name="q" id="secondDropdown" name="second_dropdown" style="display: none; height:10%;">
+                    <!-- The options will be populated dynamically -->
+                </select>
+                <select class='select-button' id="dropdown" name="filter_type">
+                    <option  disabled {% if query_params_filter_value == '' or query_params_filter_value is None  %} selected {% endif %} value='none' >--Select--</option>
+                    {% comment %} <option {% if query_params_filter_value == 'category' %} selected {% endif %}  value="category">Category</option>
+                   <option {% if query_params_filter_value == 'model_no' %} selected {% endif %} value="model_no">Model No.</option> {% endcomment %}
+                    <option {% if query_params_filter_value == 'brand' %} selected {% endif %} value="brand">Brand</option>
+                </select>
+            <button type='submit'>Search</button>
+            <span><button onclick="clearSearch(event, 'search_field', 'dropdown', 'secondDropdown')">Clear</button></span>
+            </form>           
+        </div>
+
+        <div class="pinkbox">
+
+        <button id='' onclick="location.href='?download_csv=true'" >
+            EXPORT TO CSV
+        </button>
+            
+    <form method="post" action="{% url 'sold_asset_delete' %}">
+        {% csrf_token %}
+    {% comment %} <button type="submit">Delete Selected Assets</button> {% endcomment %}
+</div>
+
+       
+
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                {% comment %} <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th> {% endcomment %}
+                
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Total Count</th>
+                <th>Available</th>
+                <th>Out</th>
+               
+                <!-- <th style="border-radius: 0 10px  0 0; cursor: pointer;"><img src="{% static 'images/sliders.svg' %}" alt=""></th> -->
+            </tr>
+        </thead>
+       
+        <tbody>
+           {% for m in category_brand%}
+            <tr>
+                {% comment %} <td class="checkbox-column">
+                    <input type="checkbox" id="asset_{{ asset.serial_no }}" name="id" value="{{ asset.id }}">
+                </td> {% endcomment %}
+                
+                <td class="tbname">{{category}}</td>
+                <td class="tbname"><a href="/analytics-brand/{{m.brand}}/">{{m.brand}} </a></td>
+                <td class="tbname">{{m.brand_count}}</td>
+                <td class="tbname">{{m.availability}}</td>
+                <td class="tbname">{{m.not_available}}</td>
+                          
+            </tr>
+            {% endfor %}
+          
+        </tbody>
+    </form>
+    </table>
+    <div class="pagidis">
+    <div>
+</div>
+    <div class="card text-center" style="border: none;">
+            <div class="card-footer text-body-secondary" style="background-color: #fff; border: none;" >
+            Displaying all {{brand_length}} brand(s)
+            </div>
+    </div>
+    {% comment %} <div class="pagination">
+        <span class="step-links">
+            {% if assets.has_previous %}
+                <a href="{% if query_params %}?q={{query_params}}&page=1{% else %}?page=1{% endif %}">&laquo; First</a>
+                <a href="{% if query_params %}?q={{query_params}}&page={{ assets.previous_page_number }}{% else %}?page={{ assets.previous_page_number }}{% endif %}">Previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page 1 of {{ assets.paginator.num_pages }}
+            </span>
+    
+            {% if assets.has_next %}
+                <a href="{% if query_params %}?q={{query_params}}&page={{ assets.next_page_number }}{% else %}?page={{ assets.next_page_number }}{% endif %}">Next</a>
+                <a href="{% if query_params %}?q={{query_params}}&page={{ assets.next_page_number }}{% else %}?page={{ assets.paginator.num_pages }}{% endif %}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div> {% endcomment %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if category_brand.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ category_brand.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ category_brand.number }} of {{ category_brand.paginator.num_pages }}
+            </span>
+    
+            {% if category_brand.has_next %}
+                <a href="?page={{ category_brand.next_page_number }}">next</a>
+                <a href="?page={{ category_brand.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+</section>
+
+
+
+<script>
+    // JavaScript function to select or unselect all checkboxes
+    function selectAllCheckboxes(masterCheckbox) {
+        var checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = masterCheckbox.checked;
+        });
+    }
+</script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+
+<script>
+    {% if messages %}
+        {% for msg in messages %}
+            alertify.set('notifier','position', 'top-right');
+            alertify.success('{{msg}}');
+        {% endfor %}
+    {% endif %}
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#exportButton").on("click", function() {
+        $.ajax({
+            type: "GET",
+            url: "/export-to-csv/", 
+            success: function(data) {
+                var blob = new Blob([data]);
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "exported_data.csv";
+                link.click();
+            },
+            error: function(xhr, status, error) {
+                // console.error(error);
+            }
+        });
+    });
+});
+</script>
+<script>
+    function clearSearch(event, mySearchField, dropdown, secondDropdown ) {
+        event.preventDefault();
+        document.getElementById(mySearchField).value=''; 
+        document.getElementById(dropdown).value = 'none';
+        document.getElementById(secondDropdown).value = '';
+        $('#secondDropdown').empty().hide();
+        $('#secondDropdown').append('<option value="">--Select--</option>');
+        
+    }
+</script>
+<script>
+function uploadFile() {
+    var fileInput = document.getElementById('fileInput');
+    var selectedFile = fileInput.files[0];
+
+    if (selectedFile) { 
+        var formData = new FormData();
+        formData.append('file', selectedFile);
+        $.ajax({
+            type: "POST",
+            url: "/upload-sold-asset/",
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            success: function(response) {
+                window.location.reload()
+
+            },
+            error: function(xhr, status, error) {
+                window.location.reload()
+            }
+        });
+    }
+}
+
+</script>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#dropdown').change(function() {
+            var selectedValue = $(this).val();
+            if (selectedValue !== 'none') {
+                $.ajax({
+                    type: 'GET',
+                    url: '/asset-list-search-analytics-brand/', 
+                    data: {
+                        'selected_value': selectedValue
+                    },
+                    success: function(data) {
+                        // Update the second dropdown with fetched data
+                        $('#secondDropdown').empty().show();
+                        $('#secondDropdown').append('<option value="">--Select--</option>');
+                        $.each(data, function(key, value) {
+                            $('#secondDropdown').append('<option value="' + value + '">' + value + '</option>');
+                        });
+                        $('#secondDropdown').select2({
+                            placeholder: 'Search...',                             
+                        });
+                        $('#search_field').hide();
+                        $('#secondDropdown').select2({
+                            dropdownAutoWidth: true,
+                            width:"300px",
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                    }
+                });
+            } else {
+                // If the default option is selected, hide the second dropdown and show the input dropdown
+                $('#secondDropdown').hide();
+                $('#search_field').show();
+            }
+        });
+    });
+</script>
+
+
+{% endblock content %}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Excel File</title>
+</head>
+<body>
+    <h1>Upload Excel File</h1>
+    <form method="post" enctype="multipart/form-data" id="uploadForm">
+        {% csrf_token %}
+        <input type="file" name="excel_file" accept=".xlsx">
+        <br><br>
+        <input type="submit" value="Upload">
+    </form>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch('/upload/', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data); // You can handle success message or redirect here
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+    </script>
+</body>
+</html>

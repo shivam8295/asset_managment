@@ -1,0 +1,185 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+<style>
+    table {
+            width: 100%;
+            border-collapse: separate; /* Set border-collapse to separate */
+            border-spacing: 0; /* Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+
+        .select-button{
+            border: 1px solid #CCCCCC;
+            color: #7C7C7C !important;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            padding: 0 6px;
+            font-size: inherit;
+            height:40px;
+    
+        }
+
+        .asset-tablebtn button{
+            border: 1px solid #CCCCCC;
+            color: #7C7C7C !important;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            padding: 0 20px;
+            height: 40px;}
+
+            span.select2-selection.select2-selection--single {
+                height:38px !important;
+            }
+</style>
+
+<!-- Alert JS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Alert JS -->
+
+<section class="assetdetail">
+    <button onclick="goback()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+
+    <div class="assetheaderbuttones">
+        {% comment %} {% for m in customer_obj%}
+        <h3>{{m.r_customer}}</h3>
+        {% endfor %} {% endcomment %}
+        
+    </div>
+</section>
+
+<section class="assest-container-table">
+    <button id="exportButton">
+        EXPORT TO CSV
+    </button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                {% comment %} <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th> {% endcomment %}
+                <th>Serial Number</th>
+                <th>Category</th>
+                <th>SubCategory</th>
+                <th>Discription </th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Quantity</th>
+                
+               
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for m in all_asset_of_an_order %}
+            <tr>
+                <td>{{m.r_serialno}}</td>
+                {% comment %} <td id="id_{{m.id}}">{{m.id}}</td> {% endcomment %}
+                <td>{{m.r_category}} </td>
+                <td>{{m.r_subcategory}} </td>
+                <td>{{m.r_description}} </td>
+                <td >{{m.r_brand}}</td>
+                <td>{{m.r_modelno}}</td> 
+                <td>{{m.quantity}}</td>              
+                
+                
+            </tr>
+            {% endfor %}
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+{% endblock content %} 
+
+<script>
+    function goback(){
+        window.location.href = '/asset_management/requirement-report-main-page/'
+    }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% comment %} for exporting to csv {% endcomment %}
+<script>
+$(document).ready(function() {
+    
+    $("#exportButton").on("click", function() {
+        let spinner = `
+        <div id="spinner" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>`;
+        $('#exportButton').html(spinner);
+
+        $.ajax({
+            type: "POST",
+            url: "/asset_management/requirement-exposed-to-csv/",
+            data: { export_all: "export_all", csrfmiddlewaretoken: "{{ csrf_token }}" },
+            success: function(data) {
+                var blob = new Blob([data], { type: 'text/csv' });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "Requirements.csv";
+                document.body.appendChild(link);
+                link.click();
+                $('#exportButton').html("EXPORT TO CSV");
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                $('#exportButton').html("EXPORT TO CSV");
+            }
+        });
+    });
+});
+</script>

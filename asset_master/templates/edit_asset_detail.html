@@ -1,0 +1,754 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    /* Optional: Add custom styling to the Dropzone container */
+    .dropzone {
+        background: white;
+        border-radius: 8px;
+        min-height: 10px;
+        width: 120px;
+        padding: 12px;
+        text-align: center;
+        border: none;
+    }
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -40px;
+    }
+
+
+    .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    }
+
+    .navbar-second a {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+
+    }
+
+    .navbar-second a svg {
+        margin-right: 5px;
+    }
+
+    .navbar-second a:hover {
+        color: #6A1B9A;
+    }
+
+    .active {
+        color: #6A1B9A;
+        border-bottom: 3px solid #6A1B9A;
+    }
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+
+    .transparent-button {
+        border: none;
+        background-color: transparent;
+        color: #6A1B9A;
+        
+    }
+    
+</style>
+
+
+<section class="assetdetail-detail" style=" margin-top: 60px">
+  
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform:msFilter"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+    <form method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        <div class="assetdetail-containing">
+        {% comment %} <a href="{% url 'asset_list' %}" class="btn" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform:msFilter"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></a> {% endcomment %}
+      <div class="assebutton" style="gap: 20px; display: flex;    justify-content: flex-end;      ">
+       <div>
+     
+            {%if m.image %}
+                <button style="background: #6A1B9A;
+                border: none;
+                color: #fff;
+                padding: 10px 20px;
+                font-size: 14px;
+                border: none;
+                border-radius: 5px;
+                text-transform: uppercase;" onclick="removeImage({{m.id}})">Remove image</button>
+            {%endif%}
+            
+        </div>
+        
+        <button type="submit" style="background: #6A1B9A;
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        text-transform: uppercase;">Update Asset</button>
+    </div>
+        <div class="assetdetail-contain mt-0">
+            <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A"
+                    class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
+                    <path
+                        d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z" />
+                    <path
+                        d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                </svg>Core Information</h1>
+            <div class="detialasset mt-4">
+                {% for m in assets %}
+                <div class="detialasset-name">
+                    <p>category</p>
+                    <div class="bndname">
+
+                      <input type="text" name="category" id="" value="{{m.category}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Sub Category</p>
+                    <div class="bndname">
+                      <input type="text" name="sub_category" id="" value="{{m.sub_category}}">
+                       
+                                  
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                  
+                    <p>serial number</p>
+                    <div class="bndname">
+                      <span>  <input type="text" name="serial_no" id="" value="{{m.serial_no}}"></span>
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>asset tag</p>
+                    <div class="bndname">
+                      <input type="text" name="asset_tag" id="" value="{{m.asset_tag}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>brand</p>
+                    <div class="bndname">
+                      <input type="text" name="brand" id="" value="{{m.brand}}">
+                    
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>model number</p>
+                    <div class="bndname">
+                      <input type="text" name="model_no" id="" value="{{m.model_no}}">
+                    </div>
+
+                </div>
+                
+                <div class="detialasset-name">
+                    <p>Vintage</p>
+                    <div class="bndname">{% if m.age == nan %}
+                      <input type="number" min="0" name="age" id="" value="">
+                      {% else %}
+                      <input type="number" min="0" name="age" id="" value="{{m.age}}">
+                      {% endif %}
+                    </div>
+
+                </div>
+
+                <!-- <div class="detialasset-name">
+                    <p>SKU</p>
+                    <div class="bndname">{% if m.sku == nan or m.sku == "nan" %}
+                      <input type="text" name="sku" id="" value="">
+                      {% else %}
+                      <input type="text" name="sku" id="" value="{{m.sku}}">
+                      {% endif %}
+                    </div>
+                </div> -->
+                <div class="detialasset-name">
+                    <p>storage area </p>
+                    <div class="bndname">
+
+                      <input type="text" name="area" id="" value="{{m.area}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>FC No.</p>
+                    <div class="bndname">
+                        <div class="bndname">{% if m.fc_no == nan or m.fc_no == "nan" %}
+                            <input type="text" name="fc_no" id="" value="">
+                            {% else %}
+                            <input type="text" name="fc_no" id="" value="{{m.fc_no}}">
+                            {% endif %}
+                          </div>
+                    </div>
+                </div>
+                <div class="detialasset-name">
+                    <p>last service date</p>
+                    <div class="bndname">
+                      <input type="date" id="myDateField1" name="last_service_date" value="{{ m.last_service_date|date:'Y-m-d' }}">
+                        <span><button class="transparent-button" onclick="clearDate(event, 'myDateField1')">Clear</button></span>
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>upcoming service date</p>
+                    <div class="bndname">
+                      <input type="date" id="myDateField2" name="upcoming_service_date" value="{{ m.upcoming_service_date|date:'Y-m-d' }}">
+                      <span><button class="transparent-button" onclick="clearDate(event, 'myDateField2')">Clear</button></span>
+
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Box number </p>
+                    <div class="bndname">
+    
+                      <input type="text" name="box_number" id="" value="{{m.box_number}}">
+                    </div>
+    
+                </div>
+                <div class="detialasset-name">
+                    <p>Owner </p>
+                    <div class="bndname">
+    
+                      <input type="text" name="owner" id="" value="{{m.owner}}">
+                    </div>
+    
+                </div>
+
+                <div class="detialasset-name" style="margin-left: 10px;">
+                    <p>description</p>
+                    <div class="bndname">
+                      <textarea name="description">{{m.description}}</textarea>
+                    </div>
+                </div>
+
+            </div>
+            
+        <div class="detialasset-name" style="margin-left: 10px; margin-top: 15px;">
+            <p>Asset Image</p>
+            <div class="bndname">
+                {%if m.image %}
+                <form method="post" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    <img src="{%if m.image %}{{m.image.url}}{%endif%}"
+                    alt="Upload Image"
+                    style="width: 70%;height: 70%;border-radius: 5px; margin-bottom: 8px;">
+                    {{m.image.name}} 
+                    <input type="file" name="image" value=""
+                    style="width: 100%;height: 100%;border-radius: 5px; margin-top: 5%;"/>
+                    </form>
+
+                {%else%}
+                    <input type="file" name="image" style="width: 100%;border-radius: 5px;"/>
+                    
+                {%endif%}
+                
+                
+            </div>
+            
+            
+            
+        </div>
+        
+
+        <h1 style="margin-top: 4%"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A" class="bi bi-distribute-horizontal" viewBox="0 0 16 16" style="margin-right: 5px;">
+            <path fill-rule="evenodd" d="M14.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5m-13 0a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5"/>
+            <path d="M6 13a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/>
+          </svg>UoM (Unit of Measurement)</h1>
+
+          <div class="detialasset mt-4">
+          <div class="detialasset-name">
+            <p>Length </p>
+            <div class="bndname">
+                <div class="bndname">{% if m.length == nan or m.length == "nan" %}
+                    <input type="text" name="length" id="" value="">
+                    {% else %}
+                    <input type="text" name="length" id="" value="{{m.length}}">
+                    {% endif %}
+                  </div>
+            </div>
+
+        </div>
+        <div class="detialasset-name">
+            <p>Breath </p>
+            <div class="bndname">
+                <div class="bndname">{% if m.breadth == nan or m.breadth == "nan" %}
+                    <input type="text" name="breadth" id="" value="">
+                    {% else %}
+                    <input type="text" name="breadth" id="" value="{{m.breadth}}">
+                    {% endif %}
+                  </div>
+            </div>
+
+        </div>
+        <div class="detialasset-name">
+            <p>Width </p>
+            <div class="bndname">
+                <div class="bndname">{% if m.width == nan or m.width == "nan" %}
+                    <input type="text" name="width" id="" value="">
+                    {% else %}
+                    <input type="text" name="width" id="" value="{{m.width}}">
+                    {% endif %}
+                  </div>
+            </div>
+
+        </div>
+        <div class="detialasset-name">
+            <p>Height </p>
+            <div class="bndname">
+                <div class="bndname">
+                    {% if m.height == nan or m.height == "nan" %}
+                    <input type="text" name="height" id="" value="">
+                    {% else %}
+                    <input type="text" name="height" id="" value="{{m.height}}">
+                    {% endif %}
+                  </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="assetdetail-contain mt-5">
+    <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A" class="bi bi-person-lines-fill" viewBox="0 0 16 16" style="margin-right: 5px;">
+      <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z"/>
+    </svg> Product Engineering Support Info</h1>
+    <div class="detialasset mt-4">
+      <div class="detialasset-name">
+          <p>Warranty Period</p>
+          <div class="bndname">
+            {% if m.warranty_period == nan or m.warranty_period == "nan" %}
+            <input type="text" name="warranty_period" id="" value="">
+            {% else %}
+            <input type="text" name="warranty_period" id="" value="{{m.warranty_period}}">
+            {% endif %}
+          </div>
+    
+      </div>
+      <div class="detialasset-name">
+        <p>Under AMC</p>
+        <div class="bndname">
+            <select class="form-select" name="boolean_field1" onchange="setUnderAMC({{m.id}})" aria-label="Default select example">
+                <option disabled {% if m.under_amc == None %}selected{% endif %}>SELECT</option>
+                <option value="1" {% if m.under_amc == True %}selected{% endif %}>YES</option>
+                <option value="2" {% if m.under_amc == False %}selected{% endif %}>NO</option>
+              </select>
+        </div>
+
+    </div>
+      <div class="detialasset-name">
+          <p>AMC Date</p>
+          <div class="bndname">
+            {% if m.amc_date == nan or m.amc_date == "nan" %}
+            <input type="date" name="amc_date" id="myDateField3" value="">
+            {% else %}
+            <input type="date" name="amc_date" id="myDateField3" value="{{m.amc_date|date:'Y-m-d'}}">
+            {% endif %}
+            <span><button class="transparent-button" onclick="clearDate(event, 'myDateField3')">Clear</button></span>
+
+          </div>
+    
+      </div>            
+    
+    </div>
+    <div class="assetdetail-contain mt-5">
+        <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A" class="bi bi-upc-scan" viewBox="0 0 16 16" style="margin-right: 5px;">
+            <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+          </svg> Asset In and Out Tracking</h1>
+        <div class="detialasset mt-4">
+            {% for m in assets %}
+            <div class="detialasset-name">
+                <p>Storage Warehouse Number</p>
+                <div class="bndname">
+                    {% if m.storage_warehouse_number == nan or m.storage_warehouse_number == "nan" %}
+                    <input type="text" name="storage_warehouse_number" id="" value="">
+                    {% else %}
+                    <input type="text" name="storage_warehouse_number" id="" value="{{m.storage_warehouse_number}}">
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="detialasset-name">
+                <p>Availability</p>
+                <div class="bndname">
+                    <select class="form-select" name="boolean_field2" onchange="setAvailability({{m.id}})" aria-label="Default select example">
+                        <option disabled {% if m.availability == None %}selected{% endif %}>SELECT</option>
+                        <option value="1" {% if m.availability == True %}selected{% endif %}>YES</option>
+                        <option value="2" {% if m.availability == False %}selected{% endif %}>NO</option>
+                      </select>
+                </div>
+
+            </div>
+            <div class="detialasset-name">
+                <p>Outward Date</p>
+                <div class="bndname">
+                    {% if m.outward_date == nan or m.outward_date == "nan" %}
+                    <input type="date" name="outward_date" id="myDateField4" value="">
+                    {% else %}
+                    <input type="date" name="outward_date" id="myDateField4" value="{{m.outward_date|date:'Y-m-d'}}">
+                    {% endif %}
+                    <span><button class="transparent-button" onclick="clearDate(event, 'myDateField4')">Clear</button></span>
+
+                </div>
+
+            </div>
+            <div class="detialasset-name">
+                <p>Outward Remarks</p>
+                <div class="bndname">
+                    {% if m.outward_remarks == nan or m.outward_remarks == "nan" %}
+                    <input type="text" name="outward_remarks" id="" value="">
+                    {% else %}
+                    <input type="text" name="outward_remarks" id="" value="{{m.outward_remarks}}">
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="detialasset-name">
+                <p>Inward Date</p>
+                <div class="bndname2">
+                    {% if m.inward_date == nan or m.inward_date == "nan" %}
+                    <input type="date" name="inward_date" id="myDateField5" value="">
+                    {% else %}
+                    <input type="date" name="inward_date" id="myDateField5" value="{{m.inward_date|date:'Y-m-d'}}">
+                    {% endif %}
+            <span><button class="transparent-button" onclick="clearDate(event, 'myDateField5')">Clear</button></span>
+
+                </div>
+
+            </div>
+            <div class="detialasset-name">
+                <p>Inward Remarks</p>
+                <div class="bndname">
+                    {% if m.inward_remarks == nan or m.inward_remarks == "nan" %}
+                    <input type="text" name="inward_remarks" id="" value="">
+                    {% else %}
+                    <input type="text" name="inward_remarks" id="" value="{{m.inward_remarks}}">
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+       
+
+    </div>
+    
+    </div>
+        <div class="assetdetail-contain">
+            <h1><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    style="fill: #6A1B9A;transform:msFilter">
+                    <path
+                        d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8 8a2 2 0 0 0 2.828 0l7.172-7.172a2 2 0 0 0 0-2.828l-8-8zM7 9a2 2 0 1 1 .001-4.001A2 2 0 0 1 7 9z">
+                    </path>
+                </svg>Purchase</h1>
+
+            <div class="detialasset mt-4">
+                <div class="detialasset-name">
+                    <p>Vendor</p>
+                    <div class="bndname">
+                    {% if m.vendor == nan or m.vendor == "nan" %}
+                    <input type="text" name="vendor" id="" value="">
+                    {% else %}
+                    <input type="text" name="vendor" id="" value="{{m.vendor}}">
+                    {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Purchased On </p>
+                    <div class="bndname">
+                    {% if m.purchased_on == nan or m.purchased_on == "nan" %}
+                    <input type="date" name="purchased_on" id="myDateField6" value="">
+                    {% else %}
+                    <input type="date" name="purchased_on" id="myDateField6" value="{{m.purchased_on|date:'Y-m-d'}}">
+                    {% endif %}
+                    <span><button class="transparent-button" onclick="clearDate(event, 'myDateField6')">Clear</button></span>
+
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Cost Price </p>
+                    <div class="bndname">
+                    {% if m.cost_price == nan or m.cost_price == "nan" %}
+                    <input type="text" name="cost_price" id="" value="">
+                    {% else %}
+                    <input type="text" name="cost_price" id="" value="{{m.cost_price}}">
+                    {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Tax Rate
+                    </p>
+                    <div class="bndname">
+                    {% if m.tax_rate == nan or m.tax_rate == "nan" %}
+                    <input type="text" name="tax_rate" id="" value="">
+                    {% else %}
+                    <input type="text" name="tax_rate" id="" value="{{m.tax_rate}}">
+                    {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Depreciated Value
+                    </p>
+                    <div class="bndname">
+                        {% if m.depricated_value == nan or m.depricated_value == "nan" %}
+                    <input type="text" name="depricated_value" id="" value="">
+                    {% else %}
+                    <input type="text" name="depricated_value" id="" value="{{m.depricated_value}}">
+                    {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Created On
+
+                    </p>
+                    <div class="bndname">
+                    {% if m.created_on == nan or m.created_on == "nan" %}
+                    <input type="date" name="created_on" id="myDateField7" value="">
+                    {% else %}
+                    <input type="date" name="created_on" id="myDateField7" value="{{m.created_on|date:'Y-m-d'}}">
+                    {% endif %}
+                    <span><button class="transparent-button" onclick="clearDate(event, 'myDateField7')">Clear</button></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="assetdetail-contain">
+            <h1><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    style="fill: #6A1B9A;transform: msFilter">
+                    <path
+                        d="M15.999 8.5h2c0-2.837-2.755-4.131-5-4.429V2h-2v2.071c-2.245.298-5 1.592-5 4.429 0 2.706 2.666 4.113 5 4.43v4.97c-1.448-.251-3-1.024-3-2.4h-2c0 2.589 2.425 4.119 5 4.436V22h2v-2.07c2.245-.298 5-1.593 5-4.43s-2.755-4.131-5-4.429V6.1c1.33.239 3 .941 3 2.4zm-8 0c0-1.459 1.67-2.161 3-2.4v4.799c-1.371-.253-3-1.002-3-2.399zm8 7c0 1.459-1.67 2.161-3 2.4v-4.8c1.33.239 3 .941 3 2.4z">
+                    </path>
+                </svg>Pricing</h1>
+
+            <div class="detialasset mt-4">
+                <div class="detialasset-name">
+                    <p>Rental Pricing
+
+                    </p>
+                    <div class="bndname">
+                    {% if m.rental_pricing == nan or m.rental_pricing == "nan" %}
+                    <input type="text" name="rental_pricing" id="" value="">
+                    {% else %}
+                    <input type="text" name="rental_pricing" id="" value="{{m.rental_pricing}}">
+                    {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Rent Collected
+                    </p>
+                    <div class="bndname">
+                    {% if m.rent_collected == nan or m.rent_collected == "nan" %}
+                    <input type="text" name="rent_collected" id="" value="">
+                    {% else %}
+                    <input type="text" name="rent_collected" id="" value="{{m.rent_collected}}">
+                    {% endif %}
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Available for Sale </p>
+                    <div class="bndname">
+                        {% if m.available_for_sale == nan or m.available_for_sale == "nan" %}
+                        <input type="text" name="available_for_sale" id="" value="">
+                        {% else %}
+                        <input type="text" name="available_for_sale" id="" value="{{m.available_for_sale}}">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="assetdetail-contain">
+            <h1><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    style="fill: #6A1B9A;transform: msFilter">
+                    <path d="M12 2h-1v9H2v1a10 10 0 0 0 17.07 7.07A10 10 0 0 0 12 2z"></path>
+                </svg>Usage Information</h1>
+
+            <div class="detialasset mt-4">
+                <div class="detialasset-name">
+                    <p>Asset Utilization
+                    </p>
+                    <div class="bndname">
+                    {% if m.asset_utilization == nan or m.asset_utilization == "nan" %}
+                    <input type="text" name="asset_utilization" id="" value="">
+                    {% else %}
+                    <input type="text" name="asset_utilization" id="" value="{{m.asset_utilization}}">
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    
+{%endfor%}
+
+</section>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>   
+  function removeImage(id) {
+        $.ajax({
+            type: "POST",
+            url: "/delete-asset-detail-image/", 
+            data:{"id":id, "csrfmiddlewaretoken":"{{csrf_token}}"},
+            success: function(response) {
+                location.reload(); 
+            }
+          
+        });
+    }
+   </script>
+
+<script>
+    // Customize your Dropzone options as needed
+    Dropzone.options.imageUpload = {
+        paramName: "image", // The name that will be used to transfer the file
+        maxFilesize: 2, // MB
+        acceptedFiles: "image/*",
+        addRemoveLinks: true, // Display remove link
+        dictDefaultMessage: "<span style='font-size: 14px; color:#6A1B9A; ' > Upload </span>",
+        dictRemoveFile: "Remove",
+        init: function () {
+            this.on("success", function (file, response) {
+                // Handle success
+                console.log(response);
+            });
+            this.on("error", function (file, response) {
+                // Handle error
+                console.error(response);
+            });
+        }
+    };
+</script>
+
+<script>
+    function setActive(navbarId, linkId) {
+        // Remove 'active' class from all links in the specified navbar
+        var links = document.getElementById(navbarId).getElementsByTagName('a');
+        for (var i = 0; i < links.length; i++) {
+            links[i].classList.remove('active');
+        }
+
+        // Add 'active' class to the clicked link
+        document.getElementById(linkId).classList.add('active');
+    }
+</script>
+<script>   
+ {% for m in assets %}
+   function deleteImage() {
+        var id = '{{ m.id }}'; 
+        window.location.href = '/delete-asset-detail-image/' + id + '/';
+    } 
+    {% endfor %}
+</script>
+
+
+<script>
+    function setAvailability(id) {
+        var selectedValue = $('select[name="boolean_field2"]').val();
+        $.ajax({
+            type: 'POST',
+            url: '/asset-detail-set-availability/', 
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                id: id,
+                boolean_field: selectedValue
+            },
+            success: function(response) {
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Availability edited successfully');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+</script>
+
+ <script>
+    function setUnderAMC(id) {
+        var selectedValue = $('select[name="boolean_field1"]').val();
+        $.ajax({
+            type: 'POST',
+            url: '/asset-detail-set-under-amc/', 
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                id: id,
+                boolean_field: selectedValue
+            },
+            success: function(response) {
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Under AMC edited successfully');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+</script>
+
+{% comment %} Clear date field {% endcomment %}
+<script>
+    function clearDate(event, myDateField ) {
+        event.preventDefault();
+        document.getElementById(myDateField).value = '';
+    }
+</script>
+
+
+
+
+{% for m in assets %}
+<script>
+    function goToAssetDetail() {
+        window.location.href = "/asset-detail/{{m.id}}/" 
+    }
+</script>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,222 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    /* Optional: Add custom styling to the Dropzone container */
+    /* .dropzone {
+        background: white;
+        border-radius: 8px;
+        min-height: 10px;
+        width: 120px;
+        padding: 12px;
+        text-align: center;
+        border: none;
+    }
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -40px;
+    } */
+
+
+    .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    }
+
+    .navbar-second a {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+
+    }
+
+    .navbar-second a svg {
+        margin-right: 5px;
+    }
+
+    .navbar-second a:hover {
+        color: #6A1B9A;
+    }
+
+    .active {
+        color: #6A1B9A;
+        border-bottom: 3px solid #6A1B9A;
+    }
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+    
+</style>
+<section class="assetdetail">
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+    <div class="assetheaderbuttones">
+        
+        <div class="uploadboxy" style="align-items: center;">
+            <form action="" class="dropzone" id="imageUpload" enctype="multipart/form-data">
+            </form>
+            <h1 style="font-size: 1.4rem !important; color:#4C555D;">Create new Customer</h1>
+        </div>
+        
+    <form action="{% url 'add_new_customer' %}" method="post">
+       {%csrf_token%}
+        <div class="assebutton" style="gap: 20px; display: flex;">
+            <div class="asset-tablebtn">
+                
+                    <button style="height: 45px;">
+                        <a href="/asset-list/">CANCEL</a>
+                    </button>
+                
+        </div>
+            <button type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                width="20" height="20" viewBox="0 0 24 24"
+                style="fill: #fff;transform: ;msFilter:; margin-right: 5px;">
+                <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path>
+                <path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path>
+                </svg>Done
+            </button>
+    
+        </div>
+       
+    </div>
+    
+
+</section>
+<div class="assetform-heading">
+    <h1> Customer Information</h1>
+    <p>Specify the primary description for your customer</p>
+</div>
+
+
+<section class="assetform-data ">
+
+<div class="assetform-formtable">
+    <div class="assetform-input">
+        <label for="">Customer<span></span></label>
+        <input type="text" name="customer" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">Completed Orders<span></span></label>
+        <input type="text" name="completed_orders" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Deployed Orders<span></span></label>
+        <input type="text" name="deployed_order" id="" >
+    </div>
+    
+    
+    <div class="assetform-input">
+        <label for="">Taxed<span></span></label>
+        <input type="text" name="taxed" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Email Address<span></span></label>
+        <input type="text"  name="email_address" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Department<span></span></label>
+        <input type="text" name="department" id="" >
+    </div>
+   
+    <div class="assetform-input">
+        <label for="">Phone Number<span></span></label>
+        <input type="text" name="phone_number" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Customer Revenue<span></span></label>
+        <input type="text" name="customer_revenue" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Commercial address<span></span></label>
+        <input type="text" name="commercial_address" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Category<span></span></label>
+        <input type="text" name="category" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Created At<span></span></label>
+        <input type="date" name="created_at" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Secondary Email<span></span></label>
+        <input type="text" name="secondary_email" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Description<span></span></label>
+        <input type="text" name="description" id="" >
+    </div>
+    
+
+</div>
+
+</section>
+</form>
+<script>
+    // Customize your Dropzone options as needed
+    Dropzone.options.imageUpload = {
+        paramName: "image", // The name that will be used to transfer the file
+        maxFilesize: 2, // MB
+        acceptedFiles: "image/*",
+        addRemoveLinks: true, // Display remove link
+        dictDefaultMessage: "<span style='font-size: 14px; color:#6A1B9A; ' > Upload </span>",
+        dictRemoveFile: "Remove",
+        init: function () {
+            this.on("success", function (file, response) {
+                // Handle success
+                console.log(response);
+            });
+            this.on("error", function (file, response) {
+                // Handle error
+                console.error(response);
+            });
+        }
+    };
+</script>
+
+<script>
+    function setActive(navbarId, linkId) {
+        // Remove 'active' class from all links in the specified navbar
+        var links = document.getElementById(navbarId).getElementsByTagName('a');
+        for (var i = 0; i < links.length; i++) {
+            links[i].classList.remove('active');
+        }
+
+        // Add 'active' class to the clicked link
+        document.getElementById(linkId).classList.add('active');
+    }
+</script>
+
+
+{% endblock content %}

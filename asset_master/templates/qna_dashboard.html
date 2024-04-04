@@ -1,0 +1,52 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<div class="containermain " style="margin-top:100px ;">
+<section class="card-sections mt-5">
+    <div class="dash-container row d-flex justify-content-center">
+        <div class="maincard col-auto">
+            <h1 style="color: #E15F12;">Asset Master</h1>
+            <p>Central repository containing master details of all Zoom Communications assets. </p>
+           <a href="/asset-list/"><button class="selectbn">Select</button></a> 
+        </div>
+        <div class="maincard col-auto">
+            <h1 style="color: #00A3C7 ;">Orders </h1>
+            <p>Provides a comprehensive view for input and display of kit list details for specific orders. </p>
+            <a href="/asset_management/confirmed-orders-list/"> <button class="selectbn">Select</button></a>
+        </div>
+        {% comment %} <div class="maincard">
+            <h1 style="color: #37A80D ;">Warehouse </h1>
+            <p>Stores and organizes warehouse details, including stand-wise and rack-wise information, enabling real-time tracking of asset movement. </p>
+            <a href="/asset_management/warehouse-list/"> <button class="selectbn">Select</button></a>
+        </div> {% endcomment %}
+        <div class="maincard col-auto">
+            <h1 style="color: #F8B438 ;">Orders Dispatch </h1>
+            <p>Verifies assets at the time of dispatch to ensure they match the placed order. Generates challan once all assets are matched for dispatch.</p>
+            <a href="/asset_management/orderdispatch-list/"> <button class="selectbn">Select</button></a>
+        </div>
+        <div class="maincard col-auto">
+            <h1 style="color: #37A80D ;">Repair and Maintenance  
+            </h1>
+            <p>Generates and tracks maintenance requests for assets requiring repair or servicing. </p>
+            <a href="/asset_management/repair-maintenance-list/"><button class="selectbn">Select</button></a>
+        </div>
+        
+        <div class="maincard col-auto">
+            <h1 style="color: #5f5367 ;">Report </h1>
+            <p>Provides real-time dashboards and reporting capabilities. Offers insights into asset utilization, order fulfilment, and warehouse efficiency. </p>
+            <a href="/asset_management/assets-reports-main-page/"><button class="selectbn">Select</button></a>
+        </div>
+
+        <div class="maincard col-auto">
+            <h1 style="color: #5f5367 ;">Requirements </h1>
+            <p>Display all the requiremnts of asset from the customers</p>
+            <a href="/asset_management/requirement-report-main-page/"><button class="selectbn">Select</button></a>
+        </div>
+
+    </div>
+
+</section>
+</div>
+{% endblock content %}

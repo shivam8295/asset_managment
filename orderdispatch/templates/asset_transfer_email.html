@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Transfer Email</title>
+</head>
+<body>
+    <p>Hi Zoom Communication Team,</p>
+    <p>Received asset transfer request by “{{user_email_id}}”.</p>
+    <p>Asset transfer details.</p>
+    <ul>
+        {% for asset_obj in asset_objs %}
+        <p>{{ forloop.counter }}- Description: {{ asset_obj.description }}</p>
+            <li>Model No: {{ asset_obj.model_no }}</li>
+            <li>Serial no: {{ asset_obj.serial_no }}</li>
+            <li>Brand: {{ asset_obj.brand }}</li>
+        {% endfor %}
+    </ul>
+    <p>Please log-in to ERP to approve the request.</p>
+    <p>Thanks,</p>
+    <p>ERP Admin</p>
+</body>
+</html>

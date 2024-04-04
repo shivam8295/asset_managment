@@ -1,0 +1,22 @@
+{% load static %}
+<nav class="navbar" style="    box-shadow: 0px 4px 10px 0px rgba(116, 89, 89, 0.5);height: 70px; position: fixed; top: 0; width: 100%; background-color: #fff; z-index: 9;">
+    <a href="{% url 'home' %}"><img src="{% static 'images/zoom logo.png'%} " class='img-fluid'  alt="" style="width: 185px;"></a>
+    
+    
+    
+                    
+            <div class="profile-details">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                  </svg>
+    
+                <span class="admin_name" style="    font-family: 'Open Sans', sans-serif;padding-right: 20px;">{{request.user.email}}</span>
+                <a href="/logout/" type="post" class="btn btn-info" style="background-color: #EDED; border: none; border-radius:10px;" ><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAZdJREFUSEvV1T1IllEYxvGf6WIf1iKNSUQNWSZWNKRjCBKt0SCRLQ1BOoQRuAhREPSx1BLR4BANDTk42xBFX0KFOAQVNAViUkShxQ1HsXjP+5wGB+/pwHOf8z/nvq6Lp8EqV8Mqn+9/Ab/ThYr3FTemg9cmYD+eZ17QhRf1dKw3omZcxRmsywAWcR3D+FkLlAM04iGO4js2ZADfsB4PcBwB/KtygJs4i/c4hjcZwB48wjZcxoUSwC68ww8cSOulfbVctDtpFGPcgU8rIbVecBcncQkX/7lRzqZXcD7pMVgFeIlOtONtIWAvpvAYPVWAWWxJwobAJdWCOXxBaxXgKzZhI8IlJRW984i9m6sAr9GBCFGMq6QO4UkSO4yxXLVEXhLsdgpZCeAe+jGKkSrATkxjAQfxqoLQjcnUvx0fqwDx/Q5O4QOOYCYD2YcJbMUNnCsJWvRE/J8mq0bgbuHaihDFK4cwgCY8w2H8KgVEX7hhDH11RhTBu4/TOceV/HDacAK9yV1xywjVeDr8cz2NSgAlLsr2rH3AH8uzUhkmpwStAAAAAElFTkSuQmCC"/></a>
+            </div>
+            </nav>
+            
+            
+
+
+            <!-- <span class="admin_name">{{user_email}}</span> -->

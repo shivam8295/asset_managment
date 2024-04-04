@@ -1,0 +1,132 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+
+{% block css %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<style>
+     td {
+    font-size: 16px;
+    text-transform: capitalize;
+}
+    th {
+      font-size: 13px;
+      text-transform: uppercase;
+}
+    h1{
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 40px;
+        color: #000;
+        font-weight: 700;
+    }
+    .table-container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .filter{
+        display: flex;
+        align-content: center;
+        gap: 10px;
+    }
+    .table-container {
+        display: flex;
+        justify-content: space-between;
+    }
+  
+  </style>
+{% endblock css %}
+
+
+
+{% block content %}
+<table class="table table-hover" id="myTable" style="width: 99%; margin: 0 auto;" >
+  <div class="table-container mt-5 mb-3 pt-4" style="width: 99%; margin: 0 auto;">
+  <h1>ASSETS MASTER</h1>
+  <!-- <input type="text" id="myInput" placeholder="Search "
+  title="Type in a name or country" style="width: 25%;height: 45px;border-radius: 5px;border: none;background: #d7d6df69;padding-left: 10px;">  -->
+  <form method="GET" action="{% url 'asset-master-list' %}">
+    <input type="text" name="q" placeholder="Search" style="width: 25%;height: 45px;border-radius: 5px;border: none;background: #d7d6df69;padding-left: 10px;" value="{{ request.GET.q }}">
+    <button type="submit">Search</button>
+</form>
+
+    <thead class="table-light">
+        
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Area</th>
+            <th scope="col">fc no.</th>
+            <!-- <th scope="col">status</th> -->
+            <th scope="col">category</th>
+            <th scope="col">description</th>
+            <th scope="col">brand</th>
+            <th scope="col">model no</th>
+            <th scope="col">serial no</th>
+            <th scope="col">sku</th>
+            <th scope="col">asset tag</th>
+            <!-- <th scope="col">comments</th> -->
+          </tr>
+    </thead>
+    <tbody>
+      {% for asset in assets %}
+        <tr>
+            <th scope="row">{{ asset.id }}</th>
+            <td>{{asset.area}}</td>
+            <td>{{asset.fc_no}}</td>
+            <!-- <td>Maintenance</td> -->
+            <!-- <td>{{asset.status}}</td> -->
+            <td>{{asset.category}}</td>
+            <td>{{asset.description}}</td>
+            <td>{{asset.brand}}</td>
+            <td>{{asset.model_no}}</td>
+            <td>{{asset.serial_no}}</td>
+            <td>{{asset.sku}}</td>
+            <td>{{asset.asset_tag}}</td>
+            <!-- <td>{{asset.comment}}</td> -->
+          </tr>
+          {% endfor %}
+   
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    {% if assets.has_previous %}
+        <a href="?page=1">&laquo; First</a>
+        <a href="?page={{ assets.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    <span class="current">
+        Page {{ assets.number }} of {{ assets.paginator.num_pages }}.
+    </span>
+
+    {% if assets.has_next %}
+        <a href="?page={{ assets.next_page_number }}">Next</a>
+        <a href="?page={{ assets.paginator.num_pages }}">Last &raquo;</a>
+    {% endif %}
+</div>
+
+  
+  <script>
+    function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        var matchFound = false;
+        td = tr[i].getElementsByTagName("td");
+        for (var j = 0; j < td.length; j++) {
+          txtValue = td[j].textContent || td[j].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            matchFound = true;
+            break;
+          }
+        }
+        tr[i].style.display = matchFound ? "" : "none";
+      }
+    }
+  </script>
+
+{% endblock content %}

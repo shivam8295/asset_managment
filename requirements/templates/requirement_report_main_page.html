@@ -1,0 +1,331 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+<style>
+    table {
+            width: 100%;
+            border-collapse: separate; /* Set border-collapse to separate */
+            border-spacing: 0; /* Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+
+        .select-button{
+            border: 1px solid #CCCCCC;
+            color: #7C7C7C !important;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            padding: 0 6px;
+            font-size: inherit;
+            height:40px;
+    
+        }
+
+        .asset-tablebtn button{
+            border: 1px solid #CCCCCC;
+            color: #7C7C7C !important;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            padding: 0 20px;
+            height: 40px;}
+
+            span.select2-selection.select2-selection--single {
+                height:38px !important;
+            }
+</style>
+
+<!-- Alert JS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Alert JS -->
+
+<section class="assetdetail">
+    <button onclick="goToDashboard()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+
+    <div class="assetheaderbuttones">
+        <h1>Requirement Report</h1>
+
+        <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                data-bs-title="Add a new individual asset."><a href="/asset_management/requirement-asset/"
+                    style="color: #fff; text-decoration: none;">+ Add requirement</a> </button>
+        
+    </div>
+</section>
+
+<section class="assest-container-table">
+
+    {% comment %} <div class="asset-tablebtn">
+        <div class="searchiconbtn" >
+            <form method="GET">   
+                <input name="q" id="search_field" type="text" placeholder="Search.." value="{% if query_params_q %} {{query_params_q}} {% endif %}" style = "padding-left: 10px; border-radius: 5px;">   
+                <select name="q" id="secondDropdown" name="second_dropdown" style="display: none; height:10%;">
+                    <!-- The options will be populated dynamically -->
+                </select>
+                <select class='select-button' id="dropdown" name="filter_type">
+                    <option  disabled {% if query_params_filter_value == '' or query_params_filter_value is None  %} selected {% endif %} value='none' >--Select--</option>
+                    <option {% if query_params_filter_value == 'customer_id' %} selected {% endif %}  value="customer_id">Customer</option>
+                    <option {% if query_params_filter_value == 'order_id' %} selected {% endif %} value="order_id">Order Number</option>
+                </select>
+                <button type='submit'>Search</button>
+                <span><button onclick="clearSearch(event, 'search_field', 'dropdown', 'secondDropdown')">Clear</button></span>
+            </form> 
+        </div>
+        </div> {% endcomment %}
+        {% comment %} <button id="exportButton">
+            EXPORT TO CSV
+        </button>
+        {% endcomment %}
+
+   
+
+    <table class="table">
+        <thead>
+            <tr>
+                {% comment %} <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th> {% endcomment %}
+                <th>S.NO</th>
+                <th>Customer name </th>
+                <th> Order Start Date</th>
+                <th>Order End Date</th>
+               
+                {% comment %} <th>Order Status</th> {% endcomment %}
+                <!-- <th style="border-radius: 0 10px  0 0; cursor: pointer;"><img src="{% static 'images/sliders.svg' %}" alt=""></th> -->
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for m in requirement %}
+            <tr>
+              {% comment %} {% if forloop.counter|add:0 ==id %} {% endcomment %}
+                {% comment %} <td class="checkbox-column"><input type="checkbox" name="order_id" value="{{ m.id }}"></td> {% endcomment %}
+                <td class="tbname">{{forloop.counter}}</td>
+                <td class="tbname"><a href="/asset_management/requirement-per-customer/{{m.id}}/">{{m.r_customer}}</a></td>
+              {% comment %} {% else %}   {% endcomment %}
+                {% comment %} <td class="tbname">{{forloop.counter}}</td>
+                <td class="tbname"><a href="/asset_management/requirement-per-customer/">{{m.r_customer}}</a></td> {% endcomment %}
+              {% comment %} {%  endif %} {% endcomment %}
+                <td>
+                    {% if m.r_order_startdate == none or m.r_order_startdate == "" %}
+                        --
+                    {% else %}
+                        {{m.r_order_startdate|date:'d-m-Y'}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if m.r_order_enddate == none or m.r_order_enddate == "" %}
+                        --
+                    {% else %}
+                        {{m.r_order_enddate|date:'d-m-Y'}}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+    {% comment %} <div class="pagidis">
+        <div></div>
+    <div class="card text-center" style="border: none;">
+            <div class="card-footer text-body-secondary" style="background-color: #fff; border: none;" >
+            Displaying all {{queryset_length}} assets
+            </div>
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if orders.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ orders.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ orders.number }} of  {{ orders.paginator.num_pages }}
+            </span>
+    
+            {% if orders.has_next %}
+                <a href="?page={{ orders.next_page_number }}">next</a>
+                <a href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div> {% endcomment %}
+</div>
+</section>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+{% comment %} <script>
+    {% if messages %}
+        {% for msg in messages %}
+            alertify.set('notifier','position', 'top-right');
+            alertify.success('{{msg}}');
+        {% endfor %}
+    {% endif %}
+</script> {% endcomment %}
+
+<script>
+    // JavaScript function to select or unselect all checkboxes
+    function selectAllCheckboxes(masterCheckbox) {
+        var checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = masterCheckbox.checked;
+        });
+    }
+</script>
+
+
+<script>
+    function clearSearch(event, mySearchField, dropdown, secondDropdown ) {
+        event.preventDefault();
+        document.getElementById(mySearchField).value=''; 
+        document.getElementById(dropdown).value = 'none';
+        document.getElementById(secondDropdown).value = '';
+        $('#secondDropdown').empty().hide();
+        $('#secondDropdown').append('<option value="">--Select--</option>');
+        
+    }
+</script>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% comment %} for exporting to csv {% endcomment %}
+<script>
+$(document).ready(function() {
+    
+    $("#exportButton").on("click", function() {
+        let spinner = ` <div id="spinner">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden"></span>
+                </div>
+              </div>
+        </div> `
+        $('#exportButton').html(spinner)
+
+        
+        $.ajax({
+            type: "POST",
+            url: "/asset_management/requirement-export-to-csv/", 
+            data: { export_all: "export_all",
+                "csrfmiddlewaretoken":"{{csrf_token}}" },
+            success: function(data) {
+                var blob = new Blob([data]);
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "Confirmed Order List.csv";
+                link.click();
+                window.location.reload()
+            },
+            error: function(xhr, status, error) {
+                // console.error(error);
+            }
+        });
+    });
+});
+</script>
+{% comment %}  Selectes IDs
+        var selectedAssetIds = $('input[name="order_id"]:checked').map(function() {
+            return this.value;
+        }).get();
+        console.log(selectedAssetIds,"selectedAssetIds")  {% endcomment %}
+
+
+<script>
+    function goToDashboard(){
+        window.location.href = '/'
+    }
+</script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#dropdown').change(function() {
+            var selectedValue = $(this).val();
+            if (selectedValue !== 'none') {
+                $.ajax({
+                    type: 'GET',
+                    url: '/asset_management/confirm-order-search/', 
+                    data: {
+                        'selected_value': selectedValue
+                    },
+                    success: function(data) {
+                        // Update the second dropdown with fetched data
+                        $('#secondDropdown').empty().show();
+                        $('#secondDropdown').append('<option value="">--Select--</option>');
+                        $.each(data, function(key, value) {
+                            $('#secondDropdown').append('<option value="' + value + '">' + value + '</option>');
+                        });
+                        $('#secondDropdown').select2({
+                            placeholder: 'Search...',                             
+                        });
+                        $('#search_field').hide();
+                        $('#secondDropdown').select2({
+                            dropdownAutoWidth: true,
+                            width:"300px",
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                    }
+                });
+            } else {
+                // If the default option is selected, hide the second dropdown and show the input dropdown
+                $('#secondDropdown').hide();
+                $('#search_field').show();
+            }
+        });
+    });
+</script>
+
+{% endblock content %}

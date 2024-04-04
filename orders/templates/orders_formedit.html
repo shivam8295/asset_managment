@@ -1,0 +1,415 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    /* Optional: Add custom styling to the Dropzone container */
+    .dropzone {
+        background: white;
+        border-radius: 8px;
+        min-height: 10px;
+        width: 120px;
+        padding: 12px;
+        text-align: center;
+        border: none;
+    }
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -40px;
+    }
+
+
+    .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    }
+
+    .navbar-second a {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+
+    }
+
+    .navbar-second a svg {
+        margin-right: 5px;
+    }
+
+    .navbar-second a:hover {
+        color: #6A1B9A;
+    }
+
+    .active {
+        color: #6A1B9A;
+        border-bottom: 3px solid #6A1B9A;
+    }
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+
+    .transparent-button {
+        border: none;
+        background-color: transparent;
+        color: #6A1B9A;
+        
+    }
+    
+</style>
+
+
+<section class="assetdetail-detail" style=" margin-top: 60px">
+  
+
+    <div class="assetdetail-containing">
+        <button onclick="goToOrderDetails()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform:msFilter"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button> 
+        {% comment %} <a href="#" class="btn" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform:msFilter"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></a> {% endcomment %}
+    <form method="post" enctype="multipart/form-data">
+      <div class="assebutton" style="gap: 20px; display: flex;    justify-content: flex-end;      ">
+            {%csrf_token%}
+       <div>
+     
+            {%if m.image %}
+                <button style="background: #6A1B9A;
+                border: none;
+                color: #fff;
+                padding: 10px 20px;
+                font-size: 14px;
+                border: none;
+                border-radius: 5px;
+                text-transform: uppercase;" onclick="removeImage({{m.id}})">Remove image</button>
+            {%endif%}
+            
+        </div>
+        
+        <button type="submit" style="background: #6A1B9A;
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        text-transform: uppercase;">Update Order Details</button>
+    </div>
+    {% for m in orders_detail_obj%}
+        <div class="assetdetail-contain mt-0">
+            <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A"
+                    class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
+                    <path
+                        d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z" />
+                    <path
+                        d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                </svg>Order Information</h1>
+            <div class="detialasset mt-4">
+                <div class="detialasset-name">
+                  
+                    <p>NAME of CONSIGNEE</p>
+                    <div class="bndname">
+                      <span>  <input type="text" name="name_of_consignee" id="" value="{{m.name_of_consignee}}"></span>
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>INVOICE NO.
+
+                    </p>
+                    <div class="bndname">
+                      <input type="text" name="invoice_number" id="" value="{{m.invoice_number}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>QUANTITY
+
+                    </p>
+                    <div class="bndname">
+                      <input type="number" name="quantity" id="" value="{{m.quantity}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>PRICE
+
+                    </p>
+                    <div class="bndname">
+                      <input type="text" name="price" id="" value="{{m.price}}">
+                    </div>
+
+                </div>
+                
+                <div class="detialasset-name">
+                    <p>MODE of DISPATCH</p>
+                    <div class="bndname">
+                      <input type="text" name="mode_of_dispatch" id="" value="{{m.mode_of_dispatch}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>TRANSPORTATION</p>
+                    <div class="bndname">
+
+                      <input type="text" name="transportation" id="" value="{{m.transportation}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>FROM</p>
+                    <div class="bndname">
+                        <input type="text" name="order_from" id="" value="{{m.order_from}}">
+                    </div>
+
+                </div>
+
+                <div class="detialasset-name">
+                    <p>TO</p>
+                    <div class="bndname">
+
+                      <input type="text" name="order_to" id="" value="{{m.order_to}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>OUT DATE</p>
+                    <div class="bndname">
+                        <div class="bndname">
+                      <input type="date" name="out_date_and_time" id="myDateField1" value="{{m.out_date_and_time|date:'Y-m-d'}}">
+                        <span><button class="transparent-button" onclick="clearDate(event, 'myDateField1')">Clear</button></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>PREPARED by (Name)</p>
+                    <div class="bndname">
+                      <input type="text" id="myDateField1" name="prepared_by_name" value="{{m.prepared_by_name}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Maker Email</p>
+                    <div class="bndname">
+                      <input type="text" id="myDateField1" name="maker_email" value="{{m.maker_email}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>Checker Email</p>
+                    <div class="bndname">
+                      <input type="text" id="myDateField1" name="maker_email" value="{{m.maker_email}}">
+                    </div>
+
+                </div>
+                <div class="detialasset-name">
+                    <p>PREPARED by (Email)</p>
+                    <div class="bndname">
+                      <input type="text" id="myDateField1" name="prepared_by_email" value="{{m.prepared_by_email}}">
+                    </div>
+
+                </div>
+                
+                <div class="detialasset-name">
+                    <p>POC at VENUE (NAME)</p>
+                    <div class="bndname">
+    
+                      <input type="text" name="poc_at_venue_name" id="" value="{{m.poc_at_venue_name}}">
+                    </div>
+    
+                </div>
+                <div class="detialasset-name">
+                    <p>Approver Email</p>
+                    <div class="bndname">
+    
+                      <input type="text" name="approver_email" id="" value="{{m.approver_email}}">
+                    </div>
+    
+                </div>
+                <div class="detialasset-name" >
+                    <p>TRUCK DETAILS
+
+                    </p>
+                    <div class="bndname">
+                        <input type="text" name="truck_details" id="" value="{{m.truck_details}}">
+                    </div>
+                </div>
+                <div class="detialasset-name" >
+                    <p>DRIVER DETAILS
+
+                    </p>
+                    <div class="bndname">
+                        <input type="text" name="driver_details" id="" value="{{m.driver_details}}">
+                    </div>
+                </div>
+                <div class="detialasset-name" >
+                    <p>CUSTOMER NAME
+
+                    </p>
+                    <div class="bndname">
+                        <input type="text" name="customer" id="" value="{{m.customer}}">
+                    </div>
+                </div>
+                <div class="detialasset-name" >
+                    <p>ORGANIZATION
+
+                    </p>
+                    <div class="bndname">
+                        <input type="text" name="organization" id="" value="{{m.organization}}">
+                    </div>
+                </div>
+                <div class="detialasset-name" >
+                    <p>CONTACT
+                    </p>
+                    <div class="bndname">
+                        <input type="text" name="contact_details" id="" value="{{m.contact_details}}">
+
+                    </div>
+                </div>
+                <div class="detialasset-name" >
+                    <p>REMARKS
+
+                    </p>
+                    <div class="bndname">
+                        <input type="text" name="remarks" id="" value="{{m.remarks}}">
+
+                    </div>
+                </div>
+                <div class="detialasset-name" >
+                    <p>PURPOSE
+
+                    </p>
+                    <div class="bndname">
+                        <input type="text" name="purpose" id="" value="{{m.purpose}}">
+
+                    </div>
+                </div>
+                <div class="detialasset-name" >
+                    <p>REASON
+
+                    </p>
+                    <div class="bndname">
+                        <input type="text" name="reason" id="" value="{{m.reason}}">
+
+                    </div>
+                </div>
+                <div class="detialasset-name" >
+                    <p>OFFICE ADDRESS
+
+
+
+                    </p>
+                    <div class="bndname">
+                        <input type="text" name="office_address" id="" value="{{m.office_address}}">
+
+                    </div>
+                </div>
+                <div class="detialasset-name" >
+                    <p>WEBSITE
+
+
+
+                    </p>
+                    <div class="bndname">
+                        <input type="text" name="website" id="" value="{{m.website}}">
+
+                    </div>
+                </div>
+                <div class="detialasset-name">
+                    <p>DEPLOYMENT DATE</p>
+                    <div class="bndname">
+                      <input type="date" name="deployment_date" id="myDateField2" value="{{m.deployment_date|date:'Y-m-d'}}">
+                      <span><button class="transparent-button" onclick="clearDate(event, 'myDateField2')">Clear</button></span>
+                    </div>
+                </div>
+                <div class="detialasset-name">
+                    <p>RETURN DATE</p>
+                    <div class="bndname">
+                      <input type="date" id="myDateField3" name="return_date" value="{{ m.return_date|date:'Y-m-d' }}">
+                      <span><button class="transparent-button" onclick="clearDate(event, 'myDateField3')">Clear</button></span>
+                    </div>
+
+                </div>
+
+            </div> 
+        </div>
+{% endfor %}
+    </div>
+</form>
+    
+
+
+</section>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>   
+  function removeImage(id) {
+        $.ajax({
+            type: "POST",
+            url: "/delete-asset-detail-image/", 
+            data:{"id":id, "csrfmiddlewaretoken":"{{csrf_token}}"},
+            success: function(response) {
+                location.reload(); 
+            }
+          
+        });
+    }
+   </script>
+
+
+
+<script>   
+ {% for m in assets %}
+   function deleteImage() {
+        var id = '{{ m.id }}'; 
+        window.location.href = '/delete-asset-detail-image/' + id + '/';
+    } 
+    {% endfor %}
+</script>
+
+
+
+{% comment %} Clear date field {% endcomment %}
+<script>
+    function clearDate(event, myDateField ) {
+        event.preventDefault();
+        document.getElementById(myDateField).value = '';
+    }
+</script>
+
+<script>
+    function goToOrderDetails(){
+        window.location.href = '/asset_management/confirmed-orders-list/'
+    }
+</script>
+
+{% endblock content %}

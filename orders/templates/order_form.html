@@ -1,0 +1,304 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+<script type='text/javascript' src="{% static 'validations.js' %}"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    /* Optional: Add custom styling to the Dropzone container */
+    /* .dropzone {
+        background: white;
+        border-radius: 8px;
+        min-height: 10px;
+        width: 120px;
+        padding: 12px;
+        text-align: center;
+        border: none;
+    }
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -40px;
+    } */
+
+
+    .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    }
+
+    .navbar-second a {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+
+    }
+
+    .navbar-second a svg {
+        margin-right: 5px;
+    }
+
+    .navbar-second a:hover {
+        color: #6A1B9A;
+    }
+
+    .active {
+        color: #6A1B9A;
+        border-bottom: 3px solid #6A1B9A;
+    }
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+    
+</style>
+<section class="assetdetail">
+    <button onclick="goToAllOrdersList()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;/*transform;msFilter:;*/"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+    <div class="assetheaderbuttones">
+        
+        <div class="uploadboxy" style="align-items: center;">
+            <form action="" class="dropzone" id="imageUpload" enctype="multipart/form-data">
+            </form>
+            <h1 style="font-size: 1.4rem !important; color:#4C555D;">Create Order</h1>
+        </div>
+        
+    <form action="{% url 'orders_form' %}" method="post">
+       {%csrf_token%}
+        <div class="assebutton" style="gap: 20px; display: flex;">
+            <div class="asset-tablebtn">
+                
+                    <button style="height: 45px;">
+                        <a href="">CANCEL</a>
+                    </button>
+                
+        </div>
+            <button type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                width="20" height="20" viewBox="0 0 24 24"
+                style="fill: #fff;/*transform: ;msFilter:;*/ margin-right: 5px;">
+                <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path>
+                <path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path>
+                </svg>Done
+            </button>
+    
+        </div>
+       
+    </div>
+    
+
+</section>
+<div class="assetform-heading">
+    <h1> Core Information</h1>
+    <p>Specify the primary description for your asset</p>
+</div>
+
+
+<section class="assetform-data ">
+
+<div class="assetform-formtable">
+  
+    <div class="assetform-input">
+        <label for="">CUSTOMER</label>
+            <select name="customer_id" id="customer_dropdown" style="width: 60%; height:40px; border-radius:5px" required>
+                <option value="">--Select--</option>
+                {% for m in customer %}
+                    <option value="{{ m.id }}">{{ m.customer }}</option>
+                {% endfor %}
+            </select>
+    </div>
+     <div class="assetform-input">
+        <label for="">NAME OF CONSIGNEE
+
+            <span></span></label>
+        <input type="text" name="name_of_consignee" id="" >
+    </div>
+
+    <div class="assetform-input">
+        <label for="">INVOICE NO.
+            <span></span></label>
+        <input id='invoice_number' type="text" name="invoice_number" >
+    </div>
+    {% comment %} <div class="assetform-input">
+        <label for="">QUANTITY
+            <span></span></label>
+        <input id='quantity' type="number" name="quantity" id="" >
+    </div> {% endcomment %}
+    <div class="assetform-input">
+        <label for="">PRICE
+
+            <span></span></label>
+        <input type="text"  name="price" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">DEPLOYMENT DATE
+
+            <span></span></label>
+        <input type="date" name="deployment_date" id="" >
+    </div>
+    
+    
+    <div class="assetform-input">
+        <label for="">MODE OF DISPATCH
+
+            <span></span></label>
+        <input type="text" name="mode_of_dispatch" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">TRANSPORTATION
+
+            <span></span></label>
+        <input type="text"  name="transportation" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">FROM
+
+            <span></span></label>
+        <input type="text"  name="order_from" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">TO
+
+            <span></span></label>
+        <input type="text"  name="order_to" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">OUT DATE </label>
+        <input type="date"  name="out_date_and_time" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">Maker Email<span>*</span> </label>
+        <input type="text"  name="maker_email" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">Checker Email <span>*</span> </label>
+        <input type="text"  name="checker_email" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">PREPARED by (Name) <span>*</span> </label>
+        <input type="text"  name="prepared_by_name" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">PREPARED by (Email) <span>*</span></label>
+        <input type="text"  name="prepared_by_email" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">POC at VENUE (Name) <span>*</span></label>
+        <input type="text"  name="poc_at_venue_name" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">Approver Email<span>*</span></label>
+        <input type="text"  name="approver_email" id="" required>
+    </div>
+    <div class="assetform-input">
+        <label for="">TRUCK DETAILS<span></span></label>
+        <input type="text"  name="truck_details" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">DRIVER DETAILS            <span></span></label>
+        <input type="text"  name="driver_details" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">CUSTOMER NAME<span></span></label>
+        <input type="text"  name="customer" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">ORGANIZATION<span></span></label>
+        <input type="text"  name="organization" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">CONTACT<span></span></label>
+        <input type="text"  name="contact_details" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">REMARKS<span></span></label>
+        <input type="text"  name="remarks" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">PURPOSE<span></span></label>
+        <input type="text"  name="purpose" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">REASON<span></span></label>
+        <input type="text"  name="reason" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">OFFICE ADDRESS<span></span></label>
+        <input type="text"  name="office_address" id="" >
+    </div>
+    <div class="assetform-input">
+        <label for="">WEBSITE<span></span></label>
+        <input type="text"  name="website" id="" >
+    </div>
+
+    <div class="assetform-input">
+        <label for="">RETURN DATE<span>*</span></label>
+        <input id="returnDate" type="date" name="return_date" required>
+    </div>
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById('returnDate').min = today;
+        console.log(today,"today")
+    </script>
+    
+
+</div>
+
+</section>
+
+</form>
+
+<script>
+    var invoice_number = document.getElementById('invoice_number')
+    var invoice_number_error = document.getElementById('invoice_number-error')
+    invoice_number_error.style.display = 'none';
+    invoice_number.addEventListener('input', function(e){
+        var pattern = /^[\w]{0,78}$/;
+        var currentValue = e.target.value
+        var test = pattern.test(currentValue)
+        if(test){
+            invoice_number_error.style.display = 'none'
+        }
+        else{
+            invoice_number_error.style.display = 'block'
+
+        }
+    })
+</script> 
+
+
+<script>   
+    function goToAllOrdersList() {
+  
+                  window.location.href = "/asset_management/all-orders-list/" 
+    }
+     </script>
+
+
+{% endblock content %}

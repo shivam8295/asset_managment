@@ -1,0 +1,286 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+<style>
+    table {
+            width: 100%;
+            border-collapse: separate; /* Set border-collapse to separate */
+            border-spacing: 0; /* Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+
+        .asset-tablebtn button{
+    border: 1px solid #CCCCCC;
+    color: #7C7C7C !important;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 0 20px;
+    height: 40px;}
+
+    
+    .select-button{
+        border: 1px solid #CCCCCC;
+        color: #7C7C7C !important;
+        background-color: #FFFFFF;
+        border-radius: 5px;
+        padding: 0 6px;
+        font-size: inherit;
+        height:40px;
+
+    }
+
+    span.select2-selection.select2-selection--single {
+        height:38px !important;
+    }
+</style>
+<!-- Alert JS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Alert JS -->
+<section class="assetdetail">
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+
+    <div class="assetheaderbuttones">
+        <h1>Completed Orders</h1>
+ 
+          <div class="pinkbox">
+         {% comment %} <button><a href="#" style="color: #fff; text-decoration: none;">Ongoing Orders</a></button>
+         <button><a href="#" style="color: #fff; text-decoration: none;">Completed Orders</a></button>
+         <button><a href="#" style="color: #fff; text-decoration: none;">Booked Orders</a></button> {% endcomment %}
+    </div>
+    </div>
+
+    </div>
+</section>
+<section class="assest-container-table">
+    <div class="asset-tablebtn">
+        <div class="pinkbox">
+
+
+            
+    <form method="post" action="{% url 'sold_asset_delete' %}">
+        {% csrf_token %}
+</div>
+
+       
+
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order number</th>
+                <th>Organization</th>
+                <th>Asset Out Date</th>
+                <th>Deploy Date</th>
+                <th>Return Date</th>
+            </tr>
+        </thead>
+       
+        <tbody>
+            {% for m in order_completed %}
+            <tr>
+                <td class="tbname">{{m.id}}</td>
+                <td class="tbname">
+                    <a href="/asset_management/assets-reports-allocated-to-orders/{{m.id}}/">{{m.organization}}</a>
+                </td>
+                <td class="tbname">{{m.out_date_and_time|date:'d-m-Y'}}</td>
+                <td class="tbname">{{m.deployment_date|date:'d-m-Y'}}</td>
+                <td class="tbname">{{m.return_date|date:'d-m-Y'}}</td>       
+            </tr>
+            {% endfor %}
+          
+        </tbody>
+    </form>
+    </table>
+    <div class="pagidis">
+    <div>
+</div>
+    <div class="card text-center" style="border: none;">
+            <div class="card-footer text-body-secondary" style="background-color: #fff; border: none;" >
+            {% comment %} Displaying all {{brand_model_no_length}} model number(s) {% endcomment %}
+            </div>
+    </div>
+    {% comment %} <div class="pagination">
+        <span class="step-links">
+            {% if assets.has_previous %}
+                <a href="{% if query_params %}?q={{query_params}}&page=1{% else %}?page=1{% endif %}">&laquo; First</a>
+                <a href="{% if query_params %}?q={{query_params}}&page={{ assets.previous_page_number }}{% else %}?page={{ assets.previous_page_number }}{% endif %}">Previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page 1 of {{ assets.paginator.num_pages }}
+            </span>
+    
+            {% if assets.has_next %}
+                <a href="{% if query_params %}?q={{query_params}}&page={{ assets.next_page_number }}{% else %}?page={{ assets.next_page_number }}{% endif %}">Next</a>
+                <a href="{% if query_params %}?q={{query_params}}&page={{ assets.next_page_number }}{% else %}?page={{ assets.paginator.num_pages }}{% endif %}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div> {% endcomment %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if brand_model_no.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ brand_model_no.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                {% comment %} Page {{ brand_model_no.number }} of {{ brand_model_no.paginator.num_pages }} {% endcomment %}
+            </span>
+    
+            {% if brand_model_no.has_next %}
+                <a href="?page={{ brand_model_no.next_page_number }}">next</a>
+                <a href="?page={{ brand_model_no.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+</section>
+
+
+
+<script>
+    // JavaScript function to select or unselect all checkboxes
+    function selectAllCheckboxes(masterCheckbox) {
+        var checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = masterCheckbox.checked;
+        });
+    }
+</script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+
+<script>
+    {% if messages %}
+        {% for msg in messages %}
+            alertify.set('notifier','position', 'top-right');
+            alertify.success('{{msg}}');
+        {% endfor %}
+    {% endif %}
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#exportButton").on("click", function() {
+        $.ajax({
+            type: "GET",
+            url: "/export-to-csv/", 
+            success: function(data) {
+                var blob = new Blob([data]);
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "exported_data.csv";
+                link.click();
+            },
+            error: function(xhr, status, error) {
+                // console.error(error);
+            }
+        });
+    });
+});
+</script> 
+
+
+<script>
+    function clearSearch(event, mySearchField, dropdown, secondDropdown ) {
+        event.preventDefault();
+        document.getElementById(mySearchField).value=''; 
+        document.getElementById(dropdown).value = 'none';
+        document.getElementById(secondDropdown).value = '';
+        $('#secondDropdown').empty().hide();
+        $('#secondDropdown').append('<option value="">--Select--</option>');
+        
+    }
+</script>
+
+
+
+<script>
+function uploadFile() {
+    var fileInput = document.getElementById('fileInput');
+    var selectedFile = fileInput.files[0];
+
+    if (selectedFile) { 
+        var formData = new FormData();
+        formData.append('file', selectedFile);
+        $.ajax({
+            type: "POST",
+            url: "/upload-sold-asset/",
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            success: function(response) {
+                window.location.reload()
+
+            },
+            error: function(xhr, status, error) {
+                window.location.reload()
+            }
+        });
+    }
+}
+
+</script>
+
+
+
+{% endblock content %}

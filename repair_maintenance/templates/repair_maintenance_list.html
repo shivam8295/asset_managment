@@ -1,0 +1,652 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+<style>
+    .table-container {
+      overflow-x: auto;
+      border-radius: 5px;
+    }
+
+    table {
+            width: 100%;
+            /* border-collapse: separate; Set border-collapse to separate */
+            /* border-spacing: 0; Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+            border-collapse: collapse;
+            width: 100%;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+        .pinkbox {
+    display: flex;
+    gap: 10px;
+}
+        .tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  padding: 0;
+  border-radius: 10px;
+  /* background-color: #f1f1f1; */
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  transition: 0.3s;
+  font-size: 17px;
+  color: #000;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  border: none;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  /* border-bottom:2px solid #6A1B9A; */
+  color: #fff !important;
+  background-color: #6A1B9A;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  /* border: 1px solid #ccc; */
+  border-top: none;
+}
+
+/* Set initial display for the first tab content */
+#London {
+  display: block;
+}
+
+.select-button{
+    border: 1px solid #CCCCCC;
+    color: #7C7C7C !important;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 0 6px;
+    font-size: inherit;
+    height:40px;
+
+}
+
+.asset-tablebtn button{
+    border: 1px solid #CCCCCC;
+    color: #7C7C7C !important;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 0 20px;
+    height: 40px;}
+
+    span.select2-selection.select2-selection--single {
+        height:38px !important;
+    }
+
+
+</style>
+
+<section class="assetdetail">
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+
+    <div class="assetheaderbuttones">
+        <h1>Repair and Maintenance</h1>
+        <div class="assebutton">
+           
+            <div class="navbar-navi tab">
+                <button class="tablinks active" onclick="openCity(event, 'London')">INTERNAL REPAIR</button>
+            </div>
+            <div class="navbar-navi tab">
+                <button class="tablinks" onclick="openCity(event, 'Paris')">EXTERNAL REPAIR</button>
+                
+              </div>          
+    </div>
+
+    </div>
+</section>
+
+
+<section class="assest-container-table">
+    <div id="London" class="tabcontent active">
+    <div class="asset-tablebtn">
+        <div class="searchiconbtn" >
+            {% comment %} <form method="GET">   
+                <input name="q" id="search_field" type="text" placeholder="Search.." value="{% if query_params_q %} {{query_params_q}} {% endif %}" style = "padding-left: 10px; border-radius: 5px;">   
+                <select name="q" id="secondDropdown" name="second_dropdown" style="display: none; height:10%;">
+                    <!-- The options will be populated dynamically -->
+                </select>
+                <select class='select-button' id="dropdown" name="filter_type">
+                    <option  disabled {% if query_params_filter_value == '' or query_params_filter_value is None  %} selected {% endif %} value='none' >--Select--</option>
+                    <option {% if query_params_filter_value == 'job_number' %} selected {% endif %}  value="job_number">Job Number</option>
+                    <option {% if query_params_filter_value == 'equipment_type' %} selected {% endif %} value="equipment_type">Equipment Type</option>
+                </select>
+                <button type='submit'>Search</button>
+                <span><button onclick="clearSearch(event, 'search_field', 'dropdown', 'secondDropdown')">Clear</button></span>
+            </form>              {% endcomment %}
+        </div>
+        <div class="pinkbox">
+            
+        <button id="exportButton1">
+            EXPORT TO CSV
+        </button>
+        </div>
+       
+
+    </div>
+    
+    <div  class="table-container" >
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th>
+                <th style="min-width:150px ;">Job Number</th>
+                <th style="min-width:170px ;">Equipment Type</th>
+                <th style="min-width:180px ;">Equipment Name</th>
+                <th style="min-width:150px ;">Model No </th>
+                <th style="min-width:150px ;">Serial No</th>
+                <th style="min-width:150px ;">Part No</th>
+                <th style="min-width:150px ;">Qty</th>
+                <th style="min-width:150px ;">Accessories</th>
+                <th style="min-width:180px ;">Accessories Qty</th>
+                <th style="min-width:150px ;">In Date</th>
+                <th style="min-width:150px ;">In Time</th>
+                <th style="min-width:280px ;">Default Detected</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in asset_obj_internal_repair %}
+            <tr>
+                <td class="checkbox-column"><input type="checkbox"></td>
+                {% if m.job_number == none %}
+                <td>--</td> 
+                {% else %}
+                <td>{{m.job_number}}</td>         
+                {% endif %}
+
+
+                {% if m.equipment_type == none %}
+                <td>--</td> 
+                {% else %}
+                <td class="tbname"><a href="/asset_management/repair-maintenance-internal-details/{{m.id}}/">{{m.equipment_type}}</a></td>
+                {% endif %}
+
+
+                {% if m.equipment_name == none %}
+                <td>--</td> 
+                {% else %}
+                <td class="tbname"><a href="/asset_management/repair-maintenance-internal-details/{{m.id}}/">{{m.equipment_name}}</a></td>
+                {% endif %}
+
+
+
+                {% if m.model_no == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.model_no}}</td>
+                {% endif %}
+
+
+                {% if m.serial_no == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.serial_no}}</td>
+                {% endif %}
+
+
+                {% if m.part_no == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.part_no}}</td>
+                {% endif %}
+                
+                <td>1</td>     
+
+                {% if m.accessories == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.accessories}}</td>
+                {% endif %}
+
+
+                {% if m.accessories_qty == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.accessories_qty}}</td>
+                {% endif %}
+
+
+                {% if m.in_date == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.in_date|date:'d-m-Y'}}</td>
+                {% endif %}
+                
+                
+                {% if m.in_time == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.in_time}}</td>
+                {% endif %}
+                
+                
+                {% if m.default_detected == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.default_detected}}</td>
+                {% endif %}
+        
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div class="pagidis">
+    <div></div>
+    <div class="card text-center" style="border: none;">
+        <div class="card-footer text-body-secondary" style="background-color: #fff; border: none;" >
+        Displaying all {{internal_queryset_length}} assets
+        </div>
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if asset_obj_internal_repair.has_previous %}
+            <a href="?page_internal=1">&laquo; first</a>
+            <a href="?page_internal={{ asset_obj_internal_repair.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ asset_obj_internal_repair.number }} of {{ asset_obj_internal_repair.paginator.num_pages }}.
+        </span>
+
+        {% if asset_obj_internal_repair.has_next %}
+            <a href="?page_internal={{ asset_obj_internal_repair.next_page_number }}">next</a>
+            <a href="?page_internal={{ asset_obj_internal_repair.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+</div>
+
+
+
+
+
+<!--  ******************      External Reapir ***********************          -->
+
+
+<div id="Paris" class="tabcontent">
+    <div class="asset-tablebtn">
+        <div class="searchiconbtn" >
+            {% comment %} <img src="{% static 'images/search.svg' %}" alt="icon" style="margin-left: 15px;"> {% endcomment %}
+            {% comment %} <form method="GET">   
+                <input name="q" id="search_field" type="text" placeholder="Search.." value="{% if query_params_q %} {{query_params_q}} {% endif %}" style = "padding-left: 10px; border-radius: 5px;">   
+                <select name="q" id="secondDropdown" name="second_dropdown" style="display: none; height:10%;">
+                    <!-- The options will be populated dynamically -->
+                </select>
+                <select class='select-button' id="dropdown" name="filter_type">
+                    <option  disabled {% if query_params_filter_value == '' or query_params_filter_value is None  %} selected {% endif %} value='none' >--Select--</option>
+                    <option {% if query_params_filter_value == 'customer_id' %} selected {% endif %}  value="customer_id">Customer</option>
+                    <option {% if query_params_filter_value == 'order_id' %} selected {% endif %} value="order_id">Order Number</option>
+                </select>
+                <button type='submit'>Search</button>
+                <span><button onclick="clearSearch(event, 'search_field', 'dropdown', 'secondDropdown')">Clear</button></span>
+            </form>              {% endcomment %}
+        </div>
+        <div class="pinkbox">
+            
+        <button id="exportButton2">
+            EXPORT TO CSV
+        </button>
+        </div>
+       
+
+    </div>
+    <div  class="table-container" >
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th>
+                <th style="min-width:180px ;">Equipment Type</th>
+                <th style="min-width:170px ;">Equipment Name</th>
+                <th style="min-width:180px ;">Model No</th>
+                <th style="min-width:150px ;">Serial No</th>
+                <th style="min-width:150px ;">Part No</th>
+                <th style="min-width:150px ;">Qty</th>
+                <th style="min-width:150px ;">Accessories</th>
+                <th style="min-width:180px ;">Accessories Qty</th>
+                <th style="min-width:150px ;">Out Date</th>
+                <th style="min-width:150px ;">Out Time</th>
+                <th style="min-width:180px ;">Default Detected </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in asset_obj_external_repair%}
+            <tr>
+                <td class="checkbox-column"><input type="checkbox"></td>
+                {% if m.eqiupment_type == none %}
+                    <td>--</td>
+                {% else%}
+                    <td class="tbname"><a href="/asset_management/repair-maintenance-external-details/{{m.id}}/"></a>{{m.eqiupment_type}}</td>
+                {% endif %}
+
+                {% if m.equipment_name == none %}
+                    <td>--</td>
+                {% else %}
+                    <td class="tbname"><a href="/asset_management/repair-maintenance-external-details/{{m.id}}/">{{m.equipment_name}}</a></td>
+                {% endif %}
+
+                {% if m.model_no == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.model_no}}</td>
+                {% endif %}
+
+                {% if m.serial_no == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.serial_no}}</td>
+                {% endif %}
+                
+                {% if m.part_no == none %}
+                <td>--</td> 
+                {% else %}
+                <td>{{m.part_no}}</td> 
+                {% endif %}
+
+                {% if m.quantity == none %}
+                <td>--</td>
+                {% else %}
+                <td>{{m.quantity}}</td>
+                {% endif %}
+
+                {% if m.accessories == none %}
+                <td>--</td> 
+                {% else %}
+                <td>{{m.accessories}}</td>     
+                {% endif %}
+
+                {% if m.accessories_qty == none %}
+                <td>--</td> 
+                {% else %}
+                <td>{{m.accessories_qty}}</td>         
+                {% endif %}
+
+                {% if m.out_date == none %}
+                <td>--</td> 
+                {% else %}
+                <td>{{m.out_date|date:'d-m-Y'}}</td>         
+                {% endif %}
+
+                {% if m.out_time == none %}
+                <td>--</td> 
+                {% else %}
+                <td>{{m.out_time}}</td>         
+                {% endif %}   
+                
+                {% if m.default_detected == none %}
+                <td>--</td> 
+                {% else %}
+                <td>{{m.default_detected}}</td>         
+                {% endif %}
+                    
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div class="pagidis">
+    <div></div>
+    <div class="card text-center" style="border: none;">
+        <div class="card-footer text-body-secondary" style="background-color: #fff; border: none;" >
+        Displaying all {{external_queryset_length}} assets
+        </div>
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if asset_obj_external_repair.has_previous %}
+            <a href="?page_external=1">&laquo; first</a>
+            <a href="?page_external={{ asset_obj_external_repair.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ asset_obj_external_repair.number }} of {{ asset_obj_external_repair.paginator.num_pages }}.
+        </span>
+
+        {% if asset_obj_external_repair.has_next %}
+            <a href="?page_external={{ asset_obj_external_repair.next_page_number }}">next</a>
+            <a href="?page_external={{ asset_obj_external_repair.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+</div>
+
+
+<!--  ******************      End External Reapir ***********************          -->
+
+</section>
+
+<script>
+    function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+    </script>
+
+
+<script>
+    // JavaScript function to select or unselect all checkboxes
+    function selectAllCheckboxes(masterCheckbox) {
+        var checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = masterCheckbox.checked;
+        });
+    }
+</script>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#dropdown').change(function() {
+            var selectedValue = $(this).val();
+            if (selectedValue !== 'none') {
+                $.ajax({
+                    type: 'GET',
+                    url: '/asset_management/confirm-order-search/', 
+                    data: {
+                        'selected_value': selectedValue
+                    },
+                    success: function(data) {
+                        // Update the second dropdown with fetched data
+                        $('#secondDropdown').empty().show();
+                        $('#secondDropdown').append('<option value="">--Select--</option>');
+                        $.each(data, function(key, value) {
+                            $('#secondDropdown').append('<option value="' + value + '">' + value + '</option>');
+                        });
+                        $('#secondDropdown').select2({
+                            placeholder: 'Search...',                             
+                        });
+                        $('#search_field').hide();
+                        $('#secondDropdown').select2({
+                            dropdownAutoWidth: true,
+                            width:"300px",
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                    }
+                });
+            } else {
+                // If the default option is selected, hide the second dropdown and show the input dropdown
+                $('#secondDropdown').hide();
+                $('#search_field').show();
+            }
+        });
+    });
+</script>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    
+    $("#exportButton1").on("click", function() {
+        let spinner = ` <div id="spinner">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden"></span>
+                </div>
+              </div>
+        </div> `
+        $('#exportButton1').html(spinner)
+
+        // Selectes IDs
+        var selectedAssetIds = $('input[name="asset_id"]:checked').map(function() {
+            return this.value;
+        }).get();
+
+
+        $.ajax({
+            type: "POST",
+            url: "/asset_management/internal-repair-export-to-csv/", 
+            data: { selected_asset_ids: selectedAssetIds,
+                "csrfmiddlewaretoken":"{{csrf_token}}" },
+            success: function(data) {
+                var blob = new Blob([data]);
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "Internal Repair Export.csv";
+                link.click();
+                window.location.reload()
+            },
+            error: function(xhr, status, error) {
+                // console.error(error);
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    
+    $("#exportButton2").on("click", function() {
+        let spinner = ` <div id="spinner">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden"></span>
+                </div>
+              </div>
+        </div> `
+        $('#exportButton2').html(spinner)
+
+        // Selectes IDs
+        var selectedAssetIds = $('input[name="asset_id"]:checked').map(function() {
+            return this.value;
+        }).get();
+
+
+        $.ajax({
+            type: "POST",
+            url: "/asset_management/external-repair-export-to-csv/", 
+            data: { selected_asset_ids: selectedAssetIds,
+                "csrfmiddlewaretoken":"{{csrf_token}}" },
+            success: function(data) {
+                var blob = new Blob([data]);
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "External repair Export.csv";
+                link.click();
+                window.location.reload()
+            },
+            error: function(xhr, status, error) {
+                // console.error(error);
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,1072 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+
+    /* Optional: Add custom styling to the Dropzone container */
+  
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -90px;
+        margin-top: 15px;
+    }
+
+
+    /* .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    } */
+
+   
+
+    
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+
+
+    .tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  padding: 0 30px;
+  /* background-color: #f1f1f1; */
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  border: none;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  border-bottom:2px solid #6A1B9A;
+  color: #6A1B9A;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/* Set initial display for the first tab content */
+#London {
+  display: block;
+}
+button.tablinks {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        
+    }
+    button.tablinks svg {
+        margin-right: 5px;
+    }
+    table {
+            width: 100%;
+            border-collapse: separate; /* Set border-collapse to separate */
+            border-spacing: 0; /* Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+            width: 300px;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+
+        .select-button{
+            border: 1px solid #CCCCCC;
+            color: #7C7C7C !important;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            padding: 0 6px;
+            font-size: inherit; 
+            height:40px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        .disabled-button {
+            pointer-events: none;
+            /* Optionally, you can add a different visual style for a disabled button */
+            opacity: 0.5; /* Example: Reducing opacity */
+        }
+        .spinner-border{
+            height: 18px;
+            width: 18px;
+        }
+</style>
+<section class="assetdetail">
+    <button onclick="goBack()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: msFilter"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+    <div class="assetheaderbuttones">
+        
+        <div class="uploadboxy">
+            <form action="/upload" class="dropzone" id="imageUpload" enctype="multipart/form-data">
+            </form>
+            {% for m in order_obj %}
+            <div class="uploadsubbtn">
+                <p></p>
+                <h1>{{m.challan_number}}</h1>
+                
+                <div class="editbtn">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% for m in order_obj %}
+        
+        <div class="assebutton" style="gap: 20px; display: flex;">
+            {% comment %} <button id="markOrderCompleteButton" class="hidden" onclick="showMarkOrderComplete()">Mark Order Complete</button> {% endcomment %}
+            <button id="assetTransferButton" data-toggle="" data-target=".bd-example-modal-lg" class="hidden" href="#">Transfer</button>
+            {% comment %} <button id="" data-toggle="modal" data-target=".bd-example-modal-lg" class="">Open Modal</button> {% endcomment %}
+            <button><a style="color:white" href="/asset_management/orders-info/{{m.id}}/">Order Details</a></button>
+            <button id="printChallan" onclick="generate_delivery_challan_pdf({{m.id}})">Print Delivery Challan</button>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+ <div class="navbar-navi tab">
+    <button class="tablinks active" onclick="openCity(event, 'London')"><svg
+        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-list"
+        viewBox="0 0 16 16">
+        <path
+            d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+        <path
+            d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+    </svg>Details</button>
+  </div>
+  
+  <div id="London" class="tabcontent active">
+    <section  class="assetdetail-detail " >
+
+        <div class="assetdetail-containing">
+           
+            <div class="assetdetail-contain mt-0">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A"
+                        class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
+                        <path
+                            d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z" />
+                        <path
+                            d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                    </svg>Customer Details</h1>
+                {% for m in order_obj %}
+                <div class="detialasset mt-4">
+                    <div class="detialasset-name">
+                        <p>Customer</p>
+                        <div class="bndname">
+                            {% if m.customer_id.customer == none %}
+                            --
+                            {% else %}
+                            {{m.customer_id.customer}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Phone Number</p>
+                        <div class="bndname">
+                            {% if m.customer_id.phone_number == none %}
+                            --
+                            {% else %}
+                            {{m.customer_id.phone_number}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Price</p>
+                        <div class="bndname">
+                            {% if m.price == none %}
+                            --
+                            {% else %}
+                            {{m.price}}
+                            {% endif %}
+                        </div>
+                     
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Email Address</p>
+                        <div class="bndname"> 
+                            {% if m.customer_id.email_address == none %}
+                            --
+                            {% else %}
+                            {{m.customer_id.email_address}}
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <br>
+            
+            <div class="assetdetail-contain mt-0">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A" class="bi bi-upc-scan" viewBox="0 0 16 16" style="margin-right: 5px;">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                  </svg>Order Details</h1>
+                {% for m in order_obj %}
+                <div class="detialasset mt-4">
+                    <div class="detialasset-name">
+                        <p>Deployment Date</p>
+                        <div class="bndname">
+                            {% if m.deployment_date == none %}
+                            --
+                            {% else %}
+                            <span>{{m.deployment_date|date:'d-m-Y'}}</span>
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Return Date</p>
+                        <div class="bndname">
+                            {% if m.return_date == none %}
+                            --
+                            {% else %}
+                            <span>{{m.return_date|date:'d-m-Y'}}</span>
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Out Date</p>
+                        <div class="bndname">
+                            {% if m.out_date_and_time == none %}
+                            --
+                            {% else %}
+                            <span>{{m.out_date_and_time|date:'d-m-Y'}}</span>
+                            {% endif %}
+                        </div>
+                        
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Mode <span>of</span> Dispatch</p>
+                        <div class="bndname">{{m.mode_of_dispatch}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Price</p>
+                        <div class="bndname">
+                            {% if m.price == none %}
+                            --
+                            {% else %}
+                            <span>{{m.price}}</span>
+                            {% endif %}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Remarks</p>
+                        <div class="bndname">
+                            {% if m.remarks == none %}
+                            --
+                            {% else %}
+                            <span>{{m.remarks}}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <br>
+            <div class="assetdetail-contain mt-0">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A" class="bi bi-upc-scan" viewBox="0 0 16 16" style="margin-right: 5px;">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                  </svg>Pick Up and Dispatch Details</h1>
+                {% for m in order_obj %}
+                <div class="detialasset mt-4">
+                    <div class="detialasset-name">
+                        <p>Order from</p>
+                        <div class="bndname">
+                            <span style="text-transform: capitalize;">
+                                {% if m.order_from == none %}
+                                --
+                                {% else %}
+                                {{m.order_from}}
+                                {% endif %}
+                            </span>
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Order To</p>
+                        <div class="bndname">
+                            <span style="text-transform: capitalize;">
+                                {% if m.order_to == none %}
+                                --
+                                {% else %}
+                                {{m.order_to}}
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="assetheaderbuttones">
+                    <div class="assebutton" style=" display: flex; margin-top: 20px; justify-content: flex-end;">
+                        <button class="hidden" id="assetTransferRequest" onclick="assetTransferRequest(event, {{m.id}})">
+                            <a style="color:white; text-decoration: none;"  href="">Send Transfer Request</a>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        {% comment %} <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th> {% endcomment %}
+                        <th></th>
+                        <th>BOX No. </th>
+                        <th>QTY</th>
+                        <th>CATEGORY </th>
+                        <th>Sub CATEGORY</th>
+                        <th>Description</th>
+                        <th>Brand</th>
+                        <th>Model No</th>
+                        <th>SERIAL No</th>
+                        <th class="hidden" id="asset_transfer">Transfer</th>
+                        <th class="hidden" id="move_to_inventory">Move to Inventory</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in all_asset_of_an_order%}
+                    <tr>
+                        <td class="checkbox-column">
+                            <input value="{{ m.assets__id }}" name="assets__id" id="checkBoxId{{m.assets__id}}" type="checkbox">
+                        </td>
+                        <td >
+
+                            {% if m.assets__box_number == none or m.assets__box_number == "" %}
+                                --
+                            {% else %}
+                                {{m.assets__box_number}}
+                            {% endif %}
+                        </td>
+                        <td>1</td>
+                        <td>
+                            {% if m.assets__category == none or m.assets__category == "" %}
+                                --
+                            {% else %}
+                                {{m.assets__category}}
+                            {% endif %}
+                        </td>
+                        <td    style="width:350px">
+                            {% if m.assets__sub_category == none or m.assets__sub_category == "" %}
+                                --
+                            {% else %}
+                                {{m.assets__sub_category}}
+                            {% endif %}
+                        </td> 
+                        <td>
+                            {% if m.assets__description == none or m.assets__description == "" %}
+                                --
+                            {% else %}
+                                {{m.assets__description}}
+                            {% endif %}
+                        </td>
+                        <td >
+                            {% if m.assets__brand == none or m.assets__brand == "" %}
+                            --
+                            {% else %}
+                                {{m.assets__brand}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if m.assets__model_no == none or m.assets__model_no == "" %}
+                            --
+                            {% else %}
+                                {{m.assets__model_no}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if m.assets__serial_no == none or m.assets__serial_no == "" %}
+                            --
+                            {% else %}
+                                {{m.assets__serial_no}}
+                            {% endif %}
+                        </td>              
+                        <td class="checkbox-column hidden" onclick="approveTranserRequest({{ m.assets__id }},{{m.id}})" id="transferButton{{ m.assets__id }}">
+                            <div class="book-status">
+                                    <!--column will be dynamicaclly created-->
+                            </div>
+                        </td>              
+                        <td class="hidden" id="moveToInventory{{ m.assets__id }}">
+                            <div class="book-status">
+                                    <!--column will be dynamicaclly created-->
+                            </div>
+                        </td>  
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="leftfile">
+            <div class="assetdetail-containing mt-3">
+                <div class="filebtny">
+                    <h1><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            style="fill: #6A1B9A;transform: msFilter">
+                            <path
+                                d="M19.903 8.586a.997.997 0 0 0-.196-.293l-6-6a.997.997 0 0 0-.293-.196c-.03-.014-.062-.022-.094-.033a.991.991 0 0 0-.259-.051C13.04 2.011 13.021 2 13 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V9c0-.021-.011-.04-.013-.062a.952.952 0 0 0-.051-.259c-.01-.032-.019-.063-.033-.093zM16.586 8H14V5.414L16.586 8zM6 20V4h6v5a1 1 0 0 0 1 1h5l.002 10H6z">
+                            </path>
+                            <path d="M8 12h8v2H8zm0 4h8v2H8zm0-8h2v2H8z"></path>
+                        </svg>Files</h1>    
+                        {% for m in order_obj%}
+                            <button id="uploadButton" onclick="document.getElementById('attachfile').click()">+ Attach file</button>
+                            <input type="file" id="attachfile" onchange="order_uploadFile({{m.id}})" style="display: none;">
+                       {% endfor %}
+                </div>
+                <div class="navbar-navi">
+
+                    <div class="navbar-second" id="navbar2" style="padding: 0; border: none;">
+                        <a id="ASSET DOCUMENTS" class="active" > ASSET
+                            DOCUMENTS</a>
+                        <!-- <a  id="GROUP DOCUMENTS"  onclick="setActive('navbar2','GROUP DOCUMENTS')">GROUP DOCUMENTS</a>   -->
+    
+                    </div>
+                </div>
+                <div class="filint" id="attachFile">
+                    {% for m in attached_files %}               
+                        {% if m.attached_file  %}
+                        <div class="commrntline">
+                            <li >{{m.attached_file}}</li>
+                            <div>
+                           <a href="{{m.attached_file.url}}" download ><li ></li>Download</a>    
+                           <button id="deletefile" style="background: transparent; border: none; color: red;" onclick="delete_attached_file({{m.id}})">Delete</button>
+                        </div>       
+                    </div>       
+                        {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="#A1A1A1" class="bi bi-slash-circle"
+                            viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708z" />
+                        </svg>
+                        <p>No File Found</p>
+                        {%endif%}
+                    {% endfor %}
+    
+                </div>
+    
+    
+            </div>
+            <div class="assetdetail-containing mt-3">
+                <div class="filebtny">
+                    <h1><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            style="fill: #6A1B9A;transform: msFilter">
+                            <path
+                                d="M4 18h2v4.081L11.101 18H16c1.103 0 2-.897 2-2V8c0-1.103-.897-2-2-2H4c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2z">
+                            </path>
+                            <path
+                                d="M20 2H8c-1.103 0-2 .897-2 2h12c1.103 0 2 .897 2 2v8c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2z">
+                            </path>
+                        </svg>Comments
+    
+                    </h1>
+    
+    
+                </div>
+                <div class="filint">
+                    {% for m in comments%}
+                    
+                        <div class="commrntline">
+                            <li style="width:60%;">{{m.comment}}</li>
+                            <li >{{m.date_time}}</li>
+                            
+                        </div>                    
+                    {%endfor%}
+                </div>
+        
+                    {% for m in order_obj%}
+                        <div class="addcmtbtn">
+                            <textarea name="comment" id="commentText" cols="30" rows="10" style="height: 40px; background-color: #fff; border-radius: 5px; border: none; padding: 5px; width: 70%; border: 1px solid #CCCCCC;
+                        "></textarea>
+                            <!-- <button onclick="update_comment({{m.id}})" value="">Add comment</button> -->
+                            <button onclick="update_comment_again_order({{m.id}})"  value="">Add comment</button>
+                            <!-- <button value=""><a href="/get-edit-asset-detail-comment-again/{{m.id}}/">get comment again</a></button> -->
+                        </div>
+                    {% endfor %}
+            </div>
+        </div>
+        
+    </section>
+    
+</div>
+</div>
+  
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<script>
+    {% if messages %}
+        {% for msg in messages %}
+            alertify.set('notifier','position', 'top-right');
+            alertify.success('{{msg}}');
+        {% endfor %}
+    {% endif %}
+</script>
+
+
+  
+<script>
+    // JavaScript function to select or unselect all checkboxes
+    function selectAllCheckboxes(masterCheckbox) {
+        var checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = masterCheckbox.checked;
+        });
+    }
+</script>
+
+
+
+<script>
+    function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+    </script>
+
+
+
+<script>
+    // Customize your Dropzone options as needed
+    Dropzone.options.imageUpload = {
+        paramName: "image", // The name that will be used to transfer the file
+        maxFilesize: 2, // MB
+        acceptedFiles: "image/*",
+        addRemoveLinks: true, // Display remove link
+        dictDefaultMessage: "<span style='font-size: 14px; color:#6A1B9A; ' > Upload </span>",
+        dictRemoveFile: "Remove",
+        init: function () {
+            // this.on("success", function (file, response) {
+            //     // Handle success
+            //     console.log(response);
+            // });
+            // this.on("error", function (file, response) {
+            //     // Handle error
+            //     console.error(response);
+            // });
+        }
+    };
+    
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function order_uploadFile(id) {
+        var fileInput = document.getElementById('attachfile');
+        var selectedFile = fileInput.files[0];
+        if (selectedFile) { 
+            var formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('id', id);
+            
+            $.ajax({
+                type: "POST",
+                url: "/asset_management/attach-file-to-order/",
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function(response) {
+                    window.location.reload()
+    
+                },
+                error: function(xhr, status, error) {
+                    window.location.reload()
+                }
+            });
+        }
+    }
+</script>
+
+
+
+
+
+<script>
+    function update_comment_again_order(id) {
+        var comment = $('#commentText').val(); 
+        $.ajax({
+            type: "POST",
+            url: "/asset_management/add-comment-to-order/", 
+            data: {
+                'id': id,
+                'comment': comment,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'  
+            },
+            success: function(response) {
+                window.location.reload()
+
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating comment:", error);
+            }
+        });
+    }
+</script>
+
+
+
+
+
+<script>
+    function delete_attached_file(id) {
+    let spinner = ` <div id="spinner">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden"></span>
+                </div>
+              </div>
+        </div> `
+        $('#attachFile').html(spinner)
+    $.ajax({
+        type: "POST",
+        url: "/asset_management/order-attach-file-delete/",
+        data: {
+            'id': id,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function (response) {
+            window.location.reload();
+        },
+        error: function (xhr, status, error) {
+            console.error("Error updating comment:", error);
+        }
+    });
+}
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+
+{% for m in all_asset_of_an_order %}
+<script>
+    var returnDate = new Date('{{ m.return_date | date:"Y-m-d" }}');
+    returnDate.setHours(0, 0, 0, 0);
+
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+
+    if (returnDate.getTime() < today.getTime()) {
+        document.getElementById('moveToInventory{{ m.assets__id }}').classList.remove('hidden');
+        document.getElementById('move_to_inventory').classList.remove('hidden');
+    }
+
+</script>
+{% endfor %}
+
+
+
+
+{% for m in all_asset_of_an_order %}
+<script>
+    // Assume m.return_date is a string in the format 'YYYY-MM-DD'
+    var returnDate = new Date('{{ m.return_date | date:"Y-m-d" }}');
+
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (returnDate.getTime() > today.getTime()) {
+        document.getElementById('transferButton{{ m.assets__id }}').classList.remove('hidden');
+        document.getElementById('asset_transfer').classList.remove('hidden');
+        document.getElementById('assetTransferRequest').classList.remove('hidden');
+        document.getElementById('assetTransferButton').classList.remove('hidden');
+
+    }
+
+</script>
+{% endfor %}
+
+
+{% for m in order_obj %}
+<script>
+    document.getElementById('assetTransferButton').addEventListener('click', function() {
+        var selectedOrderIds = [];
+        var order_id = '{{m.id}}'
+        var checkboxes = document.querySelectorAll('input[name="assets__id"]:checked');
+        checkboxes.forEach((checkbox) => {
+            selectedOrderIds.push(checkbox.value);
+        });
+        if (selectedOrderIds.length > 0) {
+            window.location.href ='/asset_management/transfer-form/?selectedOrderIds='+selectedOrderIds+'&order_id='+order_id;            
+        }
+        else{
+            alert('Please select at least one asset')
+        }
+    });
+</script>
+{% endfor %}
+
+
+
+
+
+<script>
+    function assetTransferRequest(event, order_id) {
+        event.preventDefault();
+        let spinner = ` <div id="spinner" style="width:200px; height:20px;">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden"></span>
+                </div>
+              </div>
+        </div> `
+        $('#assetTransferRequest').html(spinner)
+        var checkboxes = document.querySelectorAll('input[name="assets__id"]:checked');
+        var assetIds = Array.from(checkboxes).map(checkbox => checkbox.value);
+        if(assetIds.length > 0){ 
+        $.ajax({
+            type: "GET",
+            url: "/asset_management/send-transfer-email/",  
+            data: {
+                'asset_ids': assetIds.join(','),
+                'order_id': order_id, 
+                
+            },
+            success: function(response) {
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Email sent!!!!');
+                setTimeout(function () {
+                    window.location.reload(); 
+                }, 1000);
+            },
+            error: function(xhr, status, error) {
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Email cannot be sent!!!!');
+                setTimeout(function () {
+                    window.location.reload(); 
+                }, 1000); 
+
+            }
+        });
+       }
+       else{
+        alert("Select at least one asset.")
+        setTimeout(function () {
+            window.location.reload(); 
+        }, 200); 
+       }
+    }
+</script>
+
+
+
+{% for m in asset_obj_inventory_status%}
+<script>
+        var button = document.getElementById('transferButton{{ m.asset_id__id }}');
+      if({{m.asset_transfer}} === 1){
+        button.innerHTML ='<button class="book-status " disabled> Send Transfer Request </button>' 
+        button.style.fontWeight = '700';
+      }
+      
+       else if({{m.asset_transfer}} === 2){ 
+        
+        button.innerHTML =  '<button class="book-status ">Approve Transfer Request</button>';
+        button.style.fontWeight = '700';
+        }
+      
+      else if({{m.asset_transfer}} === 3){
+        button.innerHTML = '<button class="book-status" disabled> Ready To Transfer</button>'
+        button.style.fontWeight = '700';
+
+       }
+
+       else if({{m.asset_transfer}} === 4){
+        button.innerHTML = '<button class="book-status" disabled> Transfered </button>'
+        button.style.fontWeight = '700';
+
+       } 
+</script>
+{% endfor %}
+
+
+
+
+{% for m in asset_obj_inventory_status %}
+<script>
+    var container = document.querySelector('#moveToInventory{{ m.asset_id__id }} .book-status');
+    var move_to_inventory = {{ m.move_to_inventory|yesno:"true,false" }};
+    var transfered_asset = {{ m.asset_transfer }};
+    console.log(move_to_inventory, "move_asset_to_inventory")
+
+    debugger
+
+    if (move_to_inventory === false && transfered_asset===1) {
+        var button = document.createElement('button');
+        button.innerHTML = 'Move to Inventory';
+        button.style.background = 'none';
+        button.style.border = 'none';
+        button.style.color = '#E15F12';
+        button.style.fontWeight = '700';
+        button.setAttribute('data-asset-id', {{ m.asset_id__id }});
+        button.setAttribute('data-order-id', {{ m.order_id }});
+        button.onclick = function() {
+            move_asset_to_inventory(this);
+        };
+
+        container.appendChild(button);
+    }
+    else if (move_to_inventory === true && transfered_asset===1) {
+        var button = document.createElement('button');
+        button.innerHTML = 'Moved to Inventory';
+        button.style.background = 'none';
+        button.style.border = 'none';
+        button.style.color = '#E15F12';
+        button.style.fontWeight = '700';
+        button.disabled = true;
+        container.appendChild(button);
+    } 
+
+    else if (move_to_inventory === false && transfered_asset===2) {
+        var button = document.createElement('button');
+        button.innerHTML = 'Move to Inventory';
+        button.style.background = 'none';
+        button.style.border = 'none';
+        button.style.color = '#E15F12';
+        button.style.fontWeight = '700';
+        button.setAttribute('data-asset-id', {{ m.asset_id__id }});
+        button.setAttribute('data-order-id', {{ m.order_id }});
+        button.onclick = function() {
+            move_asset_to_inventory(this);
+        };
+
+        container.appendChild(button);
+    }
+
+    else if (move_to_inventory === false && transfered_asset===3) {
+        var button = document.createElement('button');
+        button.innerHTML = 'Move to Inventory';
+        button.style.background = 'none';
+        button.style.border = 'none';
+        button.style.color = '#E15F12';
+        button.style.fontWeight = '700';
+        button.setAttribute('data-asset-id', {{ m.asset_id__id }});
+        button.setAttribute('data-order-id', {{ m.order_id }});
+        button.onclick = function() {
+            move_asset_to_inventory(this);
+        };
+
+        container.appendChild(button);
+    }
+
+    else if (move_to_inventory === false && transfered_asset===4) {
+        var button = document.createElement('button');
+        button.innerHTML = 'Transfered';
+        button.style.background = 'none';
+        button.style.border = 'none';
+        button.style.color = '#E15F12';
+        button.style.fontWeight = '700';
+        button.disabled = true;
+        container.appendChild(button);
+    } 
+</script>
+{% endfor %}
+
+
+
+
+
+<script>
+    function move_asset_to_inventory(button) {
+        var asset_id = button.getAttribute('data-asset-id');
+        var order_id = button.getAttribute('data-order-id');
+
+        $.ajax({
+            type: "GET",
+            url: "/asset_management/move-asset-to-inventory/", 
+            data: {
+                'asset_id': asset_id,
+                'order_id': order_id,
+            },
+            success: function(response) {
+                button.innerHTML = 'Moved to Inventory';
+                button.disabled = true;
+                alertify.set('notifier','position', 'top-right');
+                alertify.success('Asset moved to inventory');
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating comment:", error);
+            }
+        });
+    }
+</script>
+
+
+
+
+<script>
+    function approveTranserRequest(assetId, order_id) {
+        $.ajax({
+            type: "GET",
+            url: "/asset_management/approve-tranfer-request/",  
+            data: {
+                'asset_ids': assetId,
+                'order_id': order_id,
+
+                
+            },
+            success: function(response) {
+                 window.location.reload()
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating comment:", error);
+            }
+        });
+    }
+</script>
+
+
+
+
+<script>
+    function generate_delivery_challan_pdf(id) {
+        let spinner = ` <div id="spinner" style="width:200px; height:20px;">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden"></span>
+                                </div>
+                            </div>
+                        </div> `
+        $('#printChallan').html(spinner)
+
+        var assetIds = []; 
+        $('input[name="assets__id"]:checked').each(function() {
+            assetIds.push($(this).val());
+        });
+
+            $.ajax({
+            type: "GET",
+            url: "/asset_management/print-delivery-challan/",
+            data: { id: id,
+                assetIds: assetIds },
+            success: function(response) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                window.open(url);
+                setTimeout(function () {
+                    window.location.reload(); 
+                }, 1000);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alert('Failed to generate PDF.');
+            }
+        });
+    }
+</script>
+
+
+{% endblock content %}

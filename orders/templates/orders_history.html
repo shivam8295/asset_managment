@@ -1,0 +1,826 @@
+{% load static%}
+
+{% include 'base_dashboard.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+
+<!-- Include FontAwesome CSS (you can change the version if needed) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+    
+
+    /* Optional: Add custom styling to the Dropzone container */
+  
+
+    /* Optional: Add styling for the icon */
+    .upload-icon {
+        font-size: 40px;
+        color: #0087F7;
+        margin-bottom: -90px;
+        margin-top: 15px;
+    }
+
+/* 
+    .navbar-second {
+        width: 100%;
+        background-color: #fff;
+        overflow: auto;
+        padding-left: 2%;
+        border-bottom: 2px solid #CCCCCC;
+        padding-bottom: -5px;
+    } */
+
+   
+
+    
+
+    .avaibtn select {
+        color: #007E33;
+        background-color: #CCF4DC;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16);
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+        height: 35px;
+    }
+
+
+    .tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  padding: 0 30px;
+  /* background-color: #f1f1f1; */
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  border: none;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  border-bottom:2px solid #6A1B9A;
+  color: #6A1B9A;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/* Set initial display for the first tab content */
+#London {
+  display: block;
+}
+button.tablinks {
+        float: left;
+        padding: 12px;
+        color: #7C7C7C;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        
+    }
+    button.tablinks svg {
+        margin-right: 5px;
+    }
+    table {
+            width: 100%;
+            border-collapse: separate; /* Set border-collapse to separate */
+            border-spacing: 0; /* Remove the space between cells */
+            margin-top: 20px;
+            border: 1px solid #F7EDFD;
+            border-radius:10px ;
+
+        }
+
+        th, td {
+            border: 1px solid #F7EDFD;
+            padding: 8px;
+            text-align: left;
+        
+        }
+        .table thead th {
+            border: none;
+             color: #4C555D;
+             font-size: 15px;
+             font-weight: 600;
+        }
+
+        th {
+            background-color: #F7EDFD;
+            text-transform: uppercase;
+            color: #4C555D;
+            border: none; /* Remove border for th */
+        }
+        td {
+            text-transform: capitalize;
+            font-size: 14px;
+        }
+
+        /* Style for checkboxes */
+        .checkbox-column {
+            text-align: center;
+        }
+        th, td {
+            border: none;
+        }
+        .assebutton{
+            display: flex;
+            gap: 10px;
+        }
+        td.tbname {
+            color: #006FC8;
+            text-transform:uppercase;
+            text-decoration: none;
+        }
+        td.tbname a {
+            text-decoration: none;
+        }
+
+        .pagination{
+            float:right;
+        }
+    
+
+        .spinner-border{
+            height: 20px;
+            width: 20px;
+    
+        }
+        
+       
+    
+</style>
+<section class="assetdetail">
+    <button onclick="goToConfirmOrdersList()" style="border: none; margin-bottom: 10px; background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #6A1B9A;transform: msFilter"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-5v4l-5-5 5-5v4h5v2z"></path></svg></button>
+    <div class="assetheaderbuttones">
+        <h1>Order History</h1>
+       
+
+    </div>
+</section>
+
+ <div class="navbar-navi tab">
+    <button class="tablinks active" onclick="openCity(event, 'London')"><svg
+        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-list"
+        viewBox="0 0 16 16">
+        <path
+            d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+        <path
+            d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+    </svg>Order Details</button>
+    <button class="tablinks" onclick="openCity(event, 'Paris')"><svg xmlns="http://www.w3.org/2000/svg"
+        width="16" height="16" fill="currentColor" class="bi bi-card-text" viewBox="0 0 16 16">
+        <path
+            d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+        <path
+            d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z" />
+    </svg>Customer Details</button>
+    <button class="tablinks" onclick="openCity(event, 'Tokyo')"><svg
+        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-list"
+        viewBox="0 0 16 16">
+        <path
+            d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+        <path
+            d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+    </svg>Asset Details</button>
+  </div>
+  
+  <div id="London" class="tabcontent active">
+    <section  class="assetdetail-detail " >
+
+        <div class="assetdetail-containing">
+           
+            <div class="assetdetail-contain mt-0">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A"
+                        class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
+                        <path
+                            d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z" />
+                        <path
+                            d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                    </svg>Order Details 
+                </h1>
+                <div class="detialasset mt-4">
+                    <div class="detialasset-name">
+                        <p>Name <span>of</span> consignee</p>
+                        <div class="bndname">
+                            <span class="bdnme">{{order_id.name_of_consignee}}</span>
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Organization</p>
+                        <div class="bndname">
+                            <span class="bdnme">{{order_id.organization}}</span>
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>customer</p>
+                        <div class="bndname">
+                            <span class="bdnme">{{order_id.customer}}</span>
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Invoice No. </p>
+                        <div class="bndname">
+                            {{order_id.invoice_number}}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Date </p>
+                        <div class="bndname">
+                           {{order_id.out_date_and_time|date:'d-m-Y'}}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Mode <span>of</span> Dispatch</p>
+                        <div class="bndname">{{order_id.mode_of_dispatch}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Transportation</p>
+                        <div class="bndname">{{order_id.transportation}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>from</p>
+                        <div class="bndname">{{order_id.order_from}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>to</p>
+                        <div class="bndname">{{order_id.order_to}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Out Date</p>
+                        <div class="bndname">{{order_id.out_date_and_time|date:'d-m-Y'}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Return Date</p>
+                        <div class="bndname">{{order_id.return_date|date:'d-m-Y'}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Prepared <span>by</span>(Name)</p>
+                        <div class="bndname">{{order_id.prepared_by_name}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Prepared <span>by</span>(Email) </p>
+                        <div class="bndname">{{order_id.prepared_by_email}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>POC <span>AT</span> Venue(Name)</p>
+                        <div class="bndname">{{order_id.poc_at_venue_name}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>APPROVER EMAIL</p>
+                        <div class="bndname">{{order_id.approver_email}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Truck Details</p>
+                        <div class="bndname">{{order_id.truck_details}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Driver Details</p>
+                        <div class="bndname">{{order_id.driver_details}}</div>
+    
+                    </div>
+                 
+                  
+    
+                    <div class="detialasset-name">
+                        <p>Contact </p>
+                        <div class="bndname">{{order_id.contact_details}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Remarks</p>
+                        <div class="bndname">{{order_id.remarks}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Purpose
+                            </p>
+                        <div class="bndname">{{order_id.purpose}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Reason </p>
+                        <div class="bndname">{{order_id.reason}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Office Address</p>
+                        <div class="bndname">{{order_id.office_address}}</div>
+    
+                    </div> 
+                    <div class="detialasset-name">
+                        <p>Website</p>
+                        <div class="bndname"><span>{{order_id.website}}</span></div>
+                    </div> 
+                </div>
+               
+                
+    
+            </div>
+            
+   
+           
+            
+        </div>
+    </section>
+    </div>
+  
+  <div id="Paris" class="tabcontent">
+    <section  class="assetdetail-detail " >
+       
+        <div class="assetdetail-containing">
+           
+            <div class="assetdetail-contain mt-0">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#6A1B9A"
+                        class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
+                        <path
+                            d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z" />
+                        <path
+                            d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                    </svg>Customer Information</h1>
+                {% for m in order_history_obj_ctx%}
+                <div class="detialasset mt-4">
+                    <div class="detialasset-name">
+                        <p>Customer</p>
+                        <div class="bndname">
+                            <span class="bdnme">{{m.customer}}</span>
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Completed Orders</p>
+                        <div class="bndname">
+                            {{m.completed_orders}}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Deployed Orders</p>
+                        <div class="bndname">
+                            {{m.deployed_order}}
+                        </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Taxed </p>
+                        <div class="bndname">{{m.taxed}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Email Address </p>
+                        <div class="bndname2">{{m.email_address}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Department </p>
+                        <div class="bndname">{{m.department}}</div>
+    
+                    </div>
+    
+                    <div class="detialasset-name">
+                        <p>Phone Number </p>
+                        <div class="bndname">{{m.phone_number}}
+                         </div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Customer Revenue </p>
+                        <div class="bndname">{{m.customer_revenue}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Commercial Address</p>
+                        <div class="bndname">{{m.commercial_address}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Category </p>
+                        <div class="bndname">{{m.category}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Created <span>At</span></p>
+                        <div class="bndname">{{m.created_at|date:'d-m-Y'}}</div>
+    
+                    </div>
+                    <div class="detialasset-name">
+                        <p>Secondary Email </p>
+                        <div class="bndname2">{{m.secondary_email}}</div>
+    
+                    </div>
+    
+                </div>
+                <div class="detialasset-name" style="width: 98%;margin: 0 auto;gap: 55px;">
+                    <p style="width: 500px;">Description</p>
+                    <div class="bndname" style="width: 100%;">{{m.description}}</div>
+    
+                </div>
+    
+            </div>
+            {% endfor %}
+        </div>
+       
+     
+        
+    </section>
+    
+  </div>
+  <div id="Tokyo" class="tabcontent">
+    <section class="assest-container-table">
+       
+    
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="checkbox-column" style="border-radius: 10px 0 0 0;"><input type="checkbox" id="masterCheckbox" onclick="selectAllCheckboxes(this)"></th>
+                    
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Model No.</th>
+                    <th >brand</th>
+                    <th>serial no.</th>
+                    <!-- <th style="border-radius: 0 10px  0 0; cursor: pointer;"><img src="{% static 'images/sliders.svg' %}" alt=""></th> -->
+                </tr>
+            </thead>
+           
+            <tbody>
+                {% for asset in all_asset_of_order %}
+                <tr>
+                    <td class="checkbox-column" id="tableData">
+                        <input type="checkbox" name="id" value="{{ asset.id }}">
+                    </td>
+                    
+                    <td class="tbname"><a href="/asset-detail/{{asset.id}}/">{% if asset.category == 'nan' %} -- {% elif asset.category %} {{asset.category}} {% else %} -- {% endif %}</a></td>
+                    <td class="tbname"><a href="/asset-detail/{{asset.id}}/">{% if asset.description %} {{asset.description}} {% elif asset.description == 'nan' %} -- {% else %} -- {% endif %}</a></td>
+                    <td class="tbname">{% if asset.model_no %} {{asset.model_no}} {% else %} -- {% endif %}</td>
+                    <td class="tbname">{{asset.brand}}</td>   
+                    <td class="tbname">{{asset.serial_no}}</td>           
+                </tr>
+                {% endfor %}
+            </tbody>
+        </form>
+        </table>
+        <div class="pagidis">
+        <div>
+    </div>
+        <div class="card text-center" style="border: none;">
+                <div class="card-footer text-body-secondary" style="background-color: #fff; border: none;" >
+                Displaying all {{queryset_length}} assets
+                </div>
+        </div>
+        <div class="pagination">
+            <span class="step-links">
+                {% if assets.has_previous %}
+                    <a href="{% if query_params_q and query_params_filter_value %}?q={{query_params_q}}&filter_type={{query_params_filter_value}}&page=1
+                    {% elif query_params_q %}?q={{query_params_q}}&page=1
+                    {% else %}?page=1{% endif %}">&laquo; First</a>
+    
+                    
+                    <a href="{% if query_params_q %}?q={{query_params_q}}&filter_type={{query_params_filter_value}}&page={{ assets.previous_page_number }}
+                    {% elif query_params_q %}?q={{query_params_q}}&page={{ assets.previous_page_number }}
+                    {% else %}?page={{ assets.previous_page_number }}{% endif %}">Previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ assets.number }} of {{ assets.paginator.num_pages }}
+                </span>
+                {% if assets.has_next %}
+                    <a href="{% if query_params_q and query_params_filter_value %}?q={{query_params_q}}&filter_type={{query_params_filter_value}}&page={{ assets.next_page_number }}
+                    {% elif query_params_q %}?q={{query_params_q}}&page={{ assets.next_page_number }}
+                    {% else %}?page={{ assets.next_page_number }}{% endif %}">Next</a>
+    
+    
+                    <a href="{% if query_params_q %}?q={{query_params_q}}&filter_type={{query_params_filter_value}}&page={{ assets.paginator.num_pages }}
+                    {% elif query_params_q %}?q={{query_params_q}}&page={{ assets.paginator.num_pages }}
+                    {% else %}?page={{ assets.paginator.num_pages }}{% endif %}">Last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+    </section>
+    
+  </div>
+
+  
+
+  
+
+
+</div>
+  
+
+
+
+<script>
+    function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+
+    }
+</script>
+
+
+
+<script>
+        // Customize your Dropzone options as needed
+        Dropzone.options.imageUpload = {
+            paramName: "image", // The name that will be used to transfer the file
+            maxFilesize: 2, // MB
+            acceptedFiles: "image/*",
+            addRemoveLinks: true, // Display remove link
+            dictDefaultMessage: "<span style='font-size: 14px; color:#6A1B9A; ' > Upload </span>",
+            dictRemoveFile: "Remove",
+            init: function () {
+                
+            }
+        };
+        
+</script>
+
+
+<script>
+    function changeTab(tabName){
+        document.getElementById(tabName).style.display = "block";
+    }
+</script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script>
+    {% if messages %}
+        {% for msg in messages %}
+            alertify.set('notifier','position', 'top-right');
+            alertify.success('{{msg}}');
+        {% endfor %}
+    {% endif %}
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function uploadFile(id) {
+        var fileInput = document.getElementById('attachfile');
+        var selectedFile = fileInput.files[0];
+        console.log(fileInput,"---------------------------------")
+        if (selectedFile) { 
+            var formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('id', id);
+            
+            $.ajax({
+                type: "POST",
+                url: "/asset_management/attach-file-to-customer/",
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function(response) {
+                    window.location.reload()
+    
+                },
+                error: function(xhr, status, error) {
+                    window.location.reload()
+                }
+            });
+        }
+    }
+</script>
+
+
+
+<script>
+    function update_comment_again(id) {
+        var comment = $('#commentText').val(); 
+        $.ajax({
+            type: "POST",
+            url: "/asset_management/customer-comments/", 
+            data: {
+                'id': id,
+                'comment': comment,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'  
+            },
+            success: function(response) {
+                window.location.reload()
+
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating comment:", error);
+            }
+        });
+    }
+</script>
+
+
+
+<script>
+    function delete_attached_file(id) {
+    let spinner = ` <div id="spinner">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden"></span>
+                </div>
+              </div>
+        </div> `
+        $('#attachFile').html(spinner)
+    $.ajax({
+        type: "POST",
+        url: "/asset_management/customer-attach-file-delete/",
+        data: {
+            'id': id,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function (response) {
+            window.location.reload();
+        },
+        error: function (xhr, status, error) {
+            console.error("Error updating comment:", error);
+        }
+    });
+}
+</script>
+
+
+
+<script>
+    function generate_order_pdf(id) {
+            $.ajax({
+            type: "GET",
+            url: "/asset_management/order-detail-pdf/",
+            data: { id: id },
+            success: function(response) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                window.open(url);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alert('Failed to generate PDF.');
+            }
+        });
+    }
+    </script>
+
+
+
+    <script>
+        function goToConfirmOrdersList(id){
+            window.location.href = '/asset_management/confirmed-orders-list/'
+            
+        }
+    </script>
+
+
+
+ {% for m in customer_orders %}
+    <script>
+        var orderStatus = {{m.orderdetail__order_status}}
+        var orderStatusElement = document.getElementById("orderStatus{{m.orderdetail__id}}");
+        // Check the order orderStatus and set the text color accordingly
+        if (orderStatus == 2) {
+            orderStatusElement.style.backgroundColor  = "#28a745"; 
+            orderStatusElement.style.color = "white";
+            orderStatusElement.style.fontWeight = 700;
+        } else if (orderStatus == 3) {
+            orderStatusElement.style.backgroundColor  = "red";
+            orderStatusElement.style.color = "black";
+        } else {
+            orderStatusElement.style.backgroundColor  = "#ffc107 "; 
+            orderStatusElement.style.color = "white";
+            orderStatusElement.style.fontWeight = 700;
+ 
+        }
+    </script>
+
+{% endfor %} 
+
+
+
+<script>
+    function order_dispatch(order_id) {
+    var dispatchStatusElement = document.getElementById("dispatchStatus" + order_id);
+        $.ajax({
+            type: "POST",
+            url: "/asset_management/dispatch-order/", 
+            data: {
+                'order_id': order_id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'  
+            },
+            success: function(response_data) {
+                if (response_data.success) {
+                    dispatchStatusElement.style.backgroundColor = "#EAF7FC";
+                    dispatchStatusElement.style.color = "#29ABE2";
+                    dispatchStatusElement.innerText = "Dispatched";
+                    alertify.set('notifier','position', 'top-right');
+                    alertify.success('Asset Dispatched');
+
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating comment:", error);
+            }
+        });
+    }
+</script>
+
+
+{% for m in customer_orders%}
+<script>
+    var dispatchStatusElement = document.getElementById("dispatchStatus{{m.orderdetail__id}}");
+    var orderStatus = {{ m.orderdetail__order_status }};
+    var orderDispatched = {% if m.orderdetail__order_dispatch %}true{% else %}false{% endif %};
+
+    dispatchStatusElement.innerHTML = '';
+
+    if (orderStatus == 2 && !orderDispatched) {
+
+        var buttonElement = document.createElement("button");
+        dispatchStatusElement.style.background = "#E5E8FF";
+        buttonElement.style.border = "none";
+        buttonElement.style.background = "none";
+        buttonElement.style.color = "#001AFF";
+        buttonElement.innerText = "Ready to dispatch";
+        buttonElement.onclick = function () {
+            order_dispatch({{ m.orderdetail__id }});
+        };
+        dispatchStatusElement.appendChild(buttonElement);
+    } else if (orderStatus == 2 && orderDispatched) {
+
+        var spanElement = document.createElement("span");
+        spanElement.innerText = "Dispatched";
+        dispatchStatusElement.style.backgroundColor = "#001AFF"
+        dispatchStatusElement.style.color = "white"
+        dispatchStatusElement.style.fontWeight = 700;
+        dispatchStatusElement.appendChild(spanElement);
+    } else if (orderStatus == 3) {
+
+        dispatchStatusElement.innerText = "Cancelled";
+        dispatchStatusElement.style.backgroundColor  = "red";
+        dispatchStatusElement.style.color = "black";
+    } else {
+
+        dispatchStatusElement.innerText = "Order not approved";
+        dispatchStatusElement.style.backgroundColor = "#ffc107 "; //yellow
+        dispatchStatusElement.style.color = "white";
+        dispatchStatusElement.style.fontWeight = 700;
+
+    }
+
+</script>
+{% endfor %}
+
+
+{% endblock content %}
